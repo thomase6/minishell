@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:30:15 by texenber          #+#    #+#             */
-/*   Updated: 2025/11/11 10:36:13 by texenber         ###   ########.fr       */
+/*   Updated: 2026/01/14 11:31:21 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 int		ft_abs(int n);
 double	ft_atof(char *str);
 int		ft_atoi(const char *str);
+int		ft_atoll(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_is_space(char c);

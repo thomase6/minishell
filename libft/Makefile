@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/16 14:29:16 by texenber          #+#    #+#              #
-#    Updated: 2025/09/26 10:09:01 by texenber         ###   ########.fr        #
+#    Updated: 2026/01/14 11:35:18 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS := \
 	ft_abs.c \
 	ft_atof.c \
 	ft_atoi.c \
+	ft_atoll.c \
 	ft_bzero.c \
 	ft_calloc.c \
 	ft_is_space.c \
@@ -27,6 +28,7 @@ SRCS := \
 	ft_isascii.c \
 	ft_isdigit.c \
 	ft_isprint.c \
+	ft_itoa.c \
 	ft_memchr.c \
 	ft_memcmp.c \
 	ft_memcpy.c \
@@ -42,7 +44,6 @@ SRCS := \
 	ft_strrchr.c \
 	ft_tolower.c \
 	ft_toupper.c \
-	ft_itoa.c \
 	ft_putchar_fd.c \
 	ft_putendl_fd.c \
 	ft_putnbr_fd.c \

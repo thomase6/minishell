@@ -1,23 +1,28 @@
 #include "../inc/minishell.h"
 
-int main(void)
-{
-	char *input;
+// int main(int ac, char **av, char **envp)
+// {
+// 	char	*input;
+// 	(void)ac;
+// 	(void)av;
 
-	while (1)
-	{
-		if (!(input = readline("input: ")))
-			return (1);
-		char **av = ft_split(input, ' ');
-		int i = 0;
-		while (av[i])
-		{
-			printf("av[%d]: %s\n", i, av[i]);
-			i++;
-		}
-	}
-}
+// 	while (1)
+// 	{
+// 		if (!(input = readline("input: ")))
+// 			return (1);
+// 		av = ft_split(input, '|'); // placeholder for parsing
+// 		single_cmd_execution(av[0], envp);
+// 	}
+// }
 
+// while (shell is running)
+// {
+//     input = readline()
+//     tokens = tokenize(input)
+//     commands = parse(tokens)
+//     execute(commands)
+//     cleanup()
+// }
 
 
 // minishell

@@ -6,69 +6,57 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2025/12/19 15:48:44 by texenber         ###   ########.fr        #
+#    Updated: 2026/01/16 13:59:10 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := minishell
+NAME		= minishell
 
 #ingredients
-SRC_DIR := src
-OBJ_DIR := obj
-INC_DIR := inc
-SRCS :=	\
-	main.c
-SRCS := $(SRCS:%=$(SRC_DIR)/%)
-OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-LIBFT_DIR := libft
-LIBFT_LIB := $(LIBFT_DIR)/libft.a
+EXEC_PRE	= execution/
+EXEC_SRC	= executor.c pipeline.c exec_cmd.c init_env.c builtins_dud.c /builtins/echo.c /builtins/cd.c /builtins/pwd.c /builtins/env.c /builtins/exit.c
 
-CC := cc
-WARN := -Wall -Werror -Wextra
+SRC			= execution/test_main.c $(addprefix $(EXEC_PRE), $(EXEC_SRC))
+SRCS		= $(addprefix $(PRE), $(SRC))
+PRE			= ./src/
+HEAD		= ./inc/
+CC			= cc
+WARN		= -Wall -Werror -Wextra
 ifeq ($(NOWARN), 1)
-	WARN :=
+	WARN 	=
 endif
-CFLAGS := $(WARN) -I$(INC_DIR)
-LDFLAGS := -L$(LIBFT_DIR)
-LDLIBS := -lft -lreadline
+CFLAGS		= $(WARN)
+LIBFT		= cd libft
+ODIR		= obj/
+OBJS		= $(SRCS:$(PRE)%.c=$(ODIR)%.o)
 
 #utensils
-RM := rm -f 
-LM := make -C 
-MAKEFLAGS += --no-print-directory
-DIR_DUP = mkdir -p $(@D)
+RM			= rm -f 
+LM			= make -C 
+MAKEFLAGS	+= --no-print-directory
+DIR_DUP		= mkdir -p $(@D)
 
 #recipe
-all: $(LIBFT_LIB) $(NAME)
+all:		$(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@
-	$(info CREATED $(NAME))
+$(ODIR)%.o: $(PRE)%.c
+			$(DIR_DUP)		
+			$(CC) $(CFLAGS) -c -I $(HEAD) $< -o $@
 
-$(LIBFT_LIB):
-	$(LM) $(LIBFT_DIR)
+$(NAME):	$(OBJS)
+			(${LIBFT} && make all)
+			$(CC) $(CFLAGS) -I $(HEAD) $(OBJS) -o $(NAME) ./libft/libft.a -lreadline
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(DIR_DUP)
-	$(CC) $(CFLAGS) -c -o $@ $<
-	$(info CREATED $@)
+clean:		
+			(${LIBFT} && make clean)
+			$(RM) $(OBJS)
+			rm -rf $(ODIR)
+			
+fclean:		clean
+			(${LIBFT} && make fclean)
+			$(RM) $(NAME)
 
-clean:
-	$(RM) $(OBJS)
-	$(LM) $(LIBFT_DIR) clean
-	$(info sweep sweep)
+re:			fclean all clean
 
-fclean: clean
-	$(RM) $(NAME)
-	$(LM) $(LIBFT_DIR) fclean
-	rm -rf $(OBJ_DIR)
-	$(info SWEEP SWEEP)
-
-re:
-	$(MAKE) fclean
-	$(MAKE) all
-
-#special
-.PHONY: clean fclean re
-.SILENT:
+.PHONY:		all clean fclean re
