@@ -17,6 +17,7 @@
 // 	int		*status;
 // 	bool	is_builtin;
 // }	t_exec;
+typedef struct s_shell t_shell;
 
 typedef struct s_cmd
 {
@@ -28,19 +29,19 @@ typedef struct s_cmd
 } t_cmd;
 
 // int single_cmd_execution(char *av, char **envp);
-int		execute_cmds(t_cmd *cmds, char **envp, int *last_status);
-int		exec_pipeline(t_cmd *cmds, char **envp, int *last_status);
-void	exec_child(t_cmd *cmds, char **envp, int prev_fd, int fd[2]);
-char	*resolve_path(char *cmd, char **envp);
-int		exec_builtin_parent(t_cmd *cmds, char **envp, int *last_status);
-int		exec_builtin(t_cmd *cmds, char **envp);
+int		execute_cmds(t_cmd *cmds, t_shell *shell); // **NEW**
+int		exec_pipeline(t_cmd *cmds, t_shell *shell); // **NEW**
+void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]); // **NEW**
+char	*resolve_path(char *cmd, char **envp); // CHANGE: add t_shell *shell
+int	    exec_builtin_parent(t_cmd *cmds, t_shell *shell); // **NEW**
+int	exec_builtin(t_cmd *cmds, t_shell *shell); // **NEW**
 
 /// builtin functions ///
 
 int	builtin_echo(char **argv);
-int	builtin_cd(char **av, char **envp);
+int	builtin_cd(char **av, char **envp); // CHANGE: add t_shell *shell
 int	builtin_pwd(void);
-int	builtin_env(char **envp);
+int	builtin_env(char **envp); // CHANGE: add t_shell *shell
 int	builtin_exit(char **argv);
 
 ///     exit and free       ///

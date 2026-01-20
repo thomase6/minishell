@@ -1,25 +1,26 @@
-#include "../../inc/execution.h"
+#include "../../inc/minishell.h"
 
 //this functions are just temporary while we work on other things to allow the other functions to work in the meantime
-int	exec_builtin(t_cmd *cmds, char **envp) // CHANGE: add t_shell *shell
+int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 {
 	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
 		return(builtin_echo(cmds->argv));
 	else if (ft_strncmp(cmds->argv[0], "cd", 2) == 0)
-		return(builtin_cd(cmds->argv, envp));
+		return(builtin_cd(cmds->argv, shell->env));
 	else if (ft_strncmp(cmds->argv[0], "pwd", 3) == 0)
 		return(builtin_pwd());
 	else if (ft_strncmp(cmds->argv[0], "env", 3) == 0)
-		return(builtin_env(envp));
+		return(builtin_env(shell->env));
 	else if (ft_strncmp(cmds->argv[0], "exit", 4) == 0)
 		return(builtin_exit(cmds->argv));	
 	return (0);
 }
 
-int	exec_builtin_parent(t_cmd *cmds, char **envp, int *last_status) // CHANGE: add t_shell *shell
+int	exec_builtin_parent(t_cmd *cmds, t_shell *shell) // **NEW**
 {
-	int res = exec_builtin(cmds, envp); // CHANGE: add t_shell *shell
-	*last_status = res; // CHANGE: shell->last_status
+	int res;
+	res = exec_builtin(cmds, shell);
+	shell->last_status = res;
 	return (res);
 }
 //part of exec_builtin

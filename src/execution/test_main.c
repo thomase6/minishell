@@ -8,7 +8,7 @@ int main(int argc, char **argv, char **envp)
     t_cmd c;
     t_shell shell; //this will hold our tmp env and last status used.
     char *cmd1[] = {"env",NULL};
-    char *cmd2[] = {"grep","SHLVL", NULL};
+    char *cmd2[] = {"wc","-l", NULL};
     char *cmd3[] = {"pwd", NULL};
     int status;
 
@@ -32,13 +32,13 @@ int main(int argc, char **argv, char **envp)
     c.is_builtin = 1;
     c.next = NULL;
 
-    // if (init_env(&shell, envp) == -1)
-    // {
-    //     ft_putstr_fd("Error: failed to initialize\n", 2);
-	//     return (1);
-    // }
-    execute_cmds(&a, envp, &status); // CHANGE: add t_shell *shell
-    // free_argv(shell.env);
+    if (init_env(&shell, envp) == -1)
+    {
+        ft_putstr_fd("Error: failed to initialize\n", 2);
+	    return (1);
+    }
+    execute_cmds(&a, &shell); // **NEW**
+    free_argv(shell.env);
     // printf("exit status: %d\n", status);
 }
 

@@ -40,7 +40,7 @@ char	*resolve_cmd(char *cmd, char **dir_path)
 
 // this function finds the right part of the envp were we can find the cmd path then it sends it to resolve_cmd to find the cmd path
 // make sure cmd is only a cmd without anything added to it like "ls" and not "ls -l"
-char	*resolve_path(char *cmd, char **envp) 
+char	*resolve_path(char *cmd, char **envp) // CHANGE: add t_shell *shell
 {
 	char	*env_path;
 	char	*result;
