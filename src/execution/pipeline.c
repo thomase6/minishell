@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
+/*   Updated: 2026/01/21 10:00:38 by texenber         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 #include "../../inc/execution.h"
 
@@ -51,7 +63,7 @@ int wait_all(int *last_status) //rewrite this to a simpler version // CHANGE: sh
 		else if (WIFSIGNALED(status)) //this is for signal termination like Ctrl + C
 			last = 128 + WTERMSIG(status);
 	}
-	*last_status = last; // CHANGE: shell->last_status
+	*last_status = last;
 	return (last);
 }
 
@@ -84,13 +96,11 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]) // **NEW**
 
 	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmds->argv[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd("minishell: command not found\n", 2);
 		exit(127);
 	}
 	if (cmds->is_builtin)
-		exit(exec_builtin(cmds, envp));
+		exit(exec_builtin(cmds, shell));
 	path = resolve_path(cmds->argv[0], envp); 
 	err = cmd_check(path, cmds->argv[0]);
 	if (err != 0)

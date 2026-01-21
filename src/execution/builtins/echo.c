@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/21 09:59:45 by texenber          #+#    #+#             */
+/*   Updated: 2026/01/21 09:59:46 by texenber         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../inc/execution.h"
 
 // this function is supposed to mimic the builtin command echo which prints to standard output the argument after echo unless that argument is the flag '-n'

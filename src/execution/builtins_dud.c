@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_dud.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
+/*   Updated: 2026/01/21 10:00:20 by texenber         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-//this functions are just temporary while we work on other things to allow the other functions to work in the meantime
 int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 {
+	// gotta change all of this to strcmp not strncmp because currently "echo123" passes.
 	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
 		return(builtin_echo(cmds->argv));
 	else if (ft_strncmp(cmds->argv[0], "cd", 2) == 0)
@@ -12,7 +24,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 	else if (ft_strncmp(cmds->argv[0], "env", 3) == 0)
 		return(builtin_env(shell->env));
 	else if (ft_strncmp(cmds->argv[0], "exit", 4) == 0)
-		return(builtin_exit(cmds->argv));	
+		return(builtin_exit(cmds->argv, shell->last_status));	
 	return (0);
 }
 

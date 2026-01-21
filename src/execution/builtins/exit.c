@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/21 09:59:29 by texenber          #+#    #+#             */
+/*   Updated: 2026/01/21 09:59:30 by texenber         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../inc/execution.h"
 
-int	builtin_exit(char **argv)
+int	builtin_exit(char **argv, int last_status)
 {
 	int exit_code;
 	int	i;
@@ -8,7 +20,7 @@ int	builtin_exit(char **argv)
 	ft_putstr_fd("exit\n", 2);
 
 	if (!argv[1])
-		exit(0); //change for the last_status later once the function has been changed to include last_status
+		exit(last_status);
 	i = 0;
 	if (argv[1][i] == '+' || argv[1][i] == '-')
 		i++;

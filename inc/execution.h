@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
+/*   Updated: 2026/01/21 10:01:14 by texenber         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
@@ -42,7 +54,7 @@ int	builtin_echo(char **argv);
 int	builtin_cd(char **av, char **envp); // CHANGE: add t_shell *shell
 int	builtin_pwd(void);
 int	builtin_env(char **envp); // CHANGE: add t_shell *shell
-int	builtin_exit(char **argv);
+int	builtin_exit(char **argv, int last_status);
 
 ///     exit and free       ///
 void	free_argv(char **av);
