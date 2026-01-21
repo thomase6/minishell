@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 10:01:14 by texenber         ###   ########.fr       */
+/*   Updated: 2026/01/21 16:05:04 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*resolve_path(char *cmd, char **envp); // CHANGE: add t_shell *shell
 int	    exec_builtin_parent(t_cmd *cmds, t_shell *shell); // **NEW**
 int	exec_builtin(t_cmd *cmds, t_shell *shell); // **NEW**
 
-/// builtin functions ///
+///		builtin functions	///
 
 int	builtin_echo(char **argv);
 int	builtin_cd(char **av, char **envp); // CHANGE: add t_shell *shell
@@ -56,7 +56,14 @@ int	builtin_pwd(void);
 int	builtin_env(char **envp); // CHANGE: add t_shell *shell
 int	builtin_exit(char **argv, int last_status);
 
-///     exit and free       ///
+///		export and unset helpers	///
+
+int find_env_var(char **env, char *key);
+int	update_env_var(char **env, int i, char *var);
+char **add_env_var(char **env, char *var);
+void test(void); // this is just for testing
+
+///		exit and free	///
 void	free_argv(char **av);
 
 

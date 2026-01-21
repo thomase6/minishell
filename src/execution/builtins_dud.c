@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 10:00:20 by texenber         ###   ########.fr       */
+/*   Updated: 2026/01/21 10:24:46 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 {
-	// gotta change all of this to strcmp not strncmp because currently "echo123" passes.
+	// I think strcmp would be better but the example of "echo123" does not pass strncmp so idk.
 	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
 		return(builtin_echo(cmds->argv));
 	else if (ft_strncmp(cmds->argv[0], "cd", 2) == 0)

@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/01/16 13:59:10 by texenber         ###   ########.fr        #
+#    Updated: 2026/01/21 13:29:53 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME		= minishell
 #ingredients
 
 EXEC_PRE	= execution/
-EXEC_SRC	= executor.c pipeline.c exec_cmd.c init_env.c builtins_dud.c /builtins/echo.c /builtins/cd.c /builtins/pwd.c /builtins/env.c /builtins/exit.c
+EXEC_SRC	= executor.c pipeline.c exec_cmd.c init_env.c builtins_dud.c /builtins/echo.c /builtins/cd.c /builtins/pwd.c /builtins/env.c /builtins/exit.c /builtins/export.c
 
 SRC			= execution/test_main.c $(addprefix $(EXEC_PRE), $(EXEC_SRC))
 SRCS		= $(addprefix $(PRE), $(SRC))
