@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 16:05:04 by texenber         ###   ########.fr       */
+/*   Updated: 2026/01/22 09:35:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ int	builtin_cd(char **av, char **envp); // CHANGE: add t_shell *shell
 int	builtin_pwd(void);
 int	builtin_env(char **envp); // CHANGE: add t_shell *shell
 int	builtin_exit(char **argv, int last_status);
+int	builtin_export(char **argv, t_shell *shell);
 
 ///		export and unset helpers	///
 
-int find_env_var(char **env, char *key);
-int	update_env_var(char **env, int i, char *var);
-char **add_env_var(char **env, char *var);
-void test(void); // this is just for testing
+int     find_env_var(char **env, char *key);
+int     update_env_var(char **env, int i, char *var);
+char    **add_env_var(char **env, char *var);
+void	print_export(char **env);
+void    test(void); // this is just for testing
 
 ///		exit and free	///
 void	free_argv(char **av);

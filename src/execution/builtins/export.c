@@ -6,10 +6,11 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 16:04:12 by texenber         ###   ########.fr       */
+/*   Updated: 2026/01/22 12:11:08 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
 //this function finds the key string in the env double pointer
@@ -75,6 +76,23 @@ char **add_env_var(char **env, char *var)
 	return (new_env);
 }
 
+// this function is supposed to print onto standard output the env with "declare -x"
+// Very simple version might want to add the "" later
+void	print_export(char **env)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (env[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(env[i], 1);
+		ft_putchar_fd('\n', 1);
+		i++;
+	}
+}
+
 // this is just for testing
 void test(void)
 {
@@ -94,4 +112,61 @@ void test(void)
         printf("  [%d] %s\n", i, env[i]);
     
     free_argv(env);
+}
+
+// this function is basically just checking that the first character is a letter or an underscore and that everything after is either a number, letter or an underscore until the '='.
+int	is_valid_export(char *arg)
+{
+	int i;
+
+	if (!ft_isalpha(arg[0]) || arg[0] != '_')
+		return (0);
+	i = 1;
+	while (arg[i] && arg[i] != '=')
+	{
+		if ((!ft_isalnum(arg[i])) && arg[i] != '_')
+			return (0);
+		i++;
+	}
+	if (arg[i] != '=')
+		return (0);
+	return (1);
+}
+
+
+
+int	builtin_export(char **argv, t_shell *shell)
+{
+	int	i;
+	int	res;
+	int	err;
+
+	if (!argv[1])
+	{
+		print_export(shell->env);
+		return (0);
+	}
+	i = 1;
+	err = 0;
+	while (argv[i])
+	{
+		if (!is_valid_export(argv[i]))
+		{
+			ft_putstr_fd("export: '", 2);
+			ft_putstr_fd(argv[i], 2);
+			ft_putstr_fd("': not a valid identifier\n",2);
+			err = 1;
+		}
+		else
+		{
+			res = set_env_var(shell, argv[i]);
+			if (res == -1)
+				return (1);
+		}	
+		i++;
+	}
+	if (err == 1)
+		return (1);
+	else
+		return (0);
 }

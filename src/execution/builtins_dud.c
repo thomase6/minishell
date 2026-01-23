@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 10:24:46 by texenber         ###   ########.fr       */
+/*   Updated: 2026/01/22 08:46:43 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 {
-	// I think strcmp would be better but the example of "echo123" does not pass strncmp so idk.
+	// I think strcmp would be better but the example of "echo123" does not pass strncmp which means that it's working correctly so idk
 	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
 		return(builtin_echo(cmds->argv));
 	else if (ft_strncmp(cmds->argv[0], "cd", 2) == 0)
@@ -23,6 +23,8 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 		return(builtin_pwd());
 	else if (ft_strncmp(cmds->argv[0], "env", 3) == 0)
 		return(builtin_env(shell->env));
+	else if (ft_strncmp(cmds->argv[0], "export", 6) == 0)
+		return(builtin_export(cmds->argv, shell));
 	else if (ft_strncmp(cmds->argv[0], "exit", 4) == 0)
 		return(builtin_exit(cmds->argv, shell->last_status));	
 	return (0);
@@ -52,9 +54,6 @@ int	exec_builtin_parent(t_cmd *cmds, t_shell *shell) // **NEW**
 
 // funtions that need to be added to exec_builtin
 
-
-	// else if (ft_strncmp(cmds->argv[0], "export", 6)) //issues here with envp from the main because it's read-only
-	// 	return(builtin_export());
 	// else if (ft_strncmp(cmds->argv[0], "unset", 5)) //issues here with envp from the main because it's read-only
 	// 	return(builtin_unset());
 	
