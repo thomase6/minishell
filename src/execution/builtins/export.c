@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/22 12:11:08 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/09 08:55:34 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int	builtin_export(char **argv, t_shell *shell)
 		}
 		else
 		{
-			res = set_env_var(shell, argv[i]);
+			res = set_env_var(shell, argv[i]); //this does nothing currently becausse the function doesn't exist
 			if (res == -1)
 				return (1);
 		}	

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 09:59:58 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/09 09:08:41 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,3 +27,5 @@ int	builtin_pwd(void)
 	free(cwd);
 	return (0);
 }
+
+// note in bash pwd still works even if PATH has been unset
