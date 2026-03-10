@@ -6,19 +6,19 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:49 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 09:59:50 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/09 12:59:41 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/execution.h"
 
-int	builtin_cd(char **av, char **envp) // CHANGE: add t_shell *shell
+int	builtin_cd(char **argv, char **envp) // CHANGE: change **envp for t_shell *shell 
 {
 	char	*path;
 	char	*home;
 	int		i;
 
-	if (!av[1])
+	if (!argv[1])
 	{
 		home = NULL;
 		i = 0;
@@ -39,7 +39,7 @@ int	builtin_cd(char **av, char **envp) // CHANGE: add t_shell *shell
 		path = home;
 	}
 	else
-		path = av[1];
+		path = argv[1];
 
 	if (chdir(path) != 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 10:00:38 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/10 09:16:00 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int wait_all(int *last_status) //rewrite this to a simpler version // CHANGE: sh
 // after it has found the path it checks to see if it's executable and then it executes it.
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]) // **NEW**
 {
-	// set_signals_for_child();// no clue what this is for yet
+	// set_signals_for_child();// no clue how to use signals yet
 	char	**envp;
 	char	*path;
 	int		err;

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 10:00:27 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/10 16:25:30 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,3 @@ char	*resolve_path(char *cmd, char **envp) // CHANGE: add t_shell *shell
 	return (result);
 }
 
-
-//	1
-// if (access(cmd, X_OK) == 0)
-// 	return (cmd);
-// return (search_path(cmd, envp));
-//	1
-
-//	2
-// static char path[256];
-
-// (void)envp;
-// snprintf(path, sizeof(path), "/bin/%s", cmd);
-// return (path);
-//	2

@@ -6,14 +6,34 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/09 08:55:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/10 14:37:19 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
-//this function finds the key string in the env double pointer
+// first we identify if the var string exists in the envp, if it does we update that variable with the new information and if it doesn't exist we create it at the bottom of the envp
+int set_env_var(t_shell *shell, char *var)
+{
+	char	**new_env;
+	int		index;
+
+	index = find_env_var(shell->env, var);
+	if(index >= 0)
+		return (update_env_var(shell->env, index, var));
+	else
+	{
+		new_env = add_env_var(shell->env, var);
+		if (!new_env)
+			return (1);
+		shell->env = new_env;
+		return (0);  
+	}
+}
+
+ 
+//this function finds the key string in the env pointer and check to see if it's the one we are looking for
 int find_env_var(char **env, char *key)
 {
 	int	i;
@@ -119,7 +139,7 @@ int	is_valid_export(char *arg)
 {
 	int i;
 
-	if (!ft_isalpha(arg[0]) || arg[0] != '_')
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 		return (0);
 	i = 1;
 	while (arg[i] && arg[i] != '=')
@@ -132,8 +152,6 @@ int	is_valid_export(char *arg)
 		return (0);
 	return (1);
 }
-
-
 
 int	builtin_export(char **argv, t_shell *shell)
 {
@@ -159,7 +177,7 @@ int	builtin_export(char **argv, t_shell *shell)
 		}
 		else
 		{
-			res = set_env_var(shell, argv[i]); //this does nothing currently becausse the function doesn't exist
+			res = set_env_var(shell, argv[i]); //this does nothing currently because the function doesn't exist
 			if (res == -1)
 				return (1);
 		}	
