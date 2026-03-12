@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/10 09:16:00 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/11 11:43:51 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int wait_all(int *last_status) //rewrite this to a simpler version // CHANGE: sh
 
 //this function is the actual child process that duplicates if necessary, closes the fds that are not used, then finds the path of the cmd in the child.
 // after it has found the path it checks to see if it's executable and then it executes it.
-void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]) // **NEW**
+void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 {
 	// set_signals_for_child();// no clue how to use signals yet
 	char	**envp;
@@ -112,7 +112,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]) // **NEW**
 }	
 // this is the first process that starts the pipeline, forks and starts the child process, it also closses all fds that were not used by the parent but the children needed
 //we do this for every single cmd unless the cmd is a builtin.
-int	exec_pipeline(t_cmd *cmds, t_shell *shell) // **NEW**
+int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 {
 	char	**envp;
 	int		*last_status;
@@ -146,7 +146,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell) // **NEW**
 			return (-1);
 		}
 		if (pid == 0)
-			exec_child(cmds, shell, prev_fd, fd); // **NEW**
+			exec_child(cmds, shell, prev_fd, fd);
 		if (cmds->infile != -1)
 			close(cmds->infile);
 		if (cmds->outfile != -1)

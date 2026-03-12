@@ -6,11 +6,29 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/10 16:25:30 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:57:51 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
+
+// this function frees the cmd arguments and closes the fd's if they are still open for each cmd
+void	free_cmds(t_cmd *cmds)
+{
+	t_cmd *tmp;
+	while(cmds)
+	{
+		tmp = cmds;
+		cmds = cmds->next;
+		if (tmp->argv)
+			free_argv(tmp->argv);
+		if (tmp->infile != -1)
+			close(tmp->infile);
+		if (tmp->outfile != -1)
+			close(tmp->outfile);
+		free(tmp);
+	}
+}
 
 // this function just frees a double pointer
 void	free_argv(char **av)

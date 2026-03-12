@@ -6,13 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:22:44 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/10 16:28:39 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/10 16:46:36 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
+// this function is meant to remove the line in the env that we are trying to remove and then it rewrites the other env pointers as if the line didn't exist in the first place
 char	**rem_env_var(char **env, int index)
 {
 	char	**new_env;

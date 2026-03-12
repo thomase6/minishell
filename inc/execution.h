@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/10 13:41:28 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/12 16:05:32 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ int     update_env_var(char **env, int i, char *var);
 char    **add_env_var(char **env, char *var);
 void	print_export(char **env);
 int     set_env_var(t_shell *shell, char *var);
-void    test(void); // this is just for testing
 
 ///		exit and free	///
 void	free_argv(char **av);
-
+void	free_cmds(t_cmd *cmds);
 
 #endif //EXECUTION_H

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/10 14:37:19 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:12:34 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ int set_env_var(t_shell *shell, char *var)
 	char	**new_env;
 	int		index;
 
+	//first we search for the variable , if we do find it we return the index in which we found the variable
 	index = find_env_var(shell->env, var);
+	//if we find it we update the variable with the new information that needs to be updated or the value in it
 	if(index >= 0)
 		return (update_env_var(shell->env, index, var));
+	// otherwise we add the variable to our env and that's it 
 	else
 	{
 		new_env = add_env_var(shell->env, var);
@@ -113,26 +116,6 @@ void	print_export(char **env)
 	}
 }
 
-// this is just for testing
-void test(void)
-{
-    char **env = malloc(sizeof(char *) * 3);
-    env[0] = ft_strdup("PATH=/usr/bin");
-    env[1] = ft_strdup("HOME=/home/user");
-    env[2] = NULL;
-    
-    printf("Before:\n");
-    for (int i = 0; env[i]; i++)
-        printf("  [%d] %s\n", i, env[i]);
-    
-    env = add_env_var(env, "NEWVAR=test");
-    
-    printf("\nAfter:\n");
-    for (int i = 0; env[i]; i++)
-        printf("  [%d] %s\n", i, env[i]);
-    
-    free_argv(env);
-}
 
 // this function is basically just checking that the first character is a letter or an underscore and that everything after is either a number, letter or an underscore until the '='.
 int	is_valid_export(char *arg)
@@ -148,8 +131,6 @@ int	is_valid_export(char *arg)
 			return (0);
 		i++;
 	}
-	if (arg[i] != '=')
-		return (0);
 	return (1);
 }
 
@@ -158,6 +139,7 @@ int	builtin_export(char **argv, t_shell *shell)
 	int	i;
 	int	res;
 	int	err;
+	char *var_with_equal;
 
 	if (!argv[1])
 	{
@@ -177,9 +159,22 @@ int	builtin_export(char **argv, t_shell *shell)
 		}
 		else
 		{
-			res = set_env_var(shell, argv[i]); //this does nothing currently because the function doesn't exist
-			if (res == -1)
-				return (1);
+			if(ft_strchr(argv[i], '='))
+			{
+				res = set_env_var(shell, argv[i]);
+				if (res == -1)
+					return (1);
+			}
+			else
+			{
+				var_with_equal = ft_strjoin(argv[i], "=");
+				if (!var_with_equal)
+					return (1);
+				res = set_env_var(shell, var_with_equal);
+				free(var_with_equal);
+				if (res == -1)
+					return(1);
+			}
 		}	
 		i++;
 	}
