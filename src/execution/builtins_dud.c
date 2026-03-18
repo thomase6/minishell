@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/10 16:26:43 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:38:15 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
 		return(builtin_echo(cmds->argv));
 	else if (ft_strncmp(cmds->argv[0], "cd", 2) == 0)
-		return(builtin_cd(cmds->argv, shell->env)); // shell->env doesn't fully work need to further test cd to see if I need to change it back to char **envp
+		return(builtin_cd(cmds->argv, shell->env)); // shell->env doesn't fully work need to further test cd to see if I need to change it back to char **envp. testing once merging is done.
 	else if (ft_strncmp(cmds->argv[0], "pwd", 3) == 0)
 		return(builtin_pwd());
 	else if (ft_strncmp(cmds->argv[0], "env", 3) == 0)

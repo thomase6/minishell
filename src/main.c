@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/12 16:06:39 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/18 09:01:42 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int ac, char **av, char **envp)
 	while(1)
 	{
 		line = readline("PLEASE WRITE SOMETHING$");
-		printf("%s\n", line);
+		// printf("%s\n", line);
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 2);
@@ -54,8 +54,8 @@ int	main(int ac, char **av, char **envp)
 		// this is temporary while the parsing is not available.
 		t_cmd a;
 		// t_cmd b;
-    	char *cmd1[] = {"export", "hoyo",NULL};
-		// char *cmd2[] = {"env",NULL};
+    	char *cmd1[] = {"exit", "+\0",NULL};
+		// char *cmd2[] = {"wc",NULL};
     	int status;
 
     	a.argv = cmd1;
@@ -67,7 +67,7 @@ int	main(int ac, char **av, char **envp)
 		// b.argv = cmd2;
     	// b.infile = -1;
     	// b.outfile = -1;
-    	// b.is_builtin = 1;
+    	// b.is_builtin = 0;
 		// b.next = NULL;
 		//temporary code execution while the parsing is not available
 		execute_cmds(&a, &shell);
@@ -82,6 +82,7 @@ int	main(int ac, char **av, char **envp)
 	cleanup_shell(&shell);
 	return(shell.last_status);
 }
+
 
 // the main shell structure
 // 1. Signals

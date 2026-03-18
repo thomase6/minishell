@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:49 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/09 12:59:41 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 12:54:24 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	builtin_cd(char **argv, char **envp) // CHANGE: change **envp for t_shell *s
 	else
 		path = argv[1];
 
+	// make sure to add the perror message afterwards.
 	if (chdir(path) != 0)
 	{
 		ft_putstr_fd("cd: ", 2);

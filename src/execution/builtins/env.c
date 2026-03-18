@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:41 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 09:59:42 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 12:44:19 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	builtin_env(char **envp) // CHANGE: add t_shell *shell
 	int i;
 
 	if (!envp)
-		return (0);
+		return (1);
 	i = 0;
 	while (envp[i])
 	{

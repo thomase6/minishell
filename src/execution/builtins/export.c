@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/12 15:12:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:37:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	update_env_var(char **env, int i, char *var)
 	env[i] = new_str;
 	return (0);
 }
-
+// could rewrite realloc.
 char **add_env_var(char **env, char *var)
 {
 	char	**new_env;
@@ -133,7 +133,7 @@ int	is_valid_export(char *arg)
 	}
 	return (1);
 }
-
+// fix error handling later.
 int	builtin_export(char **argv, t_shell *shell)
 {
 	int	i;
@@ -172,7 +172,7 @@ int	builtin_export(char **argv, t_shell *shell)
 					return (1);
 				res = set_env_var(shell, var_with_equal);
 				free(var_with_equal);
-				if (res == -1)
+				if (res == 1)
 					return(1);
 			}
 		}	

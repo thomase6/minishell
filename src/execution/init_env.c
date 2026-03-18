@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:33 by texenber          #+#    #+#             */
-/*   Updated: 2026/01/21 10:00:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 09:40:34 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	**copy_env(char **envp)
 	count = 0;
 	while (envp[count])
 		count++;
-
 	new_env = malloc(sizeof(char *) * (count + 1));
 	if (!new_env)
 		return (NULL);

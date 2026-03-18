@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/11 11:43:51 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 16:21:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 		ft_putstr_fd("minishell: command not found\n", 2);
 		exit(127);
 	}
-	if (cmds->is_builtin)
+	if (cmds->is_builtin == 1)
 		exit(exec_builtin(cmds, shell));
 	path = resolve_path(cmds->argv[0], envp); 
 	err = cmd_check(path, cmds->argv[0]);
@@ -124,6 +124,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	last_status = &shell->last_status;
 	while (cmds)
 	{
+		// need to remove the fds when merged.
 		fd[0] = -1;
 		fd[1] = -1;
 		if (cmds->next && pipe(fd) < 0)

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/12 16:05:32 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/17 12:05:44 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,12 @@ typedef struct s_cmd
     int             is_builtin;
     struct s_cmd    *next;
 } t_cmd;
-
-// int single_cmd_execution(char *av, char **envp);
+///      execution///
 int		execute_cmds(t_cmd *cmds, t_shell *shell); // **NEW**
 int		exec_pipeline(t_cmd *cmds, t_shell *shell); // **NEW**
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]); // **NEW**
 char	*resolve_path(char *cmd, char **envp); // CHANGE: add t_shell *shell
-int	    exec_builtin_parent(t_cmd *cmds, t_shell *shell); // **NEW**
+int		exec_builtin_parent(t_cmd *cmds, t_shell *shell); // **NEW**
 int     exec_builtin(t_cmd *cmds, t_shell *shell); // **NEW**
 
 ///		builtin functions	///
@@ -62,9 +61,9 @@ int     builtin_exit(char **argv, int last_status);
 
 int     find_env_var(char **env, char *key);
 int     update_env_var(char **env, int i, char *var);
-char    **add_env_var(char **env, char *var);
+char	**add_env_var(char **env, char *var);
 void	print_export(char **env);
-int     set_env_var(t_shell *shell, char *var);
+int		set_env_var(t_shell *shell, char *var);
 
 ///		exit and free	///
 void	free_argv(char **av);
