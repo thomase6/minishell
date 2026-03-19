@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:45 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 12:58:42 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/19 09:30:33 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	builtin_echo(char **argv)
 	}
 	while (argv[i])
 	{
+		j = 0;
 		ft_putstr_fd(argv[i],1);
 		if (argv[i + 1] != NULL)
 			ft_putchar_fd(' ', 1);

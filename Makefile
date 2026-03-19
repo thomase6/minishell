@@ -6,13 +6,16 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/03/12 09:19:17 by texenber         ###   ########.fr        #
+#    Updated: 2026/03/19 08:40:44 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 
 #ingredients
+
+LAP_PRE		=
+LAP_SRC		=
 
 EXEC_PRE	= execution/
 EXEC_SRC	= executor.c pipeline.c exec_cmd.c init_env.c builtins_dud.c /builtins/echo.c /builtins/cd.c /builtins/pwd.c /builtins/env.c /builtins/exit.c /builtins/export.c /builtins/unset.c
