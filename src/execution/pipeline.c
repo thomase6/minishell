@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 16:21:07 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/22 11:12:53 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 		// need to remove the fds when merged.
 		fd[0] = -1;
 		fd[1] = -1;
+		// Signal Handler for the parent
 		if (cmds->next && pipe(fd) < 0)
 		{
 			if (prev_fd != -1)

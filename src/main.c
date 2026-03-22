@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/19 09:34:25 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/22 10:22:04 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ int	main(int ac, char **av, char **envp)
 		// this is temporary while the parsing is not available.
 		t_cmd a;
 		// t_cmd b;
-    	char *cmd1[] = {"echo", "hello",NULL};
+    	char *cmd1[] = {"sleep", "10",NULL};
 		// char *cmd2[] = {"wc",NULL};
     	int status;
 
     	a.argv = cmd1;
     	a.infile = -1;
     	a.outfile = -1;
-    	a.is_builtin = 1;
+    	a.is_builtin = 0;
 		// a.next = &b;
     	a.next = NULL;
 		// b.argv = cmd2;
