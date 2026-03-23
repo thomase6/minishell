@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helper1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 09:25:02 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/18 11:04:18 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:08:14 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 int	scan_single_quote(const char *input, int i, t_token **head)
 {

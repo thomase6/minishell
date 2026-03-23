@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:28:57 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/02 11:28:58 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:08:17 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 t_token	*lexer(const char *input)
 {

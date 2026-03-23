@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:28:31 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/18 10:20:24 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:21:08 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 void	free_tokens(t_token *head)
 {
@@ -45,7 +45,7 @@ char	*ft_strjoin_free(char *s1, const char *s2)
 	return (tmp);
 }
 
-void	free_cmds(t_cmd *cmd)
+void	free_cmds_lap(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 	size_t	i;

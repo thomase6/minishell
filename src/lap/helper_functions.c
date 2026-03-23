@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 09:34:04 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/18 10:46:28 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:07:51 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 // ------------------ ft_strlen ------------------
 int	ft_strlen(const char *s)

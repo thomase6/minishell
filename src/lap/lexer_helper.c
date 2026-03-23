@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:04 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/18 11:03:08 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:08:11 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 t_token	*add_token(t_token **head, t_token_type type,
 		const char *value, int len)

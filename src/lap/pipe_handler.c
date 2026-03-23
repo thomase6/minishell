@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:44 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/09 12:03:12 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:08:39 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 t_cmd	*handle_pipe(t_cmd *current)
 {
