@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/19 15:50:33 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:22:16 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 
 typedef struct s_parser_intern
@@ -38,12 +38,12 @@ static t_cmd	*handle_pipe_token(t_cmd *current, t_cmd **cmds)
 {
 	if (!current || !current->argv || !current->argv[0])
 	{
-		free_cmds(*cmds);
+		free_cmds_lap(*cmds);
 		return (NULL);
 	}
 	current = handle_pipe(current);
 	if (!current)
-		free_cmds(*cmds);
+		free_cmds_lap(*cmds);
 	return (current);
 }
 
@@ -93,7 +93,7 @@ static t_cmd *handle_token(t_cmd *current, t_parser_intern *tmp)
 		*(tmp->expect) = (*(tmp->token))->type;
 		if (handle_redirection(current, tmp->token, tmp->last_exit) == -1)
 		{
-			free_cmds(*(tmp->cmds));
+			free_cmds_lap(*(tmp->cmds));
 			return (NULL);
 		}
 	}
@@ -133,7 +133,7 @@ t_cmd *parser(t_token *tokens, char **argv, int last_exit)
 
     if (!cmds->argv || !cmds->argv[0])
     {
-        free_cmds(cmds);
+        free_cmds_lap(cmds);
         return (NULL);
     }
 

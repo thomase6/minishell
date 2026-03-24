@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 12:05:44 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/23 09:58:39 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ typedef struct s_shell t_shell;
 
 typedef struct s_cmd
 {
-    char            **argv;
-    int             infile;
-    int             outfile;
-    int             is_builtin;
-    struct s_cmd    *next;
+	char            **argv;
+	int             infile;
+	int             outfile;
+	int             is_builtin;
+	struct s_cmd    *next;
 } t_cmd;
 ///      execution///
 int		execute_cmds(t_cmd *cmds, t_shell *shell); // **NEW**

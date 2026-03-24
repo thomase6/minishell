@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 10:35:14 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/19 15:24:55 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/03/23 10:07:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/lap.h"
 
 // ------------------ ft_strcmp ------------------
 int	ft_strcmp(const char *s1, const char *s2)
