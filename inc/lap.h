@@ -42,6 +42,24 @@ typedef struct s_cmd
 	struct s_cmd *next;			// next command (pipe)
 }   t_cmd;
 
+/* ===================== Intern helper ================== */
+typedef struct s_parser_intern
+{
+	t_token			**token;
+	t_cmd			**cmds;
+	int				last_exit;
+	t_token_type	*expect;
+}	t_parser_intern;
+
+typedef struct s_heredoc
+{
+	char	*line;
+	char	*content;
+	char	*new_content;
+	size_t	content_len;
+	size_t	line_len;
+}	t_heredoc;
+
 /* ===================== Macro for scan functions ===================== */
 #define SCAN_OR_BREAK(scan_call)			\
 	do {									\
@@ -107,5 +125,6 @@ char	*ft_strstr(const char *haystack, const char *needle);
 char	*ft_replace(char *str, const char *old, const char *niew);
 char	*ft_strjoin_free(char *s1, const char *s2);
 char	*ft_substr(const char *line, int start, int len);
+void	*ft_memcpy(void *dest, const void *src, size_t n); // add function
 
 #endif

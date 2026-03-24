@@ -21,7 +21,7 @@ LAP_SRC		= 	lexer.c				\
           		parser.c			\
           		parser_helper.c		\
           		parser_helper1.c	\
-          		pipe_handler.c		\
+          		parser_helper2.c		\
           		cleanup.c			\
           		helper_functions.c	\
           		helper_functions1.c	\
