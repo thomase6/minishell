@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:47 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/26 13:09:49 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/26 13:36:35 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int signal_main_hook(void)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_signal = 0;
 	}
 	return (0);
 }
