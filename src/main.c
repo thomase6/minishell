@@ -6,11 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/22 10:22:04 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/26 13:09:27 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+
+volatile sig_atomic_t g_signal = 0; //global variable declaration and definition
 
 void	cleanup_shell(t_shell *shell)
 {
@@ -25,7 +28,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell	shell;
 	char	*line;
 	t_cmd	*cmds = NULL; //this normally doesn't have to equal NULL, for now it is necessary to avoid crashes.
-	
+	struct sigaction sa;
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -33,12 +36,12 @@ int	main(int ac, char **av, char **envp)
 		ft_putstr_fd("Error: failed to initialize shell\n", 2);
 		return (1);
 	}
-	//signal handler
-	//setup_signals(); need to make this function
+	setup_main_signals(&sa);
+	rl_signal_event_hook = signal_main_hook; // this is the proper way of handling functions that need to be executed after the signal is interrupted. 
 	while(1)
 	{
-		line = readline("PLEASE WRITE SOMETHING$");
-		// printf("%s\n", line);
+		g_signal = 0;		// signal reset before every prompt
+		line = readline("Minishell: $");
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 2);
@@ -47,7 +50,7 @@ int	main(int ac, char **av, char **envp)
 		if (line[0] == '\0')
 		{
 			free(line);
-			continue; //gotta change this because I don't want to use continue.
+			continue;
 		}
 		add_history(line);
 		// cmds = parse_input(line, &shell);
@@ -56,7 +59,7 @@ int	main(int ac, char **av, char **envp)
 		// t_cmd b;
     	char *cmd1[] = {"sleep", "10",NULL};
 		// char *cmd2[] = {"wc",NULL};
-    	int status;
+    	// int status;
 
     	a.argv = cmd1;
     	a.infile = -1;
@@ -77,6 +80,8 @@ int	main(int ac, char **av, char **envp)
 		// 	free_cmds(cmds);// need to make this function
 		// }
 		free(line);
+		if (g_signal == SIGINT)
+			shell.last_status = 130;
 	}
 	//clean up SHELL
 	cleanup_shell(&shell);

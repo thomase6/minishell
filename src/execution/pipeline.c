@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/22 11:12:53 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/26 11:55:32 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,11 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 			return (-1);
 		}
 		if (pid == 0)
+		{
+			// signal(SIGINT, SIG_DFL);
+			// signal(SIGQUIT, SIG_DFL);
 			exec_child(cmds, shell, prev_fd, fd);
+		}
 		if (cmds->infile != -1)
 			close(cmds->infile);
 		if (cmds->outfile != -1)

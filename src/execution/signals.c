@@ -6,24 +6,37 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:47 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/22 09:29:30 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/26 13:09:49 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/execution.h"
 
-void	handle_sigint(int sig)
+int signal_main_hook(void)
 {
-	(void) sig;
-	write(1, "\n", 1);	  // Have to test how necessary this line is.
-	rl_on_new_line();				// Tells realine we are on a newline.
-	rl_replace_line("", 0);			// Clear current input buffer.
-	rl_redisplay();					// Redisplay prompt. 
+	if (g_signal == SIGINT)
+	{
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		g_signal = 0;
+	}
+	return (0);
 }
 
-void	setup_signals(void)
+void siginthandler(int sig)
 {
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);		
+	(void)sig;
+	g_signal = SIGINT;	
+}
+
+void	setup_main_signals(struct sigaction *sa)
+{
+	sa->sa_handler = siginthandler;
+	sigemptyset(&sa->sa_mask);
+	sa->sa_flags = SA_RESTART;
+	sigaction(SIGINT, sa, NULL);
+	signal(SIGQUIT, SIG_IGN); //when ignoring the signal it is ok to use signal instead of sigaction	
 }
