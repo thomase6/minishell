@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_in_main.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:47 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/26 13:36:35 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 10:30:31 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/execution.h"
+// #include "../../inc/execution.h"
 
 int signal_main_hook(void)
 {
@@ -19,8 +19,6 @@ int signal_main_hook(void)
 	{
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
 	}
 	return (0);
 }
@@ -31,11 +29,13 @@ void siginthandler(int sig)
 	g_signal = SIGINT;	
 }
 
-void	setup_main_signals(struct sigaction *sa)
+void	setup_main_signals(void)
 {
-	sa->sa_handler = siginthandler;
-	sigemptyset(&sa->sa_mask);
-	sa->sa_flags = SA_RESTART;
-	sigaction(SIGINT, sa, NULL);
+	struct sigaction sa;
+	
+	sa.sa_handler = siginthandler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN); //when ignoring the signal it is ok to use signal instead of sigaction	
 }

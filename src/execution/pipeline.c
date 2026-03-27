@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/26 11:55:32 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 11:37:24 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	close_all(int prev_fd, int fd[2])
 	}	
 }
 // This function is meant to wait for every child and return the last status of the children
-int wait_all(int *last_status) //rewrite this to a simpler version // CHANGE: shell->last_status
+static int wait_all(pid_t last_pid, int *last_status)
 {
 	int		status;
 	pid_t	pid;
@@ -58,10 +58,19 @@ int wait_all(int *last_status) //rewrite this to a simpler version // CHANGE: sh
 	last = 0;
 	while((pid = wait(&status)) > 0) 
 	{
-		if (WIFEXITED(status)) //this should be the normal exit when an error terminates the program
-			last = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status)) //this is for signal termination like Ctrl + C
-			last = 128 + WTERMSIG(status);
+		if(pid == last_pid)
+		{
+			if (WIFEXITED(status))
+				last = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{	
+				if (WTERMSIG(status) == SIGQUIT)
+					ft_putstr_fd("Quit (core dumped)\n", 2);
+				else if (WTERMSIG(status) == SIGINT)
+					write(1, "\n", 1);
+				last = 128 + WTERMSIG(status);
+			}
+		}
 	}
 	*last_status = last;
 	return (last);
@@ -71,28 +80,28 @@ int wait_all(int *last_status) //rewrite this to a simpler version // CHANGE: sh
 // after it has found the path it checks to see if it's executable and then it executes it.
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 {
-	// set_signals_for_child();// no clue how to use signals yet
 	char	**envp;
 	char	*path;
 	int		err;
 
+	set_signals_for_child();	// signals reset to default action
 	envp = shell->env;
-	if (cmds->infile != -1)
+	if (cmds->infile != -1)	//if the infile exists we are gonna duplicate it and close it
 	{
 		dup2(cmds->infile, STDIN_FILENO);
 		close(cmds->infile);
 	}
-	else if (prev_fd != -1)
+	else if (prev_fd != -1) //if the previous fd exists we are gonna duplicate it
 		dup2(prev_fd, STDIN_FILENO);
-	if (cmds->outfile != -1)
+	if (cmds->outfile != -1) //if the outfile exists we are gonna duplicate it and close it
 	{
 		dup2(cmds->outfile, STDOUT_FILENO);
 		close(cmds->outfile);
 	}
-	else if (cmds->next)
+	else if (cmds->next) //if the previous fd exists we are gonna duplicate it
 		dup2(fd[1], STDOUT_FILENO);
 
-	close_all(prev_fd, fd);
+	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
 
 	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs
 	{
@@ -112,6 +121,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 }	
 // this is the first process that starts the pipeline, forks and starts the child process, it also closses all fds that were not used by the parent but the children needed
 //we do this for every single cmd unless the cmd is a builtin.
+// tracking the last pid of the last executable command.
 int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 {
 	char	**envp;
@@ -119,15 +129,18 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	int		fd[2];
 	int		prev_fd = -1;
 	pid_t	pid;
+	pid_t	last_pid;
+	int		status;
 
+	last_pid = -1; //set to -1 because 0 is a valid pid 
 	envp = shell->env;
 	last_status = &shell->last_status;
+	set_signals_for_parent();
 	while (cmds)
 	{
 		// need to remove the fds when merged.
 		fd[0] = -1;
 		fd[1] = -1;
-		// Signal Handler for the parent
 		if (cmds->next && pipe(fd) < 0)
 		{
 			if (prev_fd != -1)
@@ -148,11 +161,9 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 			return (-1);
 		}
 		if (pid == 0)
-		{
-			// signal(SIGINT, SIG_DFL);
-			// signal(SIGQUIT, SIG_DFL);
 			exec_child(cmds, shell, prev_fd, fd);
-		}
+		if (!cmds->next)	// this is a check to find the last pid to make sure that we can use this in the wait afterwards
+			last_pid = pid;
 		if (cmds->infile != -1)
 			close(cmds->infile);
 		if (cmds->outfile != -1)
@@ -166,6 +177,8 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 		}
 		cmds = cmds->next;
 	}
-	return (wait_all(last_status));
+	status = wait_all(last_pid, last_status);
+	setup_main_signals();
+	return (0);
 }
 

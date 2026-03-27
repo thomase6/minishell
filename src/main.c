@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/26 13:09:27 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 10:29:48 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int ac, char **av, char **envp)
 	t_shell	shell;
 	char	*line;
 	t_cmd	*cmds = NULL; //this normally doesn't have to equal NULL, for now it is necessary to avoid crashes.
-	struct sigaction sa;
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -36,7 +35,7 @@ int	main(int ac, char **av, char **envp)
 		ft_putstr_fd("Error: failed to initialize shell\n", 2);
 		return (1);
 	}
-	setup_main_signals(&sa);
+	setup_main_signals();
 	rl_signal_event_hook = signal_main_hook; // this is the proper way of handling functions that need to be executed after the signal is interrupted. 
 	while(1)
 	{
@@ -44,7 +43,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline("Minishell: $");
 		if (!line)
 		{
-			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("exit\n", 1);
 			break;
 		}
 		if (line[0] == '\0')
