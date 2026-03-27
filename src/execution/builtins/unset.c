@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:22:44 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 14:38:37 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:57:28 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**rem_env_var(char **env, int index)
 	return (new_env);
 }
 
-int		builtin_unset(char **argv, t_shell *shell)
+int	builtin_unset(char **argv, t_shell *shell)
 {
 	char	**new_env;
 	int		i;
@@ -65,7 +65,7 @@ int		builtin_unset(char **argv, t_shell *shell)
 	if (!argv[1])
 		return (0);
 	i = 1;
-	while(argv[i])
+	while (argv[i])
 	{
 		index = find_env_var(shell->env, argv[i]);
 		if (index >= 0)

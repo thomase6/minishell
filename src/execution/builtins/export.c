@@ -6,56 +6,12 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 14:37:07 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:55:18 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
-
-// first we identify if the var string exists in the envp, if it does we update that variable with the new information and if it doesn't exist we create it at the bottom of the envp
-int set_env_var(t_shell *shell, char *var)
-{
-	char	**new_env;
-	int		index;
-
-	//first we search for the variable , if we do find it we return the index in which we found the variable
-	index = find_env_var(shell->env, var);
-	//if we find it we update the variable with the new information that needs to be updated or the value in it
-	if(index >= 0)
-		return (update_env_var(shell->env, index, var));
-	// otherwise we add the variable to our env and that's it 
-	else
-	{
-		new_env = add_env_var(shell->env, var);
-		if (!new_env)
-			return (1);
-		shell->env = new_env;
-		return (0);  
-	}
-}
-
- 
-//this function finds the key string in the env pointer and check to see if it's the one we are looking for
-int find_env_var(char **env, char *key)
-{
-	int	i;
-	int	key_len;
-
-	if (!env || !key)
-		return(-1);
-	key_len = 0;
-	i = 0;
-	while (key[key_len] && key[key_len] != '=')
-		key_len++;
-	while (env[i])
-	{
-		if((ft_strncmp(env[i], key, key_len) == 0) && env[i][key_len] == '=')
-			return (i);	
-		i++;
-	}
-	return (-1);
-}
 
 //this function changes the value of a string in the env double pointer at position i with the string var
 int	update_env_var(char **env, int i, char *var)
@@ -69,15 +25,16 @@ int	update_env_var(char **env, int i, char *var)
 	env[i] = new_str;
 	return (0);
 }
+
 // could rewrite realloc.
-char **add_env_var(char **env, char *var)
+char	**add_env_var(char **env, char *var)
 {
 	char	**new_env;
 	int		count;
 	int		i;
 
 	count = 0;
-	while(env[count])
+	while (env[count])
 		count++;
 	new_env = malloc(sizeof(char *) * (count + 2));
 	if (!new_env)
@@ -116,11 +73,10 @@ void	print_export(char **env)
 	}
 }
 
-
 // this function is basically just checking that the first character is a letter or an underscore and that everything after is either a number, letter or an underscore until the '='.
 int	is_valid_export(char *arg)
 {
-	int i;
+	int	i;
 
 	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 		return (0);
@@ -133,13 +89,14 @@ int	is_valid_export(char *arg)
 	}
 	return (1);
 }
+
 // fix error handling later.
 int	builtin_export(char **argv, t_shell *shell)
 {
-	int	i;
-	int	res;
-	int	err;
-	char *var_with_equal;
+	int		i;
+	int		res;
+	int		err;
+	char	*var_with_equal;
 
 	if (!argv[1])
 	{
@@ -154,12 +111,12 @@ int	builtin_export(char **argv, t_shell *shell)
 		{
 			ft_putstr_fd("export: '", 2);
 			ft_putstr_fd(argv[i], 2);
-			ft_putstr_fd("': not a valid identifier\n",2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			err = 1;
 		}
 		else
 		{
-			if(ft_strchr(argv[i], '='))
+			if (ft_strchr(argv[i], '='))
 			{
 				res = set_env_var(shell, argv[i]);
 				if (res == -1)
@@ -173,9 +130,9 @@ int	builtin_export(char **argv, t_shell *shell)
 				res = set_env_var(shell, var_with_equal);
 				free(var_with_equal);
 				if (res == 1)
-					return(1);
+					return (1);
 			}
-		}	
+		}
 		i++;
 	}
 	if (err == 1)
