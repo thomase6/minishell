@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:33 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 09:40:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/29 09:54:26 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@ char	**copy_env(char **envp)
 	new_env = malloc(sizeof(char *) * (count + 1));
 	if (!new_env)
 		return (NULL);
-
 	i = 0;
 	while (i < count)
 	{
 		new_env[i] = ft_strdup(envp[i]);
-
 		if (!new_env[i])
 		{
-			while(i > 0)
+			while (i > 0)
 				free(new_env[--i]);
 			free(new_env);
 			return (NULL);

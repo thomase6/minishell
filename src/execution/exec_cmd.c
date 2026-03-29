@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 16:56:18 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/29 09:50:52 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 // this function frees the cmd arguments and closes the fd's if they are still open for each cmd
 void	free_cmds(t_cmd *cmds)
 {
-	t_cmd *tmp;
-	while(cmds)
+	t_cmd	*tmp;
+
+	while (cmds)
 	{
 		tmp = cmds;
 		cmds = cmds->next;

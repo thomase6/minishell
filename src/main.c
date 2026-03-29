@@ -6,20 +6,18 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/27 10:29:48 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/29 11:47:00 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-
-volatile sig_atomic_t g_signal = 0; //global variable declaration and definition
+volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
 
 void	cleanup_shell(t_shell *shell)
 {
 	if (shell->env)
 		free_argv(shell->env);
-	
 	rl_clear_history();
 }
 
@@ -37,40 +35,40 @@ int	main(int ac, char **av, char **envp)
 	}
 	setup_main_signals();
 	rl_signal_event_hook = signal_main_hook; // this is the proper way of handling functions that need to be executed after the signal is interrupted. 
-	while(1)
+	while (1)
 	{
 		g_signal = 0;		// signal reset before every prompt
 		line = readline("Minishell: $");
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 1);
-			break;
+			break ;
 		}
 		if (line[0] == '\0')
 		{
 			free(line);
-			continue;
+			continue ;
 		}
 		add_history(line);
 		// cmds = parse_input(line, &shell);
 		// this is temporary while the parsing is not available.
 		t_cmd a;
-		// t_cmd b;
-    	char *cmd1[] = {"sleep", "10",NULL};
-		// char *cmd2[] = {"wc",NULL};
+		t_cmd b;
+    	char *cmd1[] = {"sleep", "10", NULL};
+		char *cmd2[] = {"env", NULL};
     	// int status;
 
     	a.argv = cmd1;
     	a.infile = -1;
     	a.outfile = -1;
     	a.is_builtin = 0;
-		// a.next = &b;
-    	a.next = NULL;
-		// b.argv = cmd2;
-    	// b.infile = -1;
-    	// b.outfile = -1;
-    	// b.is_builtin = 0;
-		// b.next = NULL;
+		a.next = &b;
+    	// a.next = NULL;
+		b.argv = cmd2;
+    	b.infile = -1;
+    	b.outfile = -1;
+    	b.is_builtin = 1;
+		b.next = NULL;
 		//temporary code execution while the parsing is not available
 		execute_cmds(&a, &shell);
 		// if (cmds)
@@ -84,7 +82,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	//clean up SHELL
 	cleanup_shell(&shell);
-	return(shell.last_status);
+	return (shell.last_status);
 }
 
 

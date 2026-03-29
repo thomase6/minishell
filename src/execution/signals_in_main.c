@@ -6,14 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:47 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/27 10:30:31 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/29 12:02:40 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 // #include "../../inc/execution.h"
 
-int signal_main_hook(void)
+int	signal_main_hook(void)
 {
 	if (g_signal == SIGINT)
 	{
@@ -23,16 +23,16 @@ int signal_main_hook(void)
 	return (0);
 }
 
-void siginthandler(int sig)
+void	siginthandler(int sig)
 {
 	(void)sig;
-	g_signal = SIGINT;	
+	g_signal = SIGINT;
 }
 
 void	setup_main_signals(void)
 {
-	struct sigaction sa;
-	
+	struct sigaction	sa;
+
 	sa.sa_handler = siginthandler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
