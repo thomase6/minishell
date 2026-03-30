@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:28 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:27 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:08:39 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**add_args(char **argv, char *word)
 		new[j] = argv[j];
 		j++;
 	}
-	new[i] = ft_strdup(word);
+	new[i] = ft_strdup_lap(word);
 	if (!new[i])
 	{
 		free(new);
@@ -89,7 +89,7 @@ static int	expand_token_value(t_token *token, char **envp, int last_exit)
 	{
 		if (val[1] == '?' && val[2] == '\0')
 		{
-			new_val = ft_itoa(last_exit);
+			new_val = ft_itoa_lap(last_exit);
 			if (!new_val)
 				return (-1);
 			free(token->value);
@@ -99,9 +99,9 @@ static int	expand_token_value(t_token *token, char **envp, int last_exit)
 		{
 			env_val = getenv(&val[1]);   // make function getenv
 			if (!env_val)
-				env_val = ft_strdup("");
+				env_val = ft_strdup_lap("");
 			else
-				env_val = ft_strdup(env_val);
+				env_val = ft_strdup_lap(env_val);
 			if (!env_val)
 				return (-1);
 			free(token->value);

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/23 09:58:39 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 11:30:30 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../libft/src/libft.h"
+#include "./minishell.h"
 
-// typedef struct s_exec
-// {
-// 	char	*path;
-// 	pid_t	*pids;
-// 	size_t	ch_count;
-// 	int		pipe_fd[2];
-// 	int		*status;
-// 	bool	is_builtin;
-// }	t_exec;
 typedef struct s_shell t_shell;
 
-typedef struct s_cmd
-{
-	char            **argv;
-	int             infile;
-	int             outfile;
-	int             is_builtin;
-	struct s_cmd    *next;
-} t_cmd;
 ///      execution///
 int		execute_cmds(t_cmd *cmds, t_shell *shell); // **NEW**
 int		exec_pipeline(t_cmd *cmds, t_shell *shell); // **NEW**

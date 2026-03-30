@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 10:35:28 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:06 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:07:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,25 @@ char	*ft_replace(char *str, const char *old, const char *new)
 	size_t	len_before;
 	size_t	len_after;
 
-	pos = ft_strstr(str, old);
+	pos = ft_strstr_lap(str, old);
 	if (!pos)
 		return (str);
 	len_before = pos - str;
-	len_after = strlen(pos + strlen(old));
-	result = malloc(len_before + strlen(new) + len_after + 1);
+	len_after = ft_strlen_lap(pos + ft_strlen_lap(old));
+	result = malloc(len_before + ft_strlen_lap(new) + len_after + 1);
 	if (!result)
 		return (NULL);
-	memcpy(result, str, len_before);
-	memcpy(result + len_before, new, strlen(new));
-	memcpy(result + len_before + strlen(new), pos + strlen(old), len_after);
-	result[len_before + strlen(new) + len_after] = '\0';
+	ft_memcpy_lap(result, str, len_before);
+	ft_memcpy_lap(result + len_before, new, ft_strlen_lap(new));
+	ft_memcpy_lap(result + len_before + ft_strlen_lap(new), pos + ft_strlen_lap(old), len_after);
+	result[len_before + ft_strlen_lap(new) + len_after] = '\0';
 	free(str);
 	return (result);
 }
 
 // ------------------------------- ft_substr -----------------------
 
-char	*ft_substr(const char *line, int start, int len)
+char	*ft_substr_lap(const char *line, int start, int len)
 {
 	char	*sub;
 	int		i;
@@ -60,7 +60,7 @@ char	*ft_substr(const char *line, int start, int len)
 }
 
 // ------------------------------- ft_memcpy -----------------------
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy_lap(void *dest, const void *src, size_t n)
 {
 	unsigned char	*d;
 	unsigned char	*s;

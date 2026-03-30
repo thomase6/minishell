@@ -6,11 +6,12 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/29 11:47:00 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:11:35 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/execution.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
 
@@ -50,32 +51,32 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		}
 		add_history(line);
-		// cmds = parse_input(line, &shell);
+		// Lexer and Parser should be around here
 		// this is temporary while the parsing is not available.
-		t_cmd a;
-		t_cmd b;
-    	char *cmd1[] = {"sleep", "10", NULL};
-		char *cmd2[] = {"env", NULL};
+		// t_cmd a;
+		// t_cmd b;
+    	// char *cmd1[] = {"sleep", "10", NULL};
+		// char *cmd2[] = {"env", NULL};
     	// int status;
 
-    	a.argv = cmd1;
-    	a.infile = -1;
-    	a.outfile = -1;
-    	a.is_builtin = 0;
-		a.next = &b;
+    	// a.argv = cmd1;
+    	// a.infile = -1;
+    	// a.outfile = -1;
+    	// a.is_builtin = 0;
+		// a.next = &b;
     	// a.next = NULL;
-		b.argv = cmd2;
-    	b.infile = -1;
-    	b.outfile = -1;
-    	b.is_builtin = 1;
-		b.next = NULL;
+		// b.argv = cmd2;
+    	// b.infile = -1;
+    	// b.outfile = -1;
+    	// b.is_builtin = 1;
+		// b.next = NULL;
 		//temporary code execution while the parsing is not available
-		execute_cmds(&a, &shell);
-		// if (cmds)
-		// {
-		// 	execute_cmds(cmds, &shell);
-		// 	free_cmds(cmds);// need to make this function
-		// }
+		// execute_cmds(&a, &shell);
+		if (cmds)
+		{
+			execute_cmds(cmds, &shell);
+			free_cmds(cmds);// need to make this function
+		}
 		free(line);
 		if (g_signal == SIGINT)
 			shell.last_status = 130;
