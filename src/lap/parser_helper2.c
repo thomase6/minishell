@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_handler.c                                     :+:      :+:    :+:   */
+/*   parser_helper2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:44 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:39 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:09:53 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* ===================== Helpers ===================== */
 static int	append_heredoc(t_heredoc *tmp)
 {
-	tmp->line_len = ft_strlen(tmp->line);
+	tmp->line_len = ft_strlen_lap(tmp->line);
 	tmp->new_content = malloc(tmp->content_len + tmp->line_len + 2);
 	if (!tmp->new_content)
 	{
@@ -25,10 +25,10 @@ static int	append_heredoc(t_heredoc *tmp)
 	}
 	if (tmp->content)
 	{
-		ft_memcpy(tmp->new_content, tmp->content, tmp->content_len);
+		ft_memcpy_lap(tmp->new_content, tmp->content, tmp->content_len);
 		free(tmp->content);
 	}
-	ft_memcpy(tmp->new_content + tmp->content_len, tmp->line, tmp->line_len);
+	ft_memcpy_lap(tmp->new_content + tmp->content_len, tmp->line, tmp->line_len);
 	tmp->new_content[tmp->content_len + tmp->line_len] = '\n';
 	tmp->new_content[tmp->content_len + tmp->line_len + 1] = '\0';
 	tmp->content = tmp->new_content;
@@ -48,7 +48,7 @@ static char	*read_heredoc_content(const char *delimiter)
 	while (1)
 	{
 		tmp.line = readline("> ");
-		if (!tmp.line || ft_strcmp(tmp.line, delimiter) == 0)
+		if (!tmp.line || ft_strcmp_lap(tmp.line, delimiter) == 0)
 		{
 			free(tmp.line);
 			break ;
@@ -74,7 +74,7 @@ int	handle_heredoc(t_cmd *cmd, t_token **token, int last_exit)
 		return (-1);
 	if (cmd->heredoc_delim)
 		free(cmd->heredoc_delim);
-	cmd->heredoc_delim = ft_strdup(cur->value);
+	cmd->heredoc_delim = ft_strdup_lap(cur->value);
 	cmd->heredoc_quoted = cur->quoted;
 	cmd->heredoc_content = read_heredoc_content(cmd->heredoc_delim);
 	*token = cur->next;

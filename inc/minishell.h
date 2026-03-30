@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:09 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/27 10:29:28 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 11:38:11 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,29 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/src/libft.h"
-#include "./execution.h"
 #include <signal.h>
 #include <sys/ioctl.h>
 
 ///		Global signal variable			///
 extern volatile sig_atomic_t g_signal;
+
+typedef struct s_cmd
+{
+	char        **argv;				// command + args
+	//		Parsing			//
+	char        *infile;			// < infile
+	char        *outfile;			// > or >> outfile
+	int         append;				// 1 if >>, 0 if >
+	char		*heredoc_delim;		// << delimter (parser only)
+	int			heredoc_quoted;		// 1 if delimiter quoted
+	char		*heredoc_content;	// << content lines
+	//		Execution		//
+	int			infile_fd;
+	int			outfile_fd;
+	int			is_builtin;
+	
+	struct s_cmd *next;			// next command (pipe)
+}   t_cmd;
 
 typedef struct s_shell
 {

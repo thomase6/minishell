@@ -6,14 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 10:35:14 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:07:54 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:05:16 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
 
 // ------------------ ft_strcmp ------------------
-int	ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp_lap(const char *s1, const char *s2)
 {
 	size_t	i;
 
@@ -30,7 +30,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 }
 
 // ------------------ ft_strjoin ------------------
-char	*ft_strjoin(const char *s1, const char *s2)
+char	*ft_strjoin_lap(const char *s1, const char *s2)
 {
 	size_t	len;
 	char	*res;
@@ -39,12 +39,12 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		s1 = "";
 	if (!s2)
 		s2 = "";
-	len = ft_strlen(s1) + ft_strlen(s2);
+	len = ft_strlen_lap(s1) + ft_strlen_lap(s2);
 	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
-	ft_strcpy(res, s1);
-	ft_strcat(res, s2);
+	ft_strcpy_lap(res, s1);
+	ft_strcat_lap(res, s2);
 	return (res);
 }
 
@@ -59,7 +59,7 @@ static void	num_to_str(char *s, long num, int len)
 	}
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa_lap(int n)
 {
 	char	*ptr;
 	int		len;
@@ -88,7 +88,7 @@ char	*ft_itoa(int n)
 }
 // ----------------------- ft_strstr ----------------------
 
-char	*ft_strstr(const char *haystack, const char *needle)
+char	*ft_strstr_lap(const char *haystack, const char *needle)
 {
 	size_t	i;
 	size_t	j;

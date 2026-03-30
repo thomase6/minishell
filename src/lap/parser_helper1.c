@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:38 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:31 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:09:13 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_redir_in(t_cmd *cmd, t_token **token)
 	next = (*token)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (-1);
-	dup = ft_strdup(next->value);
+	dup = ft_strdup_lap(next->value);
 	if (!dup)
 		return (-1);
 	if (cmd->infile)
@@ -44,7 +44,7 @@ int	handle_redir_out(t_cmd *cmd, t_token **token)
 	next = (*token)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (-1);
-	dup = ft_strdup(next->value);
+	dup = ft_strdup_lap(next->value);
 	if (!dup)
 		return (-1);
 	if (cmd->outfile)
@@ -65,7 +65,7 @@ int	handle_redir_out_append(t_cmd *cmd, t_token **token)
 	next = (*token)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (-1);
-	dup = ft_strdup(next->value);
+	dup = ft_strdup_lap(next->value);
 	if (!dup)
 		return (-1);
 	if (cmd->outfile)

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/29 11:29:15 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:41:45 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,17 +120,17 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 
 	set_signals_for_child();// signals reset to default action
 	envp = shell->env;
-	if (cmds->infile != -1) //if the infile exists we are gonna duplicate it and close it
+	if (cmds->infile_fd != -1) //if the infile exists we are gonna duplicate it and close it
 	{
-		dup2(cmds->infile, STDIN_FILENO);
-		close(cmds->infile);
+		dup2(cmds->infile_fd, STDIN_FILENO);
+		close(cmds->infile_fd);
 	}
 	else if (prev_fd != -1) //if the previous fd exists we are gonna duplicate it
 		dup2(prev_fd, STDIN_FILENO);
-	if (cmds->outfile != -1) //if the outfile exists we are gonna duplicate it and close it
+	if (cmds->outfile_fd != -1) //if the outfile exists we are gonna duplicate it and close it
 	{
-		dup2(cmds->outfile, STDOUT_FILENO);
-		close(cmds->outfile);
+		dup2(cmds->outfile_fd, STDOUT_FILENO);
+		close(cmds->outfile_fd);
 	}
 	else if (cmds->next) //if the previous fd exists we are gonna duplicate it
 		dup2(fd[1], STDOUT_FILENO);
@@ -199,10 +199,10 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 			exec_child(cmds, shell, prev_fd, fd);
 		if (!cmds->next) // this is a check to find the last pid to make sure that we can use this in the wait afterwards
 			last_pid = pid;
-		if (cmds->infile != -1)
-			close(cmds->infile);
-		if (cmds->outfile != -1)
-			close(cmds->outfile);
+		if (cmds->infile_fd != -1)
+			close(cmds->infile_fd);
+		if (cmds->outfile_fd != -1)
+			close(cmds->outfile_fd);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmds->next)

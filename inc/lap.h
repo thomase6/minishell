@@ -3,10 +3,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <readline/readline.h>
+#include <readline/history.h>
+#include "./minishell.h"
 
 /* ===================== Token Types ===================== */
 typedef enum e_token_type
@@ -28,19 +29,6 @@ typedef struct s_token
 	int             quoted;		// 0 = no quotes 1 = single 2 = double
 	struct s_token  *next;		// linked list pointer
 }   t_token;
-
-/* ===================== Command Struct ===================== */
-typedef struct s_cmd
-{
-	char        **argv;			// command + args
-	char        *infile;		// < infile
-	char        *outfile;		// > or >> outfile
-	int         append;			// 1 if >>, 0 if >
-	char	*heredoc_delim;		// << delimter (parser only)
-	int		heredoc_quoted;		// 1 if delimiter quoted
-	char	*heredoc_content;	// << content lines
-	struct s_cmd *next;			// next command (pipe)
-}   t_cmd;
 
 /* ===================== Intern helper ================== */
 typedef struct s_parser_intern
@@ -113,18 +101,18 @@ void	print_cmds(t_cmd *cmds);
 //void     *expand_variables(t_token *tokens);
 void	remove_quotes(t_token * tokens);
 /* ====================== helper functions =================== */
-char	*ft_strdup(const char *s);
+char	*ft_strdup_lap(const char *s);
 char	*ft_strndup(const char *s, size_t n);
-char	*ft_itoa(int n);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strlen(const char *s);
-char	*ft_strcpy(char *dest, const char *src);
-char	*ft_strcat(char *dest, const char *src);
-char	*ft_strjoin(const char *s1, const char *s2);
-char	*ft_strstr(const char *haystack, const char *needle);
+char	*ft_itoa_lap(int n);
+int		ft_strcmp_lap(const char *s1, const char *s2);
+int		ft_strlen_lap(const char *s);
+char	*ft_strcpy_lap(char *dest, const char *src);
+char	*ft_strcat_lap(char *dest, const char *src);
+char	*ft_strjoin_lap(const char *s1, const char *s2);
+char	*ft_strstr_lap(const char *haystack, const char *needle);
 char	*ft_replace(char *str, const char *old, const char *niew);
 char	*ft_strjoin_free(char *s1, const char *s2);
-char	*ft_substr(const char *line, int start, int len);
-void	*ft_memcpy(void *dest, const void *src, size_t n); // add function
+char	*ft_substr_lap(const char *line, int start, int len);
+void	*ft_memcpy_lap(void *dest, const void *src, size_t n); // add function
 
 #endif

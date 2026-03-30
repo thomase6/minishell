@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:09 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:21:58 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 08:57:04 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ int main(void)
                 printf("  Heredoc content:\n%s", c->heredoc_content);
         }
 
-        free_cmds(cmds);
+        free_cmds_lap(cmds);
         free_tokens(tokens);
         free(line);
     }

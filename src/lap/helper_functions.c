@@ -6,14 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 09:34:04 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:07:51 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:03:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
 
 // ------------------ ft_strlen ------------------
-int	ft_strlen(const char *s)
+int	ft_strlen_lap(const char *s)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ int	ft_strlen(const char *s)
 }
 
 // ------------------ ft_strcpy ------------------
-char	*ft_strcpy(char *dest, const char *src)
+char	*ft_strcpy_lap(char *dest, const char *src)
 {
 	char	*ptr;
 
@@ -44,7 +44,7 @@ char	*ft_strcpy(char *dest, const char *src)
 }
 
 // ------------------ ft_strcat ------------------
-char	*ft_strcat(char *dest, const char *src)
+char	*ft_strcat_lap(char *dest, const char *src)
 {
 	char	*ptr;
 
@@ -64,7 +64,7 @@ char	*ft_strcat(char *dest, const char *src)
 }
 
 // ------------------ ft_strdup ------------------
-char	*ft_strdup(const char *s)
+char	*ft_strdup_lap(const char *s)
 {
 	size_t	len;
 	char	*copy;
@@ -77,7 +77,7 @@ char	*ft_strdup(const char *s)
 	copy = malloc(len + 1);
 	if (!copy)
 		return (NULL);
-	ft_strcpy(copy, s);
+	ft_strcpy_lap(copy, s);
 	return (copy);
 }
 
