@@ -28,6 +28,7 @@ t_token	*add_token(t_token **head, t_token_type type,
 		free(new);
 		return (NULL);
 	}
+	new->quoted = 0;
 	new->next = NULL;
 	if (!*head)
 		*head = new;

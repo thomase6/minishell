@@ -58,3 +58,20 @@ char	*ft_substr(const char *line, int start, int len)
 	sub[i] = '\0';
 	return (sub);
 }
+
+// ------------------------------- ft_memcpy -----------------------
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	unsigned char	*d;
+	unsigned char	*s;
+
+	d = (unsigned char *)dest;
+	s = (unsigned char *)src;
+	while (n--)
+	{
+		*d = *s;
+		s++;
+		d++;
+	}
+	return (dest);
+}

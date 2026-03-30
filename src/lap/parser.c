@@ -12,15 +12,6 @@
 
 #include "../../inc/lap.h"
 
-
-typedef struct s_parser_intern
-{
-	t_token		**token;
-	t_cmd		**cmds;
-	int		last_exit;
-	t_token_type	*expect;
-}	t_parser_intern;
-
 /* ===================== Helpers ===================== */
 
 // Handle word tokens (commands/arguments)
@@ -64,19 +55,12 @@ static int	handle_redirection(t_cmd *current, t_token **token, int last_exit)
 }
 
 // Dispatch token to correct handler THE " BRAIN "
-static t_cmd *handle_token(t_cmd *current, t_parser_intern *tmp)
+static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 {
 	if (!*(tmp->token))
 		return (current);
-
 	if ((*(tmp->token))->type == TOKEN_WORD)
 	{
-		if (*(tmp->expect) != TOKEN_NONE)
-		{
-			*(tmp->expect) = TOKEN_NONE;
-			*(tmp->token) = (*(tmp->token))->next;
-			return (current);
-		}
 		current = handle_command_token(current, *(tmp->token));
 		*(tmp->token) = (*(tmp->token))->next;
 	}
@@ -93,49 +77,42 @@ static t_cmd *handle_token(t_cmd *current, t_parser_intern *tmp)
 		*(tmp->expect) = (*(tmp->token))->type;
 		if (handle_redirection(current, tmp->token, tmp->last_exit) == -1)
 		{
-			free_cmds_lap(*(tmp->cmds));
+			free_cmds(*(tmp->cmds));
 			return (NULL);
 		}
 	}
-
 	return (current);
 }
 
 /* ===================== Parser ===================== */
 
-t_cmd *parser(t_token *tokens, char **argv, int last_exit)
+t_cmd	*parser(t_token *tokens, char **argv, int last_exit)
 {
-    t_cmd           *cmds;
-    t_cmd           *current;
-    t_token_type    expect;
-    t_parser_intern tmp;
+	t_cmd			*cmds;
+	t_cmd			*current;
+	t_token_type	expect;
+	t_parser_intern	tmp;
 
-    (void)argv;
-    cmds = new_cmd();
-    if (!tokens || !cmds)
-        return (NULL);
-
-    current = cmds;
-    expect = TOKEN_NONE; // tracks if next word is a redirection target
-
-    // initialize the struct
-    tmp.token = &tokens;
-    tmp.cmds = &cmds;
-    tmp.last_exit = last_exit;
-    tmp.expect = &expect;
-
-    while (tokens)
-    {
-        current = handle_token(current, &tmp);
-        if (!current)
-            return (NULL);
-    }
-
-    if (!cmds->argv || !cmds->argv[0])
-    {
-        free_cmds_lap(cmds);
-        return (NULL);
-    }
-
-    return (cmds);
+	(void)argv;
+	cmds = new_cmd();
+	if (!tokens || !cmds)
+		return (NULL);
+	current = cmds;
+	expect = TOKEN_NONE;
+	tmp.token = &tokens;
+	tmp.cmds = &cmds;
+	tmp.last_exit = last_exit;
+	tmp.expect = &expect;
+	while (tokens)
+	{
+		current = handle_token(current, &tmp);
+		if (!current)
+			return (NULL);
+	}
+	if (!cmds->argv || !cmds->argv[0])
+	{
+		free_cmds(cmds);
+		return (NULL);
+	}
+	return (cmds);
 }
