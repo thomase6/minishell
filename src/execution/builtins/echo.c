@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:45 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/19 09:30:33 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:37:14 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 // in that case we print the argument without a newline.
 int	builtin_echo(char **argv)
 {
-	int i;
-	int n_flag;
-	int j;
+	int	i;
+	int	n_flag;
+	int	j;
 
 	i = 1;
 	n_flag = 0;
@@ -32,18 +32,18 @@ int	builtin_echo(char **argv)
 			n_flag = 1;
 			i++;
 		}
-		else 
-			break;
+		else
+			break ;
 	}
 	while (argv[i])
 	{
 		j = 0;
-		ft_putstr_fd(argv[i],1);
+		ft_putstr_fd(argv[i], 1);
 		if (argv[i + 1] != NULL)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
 	if (!n_flag)
-		ft_putchar_fd('\n',1);
+		ft_putchar_fd('\n', 1);
 	return (0);
 }

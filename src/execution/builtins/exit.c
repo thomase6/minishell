@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:29 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/17 13:38:20 by texenber         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:41:25 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 // make sure that the exit code is saved to the last_status to make sure that echo $? works with exit.
 int	builtin_exit(char **argv, int last_status)
 {
-	int exit_code;
+	int	exit_code;
 	int	i;
 
 	ft_putstr_fd("exit\n", 1);
-
 	if (!argv[1])
 		exit(last_status);
 	i = 0;
@@ -35,7 +34,7 @@ int	builtin_exit(char **argv, int last_status)
 	// }
 	while (argv[1][i])
 	{
-		if(!ft_isdigit(argv[1][i]))
+		if (!ft_isdigit(argv[1][i]))
 		{
 			ft_putstr_fd("exit: ", 2);
 			ft_putstr_fd(argv[1], 2);
