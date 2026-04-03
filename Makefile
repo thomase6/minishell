@@ -18,14 +18,19 @@ LAP_PRE		= lap/
 LAP_SRC		= 	lexer.c				\
           		lexer_helper.c		\
           		lexer_helper1.c		\
+          		lexer_helper2.c \
           		parser.c			\
           		parser_helper.c		\
           		parser_helper1.c	\
           		parser_helper2.c		\
+          		parser_helper3.c \
+          		validate_syntax.c \
           		cleanup.c			\
+          		error_message.c \
           		helper_functions.c	\
           		helper_functions1.c	\
-          		helper_functions2.c 
+          		helper_functions2.c \
+          		helper_functions3.c
 
 EXEC_PRE	= execution/
 EXEC_SRC	=	executor.c			\

@@ -12,33 +12,45 @@
 
 #include "../../inc/lap.h"
 
-/* ===================== Helpers ===================== */
-
-// Handle word tokens (commands/arguments)
-static t_cmd	*handle_command_token(t_cmd *current, t_token *token)
+static t_cmd	*handle_command_token(t_cmd *current, t_token **token)
 {
-	if (!token || !current)
+	if (!current || !token || !*token)
 		return (NULL);
-	if (!add_args_cmd(current, token->value))
-		return (NULL);
+	while (*token && (*token)->type == TOKEN_WORD)
+	{
+		if ((*token)->has_space_before || !current->argv)
+		{
+			if (!add_args_cmd(current, (*token)->value))
+				return (NULL);
+		}
+		else if (!join_last_arg(current, (*token)->value))
+			return (NULL);
+		*token = (*token)->next;
+	}
 	return (current);
 }
 
-// Handle pipe tokens
-static t_cmd	*handle_pipe_token(t_cmd *current, t_cmd **cmds)
+static t_cmd	*handle_pipe_token(t_cmd *current,
+					t_cmd **cmds, t_token **token)
 {
+	t_cmd	*next_cmd;
+
 	if (!current || !current->argv || !current->argv[0])
 	{
-		free_cmds_lap(*cmds);
+		free_cmds(*cmds);
 		return (NULL);
 	}
-	current = handle_pipe(current);
-	if (!current)
-		free_cmds_lap(*cmds);
-	return (current);
+	next_cmd = new_cmd();
+	if (!next_cmd)
+	{
+		free_cmds(*cmds);
+		return (NULL);
+	}
+	current->next = next_cmd;
+	*token = (*token)->next;
+	return (next_cmd);
 }
 
-// Handle redirections and heredocs
 static int	handle_redirection(t_cmd *current, t_token **token, int last_exit)
 {
 	if (!current || !token || !*token)
@@ -60,15 +72,9 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 	if (!*(tmp->token))
 		return (current);
 	if ((*(tmp->token))->type == TOKEN_WORD)
-	{
-		current = handle_command_token(current, *(tmp->token));
-		*(tmp->token) = (*(tmp->token))->next;
-	}
+		current = handle_command_token(current, tmp->token);
 	else if ((*(tmp->token))->type == TOKEN_PIPE)
-	{
-		current = handle_pipe_token(current, tmp->cmds);
-		*(tmp->token) = (*(tmp->token))->next;
-	}
+		current = handle_pipe_token(current, tmp->cmds, tmp->token);
 	else if ((*(tmp->token))->type == TOKEN_REDIR_IN
 		|| (*(tmp->token))->type == TOKEN_REDIR_OUT
 		|| (*(tmp->token))->type == TOKEN_REDIR_OUT_APPEND
@@ -77,7 +83,7 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 		*(tmp->expect) = (*(tmp->token))->type;
 		if (handle_redirection(current, tmp->token, tmp->last_exit) == -1)
 		{
-			free_cmds_lap(*(tmp->cmds));
+			free_cmds(*(tmp->cmds));
 			return (NULL);
 		}
 	}
@@ -99,10 +105,7 @@ t_cmd	*parser(t_token *tokens, char **argv, int last_exit)
 		return (NULL);
 	current = cmds;
 	expect = TOKEN_NONE;
-	tmp.token = &tokens;
-	tmp.cmds = &cmds;
-	tmp.last_exit = last_exit;
-	tmp.expect = &expect;
+	tmp = (t_parser_intern){&tokens, &cmds, last_exit, &expect};
 	while (tokens)
 	{
 		current = handle_token(current, &tmp);
@@ -111,7 +114,7 @@ t_cmd	*parser(t_token *tokens, char **argv, int last_exit)
 	}
 	if (!cmds->argv || !cmds->argv[0])
 	{
-		free_cmds_lap(cmds);
+		free_cmds(cmds);
 		return (NULL);
 	}
 	return (cmds);
