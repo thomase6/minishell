@@ -12,6 +12,22 @@
 
 #include "../../inc/lap.h"
 
+int	join_last_arg(t_cmd *current, char *val)
+{
+	int		last;
+	char	*tmp;
+
+	last = 0;
+	while (current->argv[last + 1])
+		last++;
+	tmp = ft_strjoin_lap(current->argv[last], val);
+	if (!tmp)
+		return (0);
+	free(current->argv[last]);
+	current->argv[last] = tmp;
+	return (1);
+}
+
 /* ===================== Helpers ===================== */
 static int	append_heredoc(t_heredoc *tmp)
 {
@@ -28,7 +44,8 @@ static int	append_heredoc(t_heredoc *tmp)
 		ft_memcpy_lap(tmp->new_content, tmp->content, tmp->content_len);
 		free(tmp->content);
 	}
-	ft_memcpy_lap(tmp->new_content + tmp->content_len, tmp->line, tmp->line_len);
+	ft_memcpy_lap(tmp->new_content + tmp->content_len,
+		tmp->line, tmp->line_len);
 	tmp->new_content[tmp->content_len + tmp->line_len] = '\n';
 	tmp->new_content[tmp->content_len + tmp->line_len + 1] = '\0';
 	tmp->content = tmp->new_content;
@@ -74,7 +91,7 @@ int	handle_heredoc(t_cmd *cmd, t_token **token, int last_exit)
 		return (-1);
 	if (cmd->heredoc_delim)
 		free(cmd->heredoc_delim);
-	cmd->heredoc_delim = ft_strdup_lap(cur->value);
+	cmd->heredoc_delim = ft_strdup(cur->value);
 	cmd->heredoc_quoted = cur->quoted;
 	cmd->heredoc_content = read_heredoc_content(cmd->heredoc_delim);
 	*token = cur->next;

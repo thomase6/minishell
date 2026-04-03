@@ -12,108 +12,86 @@
 
 #include "../../inc/lap.h"
 
-t_cmd	*new_cmd(void)
+static char	*get_var_value(char *val, size_t *i)
 {
-	t_cmd	*cmd;
+	size_t	start;
+	char	var[256];
+	size_t	len;
+	char	*tmp;
 
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
+	start = *i + 1;
+	while (ft_isalnum_lap(val[start]))
+		start++;
+	if (start == *i + 1)
 		return (NULL);
-	cmd->argv = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-	cmd->append = 0;
-	cmd->heredoc_delim = NULL;
-	cmd->heredoc_quoted = 0;
-	cmd->heredoc_content = NULL;
-	cmd->next = NULL;
-	return (cmd);
+	len = start - (*i + 1);
+	if (len >= sizeof(var))
+		len = sizeof(var) - 1;
+	ft_strncpy_lap(var, val + *i + 1, len);
+	var[len] = '\0';
+	*i = start;
+	tmp = getenv(var);
+	if (!tmp)
+		tmp = "";
+	return (tmp);
 }
 
-char	**add_args(char **argv, char *word)
+static int	process_dollar(char *val, char *res, t_index *idx, int last_exit)
 {
-	int		i;
-	int		j;
-	char	**new;
+	char	*tmp;
 
-	i = 0;
-	if (argv)
-		while (argv[i])
-			i++;
-	new = malloc(sizeof(char *) * (i + 2));
-	if (!new)
-		return (NULL);
-	j = 0;
-	while (j < i)
+	if (val[idx->i + 1] == '?')
 	{
-		new[j] = argv[j];
-		j++;
+		if (handle_exit(res, &idx->j, last_exit) == -1)
+			return (-1);
+		idx->i += 2;
 	}
-	new[i] = ft_strdup_lap(word);
-	if (!new[i])
+	else
 	{
-		free(new);
-		return (NULL);
-	}
-	new[i + 1] = NULL;
-	if (argv)
-		free(argv);
-	return (new);
-}
-/* count existing arguments-> allocate new array old + new + NULL
- ->copy old arg-> add new word -> free old argv array , not the string inside
-*/
-
-int	add_args_cmd(t_cmd *cmd, char *arg)
-{
-	if (!cmd || !arg)
-		return (0);
-	cmd->argv = add_args(cmd->argv, arg);
-	return (cmd->argv != NULL);
-}
-
-/*
- * Expand a single token value ($VAR or $?) in-place
- */
-static int	expand_token_value(t_token *token, char **envp, int last_exit)
-{
-	char	*val;
-	char	*new_val;
-	char	*env_val;
-
-	(void)envp;
-	if (!token || !token->value)
-		return (0);
-	val = token->value;
-	if (val[0] == '$')
-	{
-		if (val[1] == '?' && val[2] == '\0')
-		{
-			new_val = ft_itoa_lap(last_exit);
-			if (!new_val)
-				return (-1);
-			free(token->value);
-			token->value = new_val;
-		}
-		else if (val[1] != '\0')
-		{
-			env_val = getenv(&val[1]);   // make function getenv
-			if (!env_val)
-				env_val = ft_strdup_lap("");
-			else
-				env_val = ft_strdup_lap(env_val);
-			if (!env_val)
-				return (-1);
-			free(token->value);
-			token->value = env_val;
-		}
+		tmp = get_var_value(val, &idx->i);
+		if (tmp)
+			idx->j += ft_strlen_lap(ft_strcpy_lap(res + idx->j, tmp));
+		else
+			res[(idx->j)++] = val[idx->i];
 	}
 	return (0);
 }
 
-/*
- * Expand tokens linked list while parsing
- */
+static int	handle_loop(char *val, char *res, t_index *idx, int last_exit)
+{
+	while (val[idx->i])
+	{
+		if (val[idx->i] == '$')
+		{
+			if (process_dollar(val, res, idx, last_exit) == -1)
+				return (-1);
+		}
+		else
+			res[idx->j++] = val[idx->i++];
+	}
+	return (0);
+}
+
+static int	expand_token_value(t_token *t, char **envp, int last_exit)
+{
+	char	*res;
+	t_index	idx;
+
+	(void)envp;
+	if (!t || !t->value || t->quoted)
+		return (0);
+	res = malloc(ft_strlen_lap(t->value) * 5 + 1);
+	if (!res)
+		return (-1);
+	idx.i = 0;
+	idx.j = 0;
+	if (handle_loop(t->value, res, &idx, last_exit) == -1)
+		return (free(res), -1);
+	res[idx.j] = '\0';
+	free(t->value);
+	return (t->value = res, 0);
+}
+
 int	expand_tokens(t_token *tokens, char **envp, int last_exit)
 {
 	t_token	*tmp;
@@ -127,29 +105,3 @@ int	expand_tokens(t_token *tokens, char **envp, int last_exit)
 	}
 	return (0);
 }
-/*
-
-char *my_getenv(char *name, char **envp)
-{
-    int i = 0;
-    size_t len = 0;
-
-    if (!name || !envp)
-        return NULL;
-
-    len = 0;
-    while (name[len])
-        len++;
-
-    while (envp[i])
-    {
-        // compare the first len characters and make sure next char is '='
-        if (strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
-        {
-            return envp[i] + len + 1; // skip the '='
-        }
-        i++;
-    }
-    return NULL; // not found
-}
-*/

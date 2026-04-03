@@ -12,73 +12,42 @@
 
 #include "../../inc/lap.h"
 
+static int	skip_white_spaces(const char *input, int *i)
+{
+	int	has_space;
+
+	has_space = 0;
+	while (input[*i] == ' ' || input[*i] == '\t')
+	{
+		has_space = 1;
+		(*i)++;
+	}
+	return (has_space);
+}
+
 t_token	*lexer(const char *input)
 {
 	int		i;
+	int		has_space;
 	t_token	*head;
 
 	head = NULL;
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == ' ' || input[i] == '\t' || input[i] == '\n')
-			i++;
-		else if (input[i] == '\'')
-			SCAN_OR_BREAK(scan_single_quote(input, i, &head));
+		has_space = skip_white_spaces(input, &i);
+		if (!input[i])
+			break ;
+		if (input[i] == '\'')
+			SCAN_OR_BREAK(scan_single_quote(input, i, &head, has_space));
 		else if (input[i] == '"')
-			SCAN_OR_BREAK(scan_double_quote(input, i, &head));
+			SCAN_OR_BREAK(scan_double_quote(input, i, &head, has_space));
 		else if (input[i] == '|')
-			SCAN_OR_BREAK(scan_pipe(input, i, &head));
-		else if (input[i] == '<' || input[i] == '>')
-			SCAN_OR_BREAK(scan_redirections(input, i, &head));
+			SCAN_OR_BREAK(scan_pipe(input, i, &head, has_space));
+		else if (input[i] == '>' || input[i] == '<')
+			SCAN_OR_BREAK(scan_redirections(input, i, &head, has_space));
 		else
-			SCAN_OR_BREAK(scan_word(input, i, &head));
+			SCAN_OR_BREAK(scan_word(input, i, &head, has_space));
 	}
 	return (head);
 }
-
-/*
-t_token	*lexer(const char *input)
-{
-	t_token	*head = NULL;
-	int i;
-
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == ' ' || input[i] == '\t')
-			i++;
-		else if (input[i] == '\'')
-		{
-			i = check_scan(scan_single_quote(input, i, &head), &head);
-			if (i == -1)
-				break;
-		}
-		else if (input[i] == '"')
-		{
-			i = check_scan(scan_double_quote(input, i, &head), &head);
-			if (i == -1)
-				break;
-		}
-		else if (input[i] == '|')
-		{
-			i = check_scan(scan_pip(input, i, &head), &head);
-			if (i == -1)
-				break;
-		}
-		else if (input[i] == '<' || input[i] == '>')
-		{
-			i = check_scan(scan_redirections(input, i, &head), &head);
-			if (i == -1)
-				break;
-		}
-		else
-		{
-			i = check_scan(scan_word(input, i, &head), &head);
-			if (i == -1)
-				break;
-		}
-	}
-	return (head);
-}
-*/
