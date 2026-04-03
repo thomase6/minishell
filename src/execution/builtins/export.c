@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/27 13:55:18 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/03 11:21:31 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	**add_env_var(char **env, char *var)
 void	print_export(char **env)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (env[i])

@@ -94,8 +94,8 @@ int		scan_double_quote(const char * input, int i, t_token ** head);
 
 /* ===================== Utils ===================== */
 void	free_tokens(t_token * head);
-void	print_tokens(t_token * head);
-void	print_cmds(t_cmd *cmds);
+// void	print_tokens(t_token * head);
+// void	print_cmds(t_cmd *cmds);
 
 /* ===================== Later functions ===================== */
 //void     *expand_variables(t_token *tokens);
