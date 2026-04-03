@@ -124,8 +124,8 @@ char	*remove_quotes_str(const char *str);
 
 /* ===================== Utils ===================== */
 void     free_tokens(t_token * head);
-void     print_tokens(t_token * head);
-void     print_cmds(t_cmd *cmds);
+// void     print_tokens(t_token * head);
+// void     print_cmds(t_cmd *cmds);
 void	 handle_syntax_error(const char *token_str, int missing_next);
 
 /* ===================== Later functions ===================== */
