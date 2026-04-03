@@ -15,32 +15,32 @@
 static void	handle_syntax_helper(const char *token_str)
 {
 	if (ft_strcmp_lap(token_str, "<<") == 0)
-		write (2, "minishell: syntax error: unexpected token '<<'\n", 48);
+		write (2, ERR_PREFIX "unexpected token '<<'\n", 47);
 	else if (ft_strcmp_lap(token_str, ">>") == 0)
-		write (2, "minishell: syntax error: unexpected token '>>'\n", 48);
+		write (2, ERR_PREFIX "unexpected token '>>'\n", 47);
 	else if (ft_strcmp_lap(token_str, "<") == 0)
-		write (2, "minishell: syntax error: unexpected token '<'\n", 47);
+		write (2, ERR_PREFIX "unexpected token '<'\n", 46);
 	else if (ft_strcmp_lap(token_str, ">") == 0)
-		write (2, "minishell: syntax error: unexpected token '>'\n", 47);
+		write (2, ERR_PREFIX "unexpected token '>'\n", 46);
 	else if (ft_strcmp_lap(token_str, "|") == 0)
-		write (2, "minishell: syntax error: unexpected token '|'\n", 47);
+		write (2, ERR_PREFIX "unexpected token '|'\n", 46);
 	else if (ft_strcmp_lap(token_str, "'") == 0
 		|| ft_strcmp_lap(token_str, "\"") == 0)
-		write (2, "minishell: syntax error: unmatched quote\n", 42);
+		write (2, ERR_PREFIX"unmatched quote\n", 41);
 	else
-		write (2, "minishell: syntax error: unknown token\n", 40);
+		write (2, ERR_PREFIX "unknown token\n", 39);
 }
 
 void	handle_syntax_error(const char *token_str, int missing_next)
 {
 	if (!token_str)
 	{
-		write (2, "minishell: syntax error: unknown error\n", 39);
+		write (2, ERR_PREFIX "unknown error\n", 39);
 		return ;
 	}
 	if (missing_next)
 	{
-		write (2, "minishell: syntax error: un token 'newline' after '", 52);
+		write (2, ERR_PREFIX "unmatched token 'newline' after '", 58);
 		write (2, token_str, ft_strlen_lap(token_str));
 		write (2, "'\n", 2);
 		return ;

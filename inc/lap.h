@@ -9,6 +9,8 @@
 #include <readline/history.h>
 #include "./minishell.h"
 
+#define ERR_PREFIX "minishell: syntax error: "
+
 /* ===================== Token Types ===================== */
 typedef enum e_token_type
 {
