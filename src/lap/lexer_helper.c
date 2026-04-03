@@ -12,85 +12,57 @@
 
 #include "../../inc/lap.h"
 
-t_token	*add_token(t_token **head, t_token_type type,
-		const char *value, int len)
-{
-	t_token	*new;
-	t_token	*tmp;
-
-	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
-	new->type = type;
-	new->value = ft_strndup(value, len);
-	if (!new->value)
+int	scan_pipe(const char *input, int i, t_token **head, int has_space)
 	{
-		free(new);
-		return (NULL);
-	}
-	new->quoted = 0;
-	new->next = NULL;
-	if (!*head)
-		*head = new;
-	else
-	{
-		tmp = *head;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-	return (new);
-}
-
-int	scan_word(const char *input, int i, t_token **head)
-{
-	int		start;
-	t_token	*tok;
-
-	start = i;
-	while (input[i] && input[i] != ' ' && input[i] != '\t' && input[i] != '|'
-		&& input[i] != '<' && input[i] != '>' && input[i] != '"'
-		&& input[i] != '\'' && input[i] != '\n')
-		i++;
-	tok = add_token(head, TOKEN_WORD, &input[start], i - start);
-	if (!tok)
-		return (-1);
-	tok->quoted = 0;
-	return (i);
-}
-
-int	scan_pipe(const char *input, int i, t_token **head)
-{
-	if (!add_token(head, TOKEN_PIPE, &input[i], 1))
+	if (!add_token(head, (t_token_data){TOKEN_PIPE, &input[i], 1, has_space}))
 		return (-1);
 	return (i + 1);
 }
 
-int	scan_redirections(const char *input, int i, t_token **head)
+static int	create_redir(t_token **head, t_redir redir)
+{
+	if (!add_token(head, (t_token_data){redir.type,
+			redir.input, redir.len, redir.has_space}))
+		return (-1);
+	return (0);
+}
+
+static int	get_redir_type_len(const char *input, int i, int *len)
 {
 	if (input[i] == '<' && input[i + 1] == '<')
 	{
-		if (!add_token(head, TOKEN_HEREDOC, &input[i], 2))
-			return (-1);
-		return (i + 2);
+		*len = 2;
+		return (TOKEN_HEREDOC);
 	}
 	else if (input[i] == '>' && input[i + 1] == '>')
 	{
-		if (!add_token(head, TOKEN_REDIR_OUT_APPEND, &input[i], 2))
-			return (-1);
-		return (i + 2);
+		*len = 2;
+		return (TOKEN_REDIR_OUT_APPEND);
 	}
 	else if (input[i] == '>')
 	{
-		if (!add_token(head, TOKEN_REDIR_OUT, &input[i], 1))
-			return (-1);
-		return (i + 1);
+		*len = 1;
+		return (TOKEN_REDIR_OUT);
 	}
 	else if (input[i] == '<')
 	{
-		if (!add_token(head, TOKEN_REDIR_IN, &input[i], 1))
-			return (-1);
-		return (i + 1);
+		*len = 1;
+		return (TOKEN_REDIR_IN);
 	}
-	return (i);
+	*len = 0;
+	return (0);
+}
+
+int	scan_redirections(const char *input, int i,
+		t_token **head, int has_space)
+{
+	int	len;
+	int	type;
+
+	type = get_redir_type_len(input, i, &len);
+	if (!type)
+		return (i);
+	if (create_redir(head, (t_redir){type, &input[i], len, has_space}))
+		return (-1);
+	return (i + len);
 }

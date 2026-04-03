@@ -83,7 +83,7 @@ char	*ft_strdup_lap(const char *s)
 
 // ------------------ ft_strndup ------------------
 
-char	*ft_strndup(const char *s, size_t n)
+char	*ft_strndup_lap(const char *s, size_t n)
 {
 	size_t	len;
 	size_t	i;

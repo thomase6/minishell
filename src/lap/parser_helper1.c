@@ -14,6 +14,19 @@
 
 /* ===================== Redirection Handlers ===================== */
 
+int	handle_exit(char *res, size_t *j, int last_exit)
+{
+	char	*tmp;
+
+	tmp = ft_itoa_lap(last_exit);
+	if (!tmp)
+		return (-1);
+	ft_strcpy_lap(res + *j, tmp);
+	*j += ft_strlen_lap(tmp);
+	free(tmp);
+	return (0);
+}
+
 int	handle_redir_in(t_cmd *cmd, t_token **token)
 {
 	t_token	*next;
@@ -30,7 +43,7 @@ int	handle_redir_in(t_cmd *cmd, t_token **token)
 	if (cmd->infile)
 		free(cmd->infile);
 	cmd->infile = dup;
-	*token = next;
+	*token = next->next;
 	return (0);
 }
 
@@ -51,7 +64,7 @@ int	handle_redir_out(t_cmd *cmd, t_token **token)
 		free(cmd->outfile);
 	cmd->outfile = dup;
 	cmd->append = 0;
-	*token = next;
+	*token = next->next;
 	return (0);
 }
 
@@ -72,7 +85,7 @@ int	handle_redir_out_append(t_cmd *cmd, t_token **token)
 		free(cmd->outfile);
 	cmd->outfile = dup;
 	cmd->append = 1;
-	*token = next;
+	*token = next->next;
 	return (0);
 }
 
@@ -98,9 +111,7 @@ t_cmd	*build_commands(t_token *tokens)
 			current = current->next;
 		}
 		else
-		{
 			add_args_cmd(current, tokens->value);
-		}
 		tokens = tokens->next;
 	}
 	return (cmd_list);

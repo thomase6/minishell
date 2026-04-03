@@ -31,7 +31,8 @@ char	*ft_replace(char *str, const char *old, const char *new)
 		return (NULL);
 	ft_memcpy_lap(result, str, len_before);
 	ft_memcpy_lap(result + len_before, new, ft_strlen_lap(new));
-	ft_memcpy_lap(result + len_before + ft_strlen_lap(new), pos + ft_strlen_lap(old), len_after);
+	ft_memcpy_lap(result + len_before + ft_strlen_lap(new), pos
+		+ ft_strlen_lap(old), len_after);
 	result[len_before + ft_strlen_lap(new) + len_after] = '\0';
 	free(str);
 	return (result);
@@ -74,4 +75,43 @@ void	*ft_memcpy_lap(void *dest, const void *src, size_t n)
 		d++;
 	}
 	return (dest);
+}
+
+// --------------------------- ft_strncpy ----------------------------
+char	*ft_strncpy_lap(char *dest, char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
+
+// ------------------------ ft_strncmp ----------------------------------
+
+int	ft_strncmp_lap(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (i < n && s1[i] && s2[i])
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	if (i < n)
+		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return (0);
 }

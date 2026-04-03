@@ -40,38 +40,46 @@ char	*ft_strjoin_free(char *s1, const char *s2)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin(s1, s2);
+	tmp = ft_strjoin_lap(s1, s2);
 	free(s1);
 	return (tmp);
+}
+
+static void	helper_free(t_cmd *tmp)
+{
+	size_t	i;
+
+	if (!tmp)
+		return ;
+	if (tmp->argv)
+	{
+		i = 0;
+		while (tmp->argv[i])
+		{
+			free(tmp->argv[i]);
+			i++;
+		}
+		free(tmp->argv);
+	}
+	if (tmp->infile)
+		free(tmp->infile);
+	if (tmp->outfile)
+		free(tmp->outfile);
+	if (tmp->heredoc_delim)
+		free(tmp->heredoc_delim);
+	if (tmp->heredoc_content)
+		free(tmp->heredoc_content);
 }
 
 void	free_cmds_lap(t_cmd *cmd)
 {
 	t_cmd	*tmp;
-	size_t	i;
 
 	while (cmd)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
-		if (tmp->argv)
-		{
-			i = 0;
-			while (tmp->argv[i])
-			{
-				free(tmp->argv[i]);
-				i++;
-			}
-			free(tmp->argv);
-		}
-		if (tmp->infile)
-			free(tmp->infile);
-		if (tmp->outfile)
-			free(tmp->outfile);
-		if (tmp->heredoc_delim)
-			free(tmp->heredoc_delim);
-		if (tmp->heredoc_content)        // 🔹 FREE HEREDOC CONTENT
-			free(tmp->heredoc_content);
+		helper_free(tmp);
 		free(tmp);
 	}
 }
