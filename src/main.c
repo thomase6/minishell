@@ -6,14 +6,63 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 15:11:35 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/03 13:55:09 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "../inc/execution.h"
+#include "../inc/lap.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
+
+//this function is for testing
+static void print_cmds(t_cmd *cmds)
+{
+	int i = 0;
+	int	cmd_num
+	t_cmd	*current = cmds;
+	
+	printf("\n===CMDS===\n");
+	while(current)
+	{
+		printf("argv: %s\n", current->argv[0]);
+		printf("infile: %s\n", current->infile);
+		printf("outfile: %s\n", current->outfile);
+		printf("append: %d\n", current->append);
+		printf("heredoc Delimiter: %s\n", current->heredoc_delim);
+		printf("Heredoc Quotes: %d\n", current->heredoc_quoted);
+		printf("Heredoc Content: %s\n", current->heredoc_content);
+		
+		
+		current = current->next;
+		i++;
+	}
+	printf("\n===END OF CMDS===\n");
+}
+
+//this function is for testing
+static void	print_tokens(t_token *tokens)
+{
+	int	i = 0;
+	t_token *current = tokens;
+	
+	printf("\n===TOKENS===\n");
+	while (current)
+	{
+		printf("Token %d:\n", i);
+		printf(" type: %d\n", current->type);
+		printf(" value: [%s]\n", current->value);
+		printf(" quoted: %d\n", current->quoted);
+		printf(" next: %s\n", current->next ? "yes" : "no");
+		printf("\n");
+
+		current = current->next;
+		i++;
+	}
+	printf("\n===END OF TOKENS===\n");
+
+}
 
 void	cleanup_shell(t_shell *shell)
 {
@@ -26,7 +75,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
 	char	*line;
-	t_cmd	*cmds = NULL; //this normally doesn't have to equal NULL, for now it is necessary to avoid crashes.
+	t_cmd	*cmds; /*= NULL;*/ //this normally doesn't have to equal NULL, for now it is necessary to avoid crashes.
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -42,7 +91,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline("Minishell: $");
 		if (!line)
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("exit\n", 1); //issue with this error handling causing the program to exit  with the argument "ls | env"
 			break ;
 		}
 		if (line[0] == '\0')
@@ -51,7 +100,24 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		}
 		add_history(line);
-		// Lexer and Parser should be around here
+		// Lexer and Parser
+		t_token *tokens = lexer(line);
+        if (!tokens)
+        {
+            printf("Lexer failed or returned no tokens.\n");
+            free(line);
+            continue;
+        }
+		print_tokens(tokens);
+		cmds = parser(tokens, shell.env, shell.last_status);
+        if (!cmds)
+        {
+            printf("Parser failed or returned no commands.\n");
+            free_tokens(tokens);
+            // free(line);
+            continue;
+        }
+		print_cmds(cmds);
 		// this is temporary while the parsing is not available.
 		// t_cmd a;
 		// t_cmd b;
@@ -74,9 +140,10 @@ int	main(int ac, char **av, char **envp)
 		// execute_cmds(&a, &shell);
 		if (cmds)
 		{
-			execute_cmds(cmds, &shell);
+			// execute_cmds(cmds, &shell);
 			free_cmds(cmds);// need to make this function
 		}
+		free_tokens(tokens);
 		free(line);
 		if (g_signal == SIGINT)
 			shell.last_status = 130;
