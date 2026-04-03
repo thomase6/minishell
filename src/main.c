@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/03 14:09:45 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/03 14:48:24 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
 static void print_cmds(t_cmd *cmds)
 {
 	int i = 0;
-	int	cmd_num;
+	// int	cmd_num;
 	t_cmd	*current = cmds;
 	
 	printf("\n===CMDS===\n");
