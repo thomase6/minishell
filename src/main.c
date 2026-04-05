@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/03 14:48:24 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/05 11:52:27 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,108 @@
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
 
+// if the file doesn't exist it fails to open it in case of the infile which should lead to an error message with exit code 1.
+void	set_infile_and_outfile(t_cmd *cmds)
+{
+	t_cmd	*current = cmds;
+	while (current)
+	{
+		if (current->infile)
+		{
+			current->infile_fd = open(current->infile, O_RDONLY);
+			// if (current->infile_fd < 0) 
+			// 	perror(current->infile);
+		}
+		if (current->outfile)
+		{
+			if (current->append)
+				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			else
+				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			// if (current->outfile_fd < 0)
+			// 	perror(current->outfile);
+		}
+		current = current->next;
+	}
+}
+// have to change to strcmp
+bool	cmd_is_builtin(char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 4) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "pwd", 3) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "env", 3) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "exit", 4) == 0)
+		return (1);	
+	return (0);
+}
+
+// is_builtin = 0 so all we have to do is check and change if it is a builtin otherwise let it be.
+void	set_builtin_flag(t_cmd *cmds)
+{
+	t_cmd	*current = cmds;
+
+	while (current)
+	{
+		if (current->argv && current->argv[0])
+		{
+			if (cmd_is_builtin(current->argv[0]) == 1)
+				current->is_builtin = 1;
+		}
+		current=current->next;
+	}
+}
+
+void set_inbuilt_and_open(t_cmd *cmds)
+{
+	set_builtin_flag(cmds);
+	set_infile_and_outfile(cmds);
+}
+
 //this function is for testing
 static void print_cmds(t_cmd *cmds)
 {
-	int i = 0;
-	// int	cmd_num;
+	int	cmd_num = 1;
 	t_cmd	*current = cmds;
 	
 	printf("\n===CMDS===\n");
 	while(current)
 	{
+		printf("Command %d:\n", cmd_num);
+		printf(" argv: ");
+		int i = 0;
+		if (current->argv)
+		{
+			while (current->argv[i])
+			{
+				printf("[%s] ", current->argv[i]);
+				i++;
+			}
+		}		
+		printf("\n");
 		printf("argv: %s\n", current->argv[0]);
 		printf("infile: %s\n", current->infile);
 		printf("outfile: %s\n", current->outfile);
 		printf("append: %d\n", current->append);
 		printf("heredoc Delimiter: %s\n", current->heredoc_delim);
-		printf("Heredoc Quotes: %d\n", current->heredoc_quoted);
-		printf("Heredoc Content: %s\n", current->heredoc_content);
+		printf("heredoc Quotes: %d\n", current->heredoc_quoted);
+		printf("heredoc Content: %s\n", current->heredoc_content);
+		printf("is_builtin: %d\n", current->is_builtin);
+		printf("infile_fd: %d\n", current->infile_fd);
+		printf("outfile_fd: %d\n", current->outfile_fd);
+		printf("next: %s\n", current->next ? "yes" : "no");
 		
 		
 		current = current->next;
+		cmd_num++;
 		i++;
 	}
 	printf("\n===END OF CMDS===\n");
@@ -61,7 +143,6 @@ static void	print_tokens(t_token *tokens)
 		i++;
 	}
 	printf("\n===END OF TOKENS===\n");
-
 }
 
 void	cleanup_shell(t_shell *shell)
@@ -76,6 +157,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell	shell;
 	char	*line;
 	t_cmd	*cmds; /*= NULL;*/ //this normally doesn't have to equal NULL, for now it is necessary to avoid crashes.
+	t_token	*tokens;	
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -91,7 +173,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline("Minishell: $");
 		if (!line)
 		{
-			ft_putstr_fd("exit\n", 1); //issue with this error handling causing the program to exit  with the argument "ls | env"
+			ft_putstr_fd("exit\n", 2);
 			break ;
 		}
 		if (line[0] == '\0')
@@ -101,7 +183,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		add_history(line);
 		// Lexer and Parser
-		t_token *tokens = lexer(line);
+		tokens = lexer(line);
         if (!tokens)
         {
             printf("Lexer failed or returned no tokens.\n");
@@ -114,10 +196,9 @@ int	main(int ac, char **av, char **envp)
         {
             printf("Parser failed or returned no commands.\n");
             free_tokens(tokens);
-            // free(line);
+            free(line);
             continue;
         }
-		print_cmds(cmds);
 		// this is temporary while the parsing is not available.
 		// t_cmd a;
 		// t_cmd b;
@@ -138,11 +219,14 @@ int	main(int ac, char **av, char **envp)
 		// b.next = NULL;
 		//temporary code execution while the parsing is not available
 		// execute_cmds(&a, &shell);
+		set_inbuilt_and_open(cmds);
+		print_cmds(cmds);
 		if (cmds)
 		{
 			// execute_cmds(cmds, &shell);
 			free_cmds(cmds);// need to make this function
 		}
+
 		free_tokens(tokens);
 		free(line);
 		if (g_signal == SIGINT)
@@ -150,6 +234,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	//clean up SHELL
 	cleanup_shell(&shell);
+	printf("%d", shell.last_status);
 	return (shell.last_status);
 }
 

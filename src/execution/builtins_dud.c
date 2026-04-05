@@ -6,14 +6,15 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 13:36:04 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/05 11:30:13 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/execution.h"
 
-int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
+//have to change to strcmp because this allows wrong commands through.
+int	exec_builtin(t_cmd *cmds, t_shell *shell)
 {
 	// I think strcmp would be better but the example of "echo123" does not pass strncmp which means that it's working correctly so idk
 	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
@@ -33,7 +34,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell) // **NEW**
 	return (0);
 }
 
-int	exec_builtin_parent(t_cmd *cmds, t_shell *shell) // **NEW**
+int	exec_builtin_parent(t_cmd *cmds, t_shell *shell)
 {
 	int	res;
 
