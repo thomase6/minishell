@@ -94,7 +94,7 @@ t_token	*lexer(const char * input);  // input string -> linked list of tokens
 // parser (syntax check / grouping)
 t_cmd	*parser(t_token * tokens,char **envp, int last_exit);
 
-/* ===================== Parser Heleprs ==================== */
+/* ===================== Parser Helpers ==================== */
 t_cmd	*new_cmd(void);
 char	**add_args(char **argv, char *word);
 int	add_args_cmd(t_cmd *cmd, char *arg);

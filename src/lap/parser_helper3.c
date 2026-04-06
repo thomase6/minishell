@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_helper3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 10:59:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/03 10:59:43 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/05 09:29:00 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ t_cmd	*new_cmd(void)
 	cmd->heredoc_delim = NULL;
 	cmd->heredoc_quoted = 0;
 	cmd->heredoc_content = NULL;
+	cmd->infile_fd = -1;
+	cmd->outfile_fd = -1;
+	cmd->is_builtin = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
