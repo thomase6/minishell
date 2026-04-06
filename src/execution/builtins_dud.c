@@ -6,30 +6,28 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/05 11:30:13 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 11:02:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/execution.h"
 
-//have to change to strcmp because this allows wrong commands through.
 int	exec_builtin(t_cmd *cmds, t_shell *shell)
 {
-	// I think strcmp would be better but the example of "echo123" does not pass strncmp which means that it's working correctly so idk
-	if (ft_strncmp(cmds->argv[0], "echo", 4) == 0)
+	if (ft_strcmp(cmds->argv[0], "echo") == 0)
 		return (builtin_echo(cmds->argv));
-	else if (ft_strncmp(cmds->argv[0], "cd", 2) == 0)
+	else if (ft_strcmp(cmds->argv[0], "cd") == 0)
 		return (builtin_cd(cmds->argv, shell->env)); // shell->env doesn't fully work need to further test cd to see if I need to change it back to char **envp. testing once merging is done.
-	else if (ft_strncmp(cmds->argv[0], "pwd", 3) == 0)
+	else if (ft_strcmp(cmds->argv[0], "pwd") == 0)
 		return (builtin_pwd());
-	else if (ft_strncmp(cmds->argv[0], "env", 3) == 0)
+	else if (ft_strcmp(cmds->argv[0], "env") == 0)
 		return (builtin_env(shell->env));
-	else if (ft_strncmp(cmds->argv[0], "export", 6) == 0)
+	else if (ft_strcmp(cmds->argv[0], "export") == 0)
 		return (builtin_export(cmds->argv, shell));
-	else if (ft_strncmp(cmds->argv[0], "unset", 5) == 0)
+	else if (ft_strcmp(cmds->argv[0], "unset") == 0)
 		return (builtin_unset(cmds->argv, shell));
-	else if (ft_strncmp(cmds->argv[0], "exit", 4) == 0)
+	else if (ft_strcmp(cmds->argv[0], "exit") == 0)
 		return (builtin_exit(cmds->argv, shell->last_status));	
 	return (0);
 }

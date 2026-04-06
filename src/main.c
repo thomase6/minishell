@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/06 10:25:28 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 11:16:45 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,82 +15,6 @@
 #include "../inc/lap.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while ((unsigned char)s1[i] == (unsigned char)s2[i] && s1[i] && s2[i])
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-// if the file doesn't exist it fails to open it in case of the infile which should lead to an error message with exit code 1.
-void	set_infile_and_outfile(t_cmd *cmds)
-{
-	t_cmd	*current = cmds;
-	while (current)
-	{
-		if (current->infile) // <
-		{
-			current->infile_fd = open(current->infile, O_RDONLY);
-			if (current->infile_fd < 0) 
-				perror(current->infile);
-		}
-		if (current->outfile) // >
-		{
-			if (current->append)
-				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			else
-				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (current->outfile_fd < 0)
-				perror(current->outfile);
-		}
-		current = current->next;
-	}
-}
-// have to change to strcmp
-bool	cmd_is_builtin(char *cmd)
-{
-	if (ft_strncmp(cmd, "echo", 4) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "pwd", 3) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "env", 3) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "export", 6) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "unset", 5) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "exit", 4) == 0)
-		return (1);	
-	return (0);
-}
-
-// is_builtin = 0 so all we have to do is check and change if it is a builtin otherwise let it be.
-void	set_builtin_flag(t_cmd *cmds)
-{
-	t_cmd	*current = cmds;
-
-	while (current)
-	{
-		if (current->argv && current->argv[0])
-		{
-			if (cmd_is_builtin(current->argv[0]) == 1)
-				current->is_builtin = 1;
-		}
-		current=current->next;
-	}
-}
-
-void set_builtin_and_open(t_cmd *cmds)
-{
-	set_builtin_flag(cmds);
-	set_infile_and_outfile(cmds);
-}
 
 //this function is for testing
 static void print_cmds(t_cmd *cmds)
@@ -124,8 +48,6 @@ static void print_cmds(t_cmd *cmds)
 		printf("infile_fd: %d\n", current->infile_fd);
 		printf("outfile_fd: %d\n", current->outfile_fd);
 		printf("next: %s\n", current->next ? "yes" : "no");
-		
-		
 		current = current->next;
 		cmd_num++;
 		i++;
@@ -148,7 +70,6 @@ static void	print_tokens(t_token *tokens)
 		printf(" quoted: %d\n", current->quoted);
 		printf(" next: %s\n", current->next ? "yes" : "no");
 		printf("\n");
-
 		current = current->next;
 		i++;
 	}
@@ -166,8 +87,8 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
 	char	*line;
-	t_cmd	*cmds; /*= NULL;*/ //this normally doesn't have to equal NULL, for now it is necessary to avoid crashes.
-	t_token	*tokens;	
+	t_cmd	*cmds;
+	t_token	*tokens;
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -179,7 +100,7 @@ int	main(int ac, char **av, char **envp)
 	rl_signal_event_hook = signal_main_hook; // this is the proper way of handling functions that need to be executed after the signal is interrupted. 
 	while (1)
 	{
-		g_signal = 0;		// signal reset before every prompt
+		g_signal = 0;// signal reset before every prompt
 		line = readline("Minishell: $");
 		if (!line)
 		{

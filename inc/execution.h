@@ -6,30 +6,31 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 11:30:30 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 11:22:38 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
-#include <stdbool.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "../libft/src/libft.h"
 #include "./minishell.h"
 
 typedef struct s_shell t_shell;
 
-///      execution///
+///     execution	///
 int		execute_cmds(t_cmd *cmds, t_shell *shell); // **NEW**
 int		exec_pipeline(t_cmd *cmds, t_shell *shell); // **NEW**
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]); // **NEW**
 char	*resolve_path(char *cmd, char **envp); // CHANGE: add t_shell *shell
 int		exec_builtin_parent(t_cmd *cmds, t_shell *shell); // **NEW**
 int     exec_builtin(t_cmd *cmds, t_shell *shell); // **NEW**
+
+///		inbuilt flag, infile_fd and outfile_fd set	///
+void	set_builtin_and_open(t_cmd *cmds);
+void	set_builtin_flag(t_cmd *cmds);
+bool	cmd_is_builtin(char *cmd);
+void	set_infile_and_outfile(t_cmd *cmds);
+
 
 ///		builtin functions	///
 
