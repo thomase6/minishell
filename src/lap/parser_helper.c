@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:28 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/30 15:08:39 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 10:26:45 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	expand_token_value(t_token *t, char **envp, int last_exit)
 	t_index	idx;
 
 	(void)envp;
-	if (!t || !t->value || t->quoted)
+	if (!t || !t->value || t->quoted != 2)
 		return (0);
 	res = malloc(ft_strlen_lap(t->value) * 5 + 1);
 	if (!res)

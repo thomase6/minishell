@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/05 11:52:27 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 10:25:28 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,36 @@
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
 
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while ((unsigned char)s1[i] == (unsigned char)s2[i] && s1[i] && s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
 // if the file doesn't exist it fails to open it in case of the infile which should lead to an error message with exit code 1.
 void	set_infile_and_outfile(t_cmd *cmds)
 {
 	t_cmd	*current = cmds;
 	while (current)
 	{
-		if (current->infile)
+		if (current->infile) // <
 		{
 			current->infile_fd = open(current->infile, O_RDONLY);
-			// if (current->infile_fd < 0) 
-			// 	perror(current->infile);
+			if (current->infile_fd < 0) 
+				perror(current->infile);
 		}
-		if (current->outfile)
+		if (current->outfile) // >
 		{
 			if (current->append)
 				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			else
 				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			// if (current->outfile_fd < 0)
-			// 	perror(current->outfile);
+			if (current->outfile_fd < 0)
+				perror(current->outfile);
 		}
 		current = current->next;
 	}
@@ -76,7 +86,7 @@ void	set_builtin_flag(t_cmd *cmds)
 	}
 }
 
-void set_inbuilt_and_open(t_cmd *cmds)
+void set_builtin_and_open(t_cmd *cmds)
 {
 	set_builtin_flag(cmds);
 	set_infile_and_outfile(cmds);
@@ -219,7 +229,7 @@ int	main(int ac, char **av, char **envp)
 		// b.next = NULL;
 		//temporary code execution while the parsing is not available
 		// execute_cmds(&a, &shell);
-		set_inbuilt_and_open(cmds);
+		set_builtin_and_open(cmds);
 		print_cmds(cmds);
 		if (cmds)
 		{
@@ -234,7 +244,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	//clean up SHELL
 	cleanup_shell(&shell);
-	printf("%d", shell.last_status);
+	// printf("%d", shell.last_status);
 	return (shell.last_status);
 }
 
