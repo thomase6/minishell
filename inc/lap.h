@@ -1,12 +1,6 @@
 #ifndef LAP_H
 #define LAP_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "./minishell.h"
 
 #define ERR_PREFIX "minishell: syntax error: "

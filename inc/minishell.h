@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:09 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/03 12:16:59 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 11:13:11 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 # define MINISHELL_H
 // #define _DEFAULT_SOURCE
 
+#include <stdbool.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "../libft/src/libft.h"
+#include <fcntl.h>
 #include <signal.h>
 #include <sys/ioctl.h>
+#include "../libft/src/libft.h"
+
 
 ///		Global signal variable			///
 extern volatile sig_atomic_t g_signal;
