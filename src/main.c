@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/06 11:16:45 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 12:03:00 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int ac, char **av, char **envp)
             continue;
         }
 		print_tokens(tokens);
+		// validate_syntax(t_token *tokens); goes here
 		cmds = parser(tokens, shell.env, shell.last_status);
         if (!cmds)
         {
@@ -130,26 +131,7 @@ int	main(int ac, char **av, char **envp)
             free(line);
             continue;
         }
-		// this is temporary while the parsing is not available.
-		// t_cmd a;
-		// t_cmd b;
-    	// char *cmd1[] = {"sleep", "10", NULL};
-		// char *cmd2[] = {"env", NULL};
-    	// int status;
-
-    	// a.argv = cmd1;
-    	// a.infile = -1;
-    	// a.outfile = -1;
-    	// a.is_builtin = 0;
-		// a.next = &b;
-    	// a.next = NULL;
-		// b.argv = cmd2;
-    	// b.infile = -1;
-    	// b.outfile = -1;
-    	// b.is_builtin = 1;
-		// b.next = NULL;
-		//temporary code execution while the parsing is not available
-		// execute_cmds(&a, &shell);
+		// expander goes here
 		set_builtin_and_open(cmds);
 		print_cmds(cmds);
 		if (cmds)
