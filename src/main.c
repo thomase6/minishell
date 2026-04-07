@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/06 12:03:00 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/07 10:06:15 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	main(int ac, char **av, char **envp)
             free(line);
             continue;
         }
-		print_tokens(tokens);
+		print_tokens(tokens); // REMOVE AFTER TESTING
 		// validate_syntax(t_token *tokens); goes here
 		cmds = parser(tokens, shell.env, shell.last_status);
         if (!cmds)
@@ -132,12 +132,12 @@ int	main(int ac, char **av, char **envp)
             continue;
         }
 		// expander goes here
-		set_builtin_and_open(cmds);
-		print_cmds(cmds);
+		set_builtin_and_open(cmds); // REMOVE AFTER TESTING
+		print_cmds(cmds); // REMOVE AFTER TESTING
 		if (cmds)
 		{
-			// execute_cmds(cmds, &shell);
-			free_cmds(cmds);// need to make this function
+			execute_cmds(cmds, &shell);
+			free_cmds(cmds);
 		}
 
 		free_tokens(tokens);
@@ -147,7 +147,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	//clean up SHELL
 	cleanup_shell(&shell);
-	// printf("%d", shell.last_status);
+	// printf("%d", shell.last_status); // REMOVE AFTER TESTING
 	return (shell.last_status);
 }
 
