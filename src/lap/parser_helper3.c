@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 10:59:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/05 09:29:00 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:21:43 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,9 @@ int	add_args_cmd(t_cmd *cmd, char *arg)
 	return (cmd->argv != NULL);
 }
 
-/*
-static char *my_getenv(char *name, char **envp)
+char	*my_getenv(char *name, char **envp)
 {
-	int	i;
+	int		i;
 	size_t	len;
 
 	i = 0;
@@ -96,13 +95,11 @@ static char *my_getenv(char *name, char **envp)
 		len++;
 	while (envp[i])
 	{
-		// compare the first len characters and make sure next char is '='
 		if (ft_strncmp_lap(envp[i], name, len) == 0 && envp[i][len] == '=')
 		{
-			return (envp[i] + len + 1); // skip the '='
-        	}
+			return (envp[i] + len + 1);
+		}
 		i++;
 	}
-	return (NULL); // not found
+	return (NULL);
 }
-*/

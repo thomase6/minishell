@@ -12,7 +12,7 @@
 
 #include "../../inc/lap.h"
 
-static char	*get_var_value(char *val, size_t *i)
+static char	*get_var_value(char *val, size_t *i, t_shell *shell)
 {
 	size_t	start;
 	char	var[256];
@@ -30,25 +30,25 @@ static char	*get_var_value(char *val, size_t *i)
 	ft_strncpy_lap(var, val + *i + 1, len);
 	var[len] = '\0';
 	*i = start;
-	tmp = getenv(var);
+	tmp = my_getenv(var, shell->env);
 	if (!tmp)
 		tmp = "";
 	return (tmp);
 }
 
-static int	process_dollar(char *val, char *res, t_index *idx, int last_exit)
+static int	process_dollar(char *val, char *res, t_index *idx, t_shell *shell)
 {
 	char	*tmp;
 
 	if (val[idx->i + 1] == '?')
 	{
-		if (handle_exit(res, &idx->j, last_exit) == -1)
+		if (handle_exit(res, &idx->j, shell) == -1)
 			return (-1);
 		idx->i += 2;
 	}
 	else
 	{
-		tmp = get_var_value(val, &idx->i);
+		tmp = get_var_value(val, &idx->i, shell);
 		if (tmp)
 			idx->j += ft_strlen_lap(ft_strcpy_lap(res + idx->j, tmp));
 		else
@@ -57,13 +57,13 @@ static int	process_dollar(char *val, char *res, t_index *idx, int last_exit)
 	return (0);
 }
 
-static int	handle_loop(char *val, char *res, t_index *idx, int last_exit)
+static int	handle_loop(char *val, char *res, t_index *idx, t_shell *shell)
 {
 	while (val[idx->i])
 	{
 		if (val[idx->i] == '$')
 		{
-			if (process_dollar(val, res, idx, last_exit) == -1)
+			if (process_dollar(val, res, idx, shell) == -1)
 				return (-1);
 		}
 		else
@@ -72,12 +72,11 @@ static int	handle_loop(char *val, char *res, t_index *idx, int last_exit)
 	return (0);
 }
 
-static int	expand_token_value(t_token *t, char **envp, int last_exit)
+int	expand_token_value(t_token *t, t_shell *shell)
 {
 	char	*res;
 	t_index	idx;
 
-	(void)envp;
 	if (!t || !t->value || t->quoted == 1)
 		return (0);
 	res = malloc(ft_strlen_lap(t->value) * 5 + 1);
@@ -85,21 +84,21 @@ static int	expand_token_value(t_token *t, char **envp, int last_exit)
 		return (-1);
 	idx.i = 0;
 	idx.j = 0;
-	if (handle_loop(t->value, res, &idx, last_exit) == -1)
+	if (handle_loop(t->value, res, &idx, shell) == -1)
 		return (free(res), -1);
 	res[idx.j] = '\0';
 	free(t->value);
 	return (t->value = res, 0);
 }
 
-int	expand_tokens(t_token *tokens, char **envp, int last_exit)
+int	expand_tokens(t_token *tokens, t_shell *shell)
 {
 	t_token	*tmp;
 
 	tmp = tokens;
 	while (tmp)
 	{
-		if (expand_token_value(tmp, envp, last_exit) == -1)
+		if (expand_token_value(tmp, shell) == -1)
 			return (-1);
 		tmp = tmp->next;
 	}

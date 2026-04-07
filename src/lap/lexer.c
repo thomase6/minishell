@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:28:57 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:17 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:16:38 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,28 @@ t_token	*lexer(const char *input)
 			SCAN_OR_BREAK(scan_word(input, i, &head, has_space));
 	}
 	return (head);
+}
+
+t_token	*process_input(char *line, t_shell *shell)
+{
+	t_token	*tokens;
+
+	if (!line || !shell)
+		return (NULL);
+	tokens = lexer(line);
+	if (!tokens)
+		return (NULL);
+	if (validate_syntax(tokens))
+	{
+		printf("syntax error.\n");
+		free_tokens(tokens);
+		return (NULL);
+	}
+	if (expand_tokens(tokens, shell) == -1)
+	{
+		printf("expansion failed.\n");
+		free_tokens(tokens);
+		return (NULL);
+	}
+	return (tokens);
 }
