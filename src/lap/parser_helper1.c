@@ -14,11 +14,11 @@
 
 /* ===================== Redirection Handlers ===================== */
 
-int	handle_exit(char *res, size_t *j, int last_exit)
+int	handle_exit(char *res, size_t *j, t_shell *shell)
 {
 	char	*tmp;
 
-	tmp = ft_itoa_lap(last_exit);
+	tmp = ft_itoa_lap(shell->last_status);
 	if (!tmp)
 		return (-1);
 	ft_strcpy_lap(res + *j, tmp);

@@ -32,7 +32,7 @@ typedef struct s_parser_intern
 {
 	t_token			**token;
 	t_cmd			**cmds;
-	int				last_exit;
+	 t_shell         *shell; 
 	t_token_type	*expect;
 }	t_parser_intern;
 
@@ -86,7 +86,8 @@ typedef struct s_redir
 t_token	*lexer(const char * input);  // input string -> linked list of tokens
 
 // parser (syntax check / grouping)
-t_cmd	*parser(t_token * tokens,char **envp, int last_exit);
+t_cmd   *parser(t_token *tokens, t_shell *shell);
+t_token	*process_input(char *line, t_shell *shell);
 
 /* ===================== Parser Helpers ==================== */
 t_cmd	*new_cmd(void);
@@ -97,10 +98,11 @@ int	validate_syntax(t_token *head);
 int	handle_redir_in(t_cmd *cmd, t_token **token);
 int	handle_redir_out(t_cmd *cmd, t_token **token);
 int	handle_redir_out_append(t_cmd *cmd, t_token **token);
-int	handle_heredoc(t_cmd *cmd, t_token **token, int last_exit);
-int	expand_tokens(t_token *tokens, char **envp, int last_exit);
-int	handle_exit(char *res, size_t *j, int last_exit);
+int     handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell);
+int     expand_tokens(t_token *tokens, t_shell *shell);
+int	handle_exit(char *res, size_t *j, t_shell *shell);
 int	join_last_arg(t_cmd *current, char *val);
+int	expand_token_value(t_token *t, t_shell *shell);
 void     free_cmds(t_cmd *cmds);
 t_cmd	*handle_pipe(t_cmd *current);
 t_cmd *build_commands(t_token *tokens);
@@ -121,6 +123,7 @@ void     free_tokens(t_token * head);
 // void     print_tokens(t_token * head);
 // void     print_cmds(t_cmd *cmds);
 void	 handle_syntax_error(const char *token_str, int missing_next);
+char *my_getenv(char *name, char **envp);
 
 /* ===================== Later functions ===================== */
 //void     *expand_variables(t_token *tokens);
