@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/30 15:10:22 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:15:43 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_cmd	*handle_pipe_token(t_cmd *current,
 	return (next_cmd);
 }
 
-static int	handle_redirection(t_cmd *current, t_token **token, int last_exit)
+static int	handle_redirection(t_cmd *current, t_token **token, t_shell *shell)
 {
 	if (!current || !token || !*token)
 		return (-1);
@@ -62,7 +62,7 @@ static int	handle_redirection(t_cmd *current, t_token **token, int last_exit)
 	if ((*token)->type == TOKEN_REDIR_OUT_APPEND)
 		return (handle_redir_out_append(current, token));
 	if ((*token)->type == TOKEN_HEREDOC)
-		return (handle_heredoc(current, token, last_exit));
+		return (handle_heredoc(current, token, shell));
 	return (0);
 }
 
@@ -81,7 +81,7 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 		|| (*(tmp->token))->type == TOKEN_HEREDOC)
 	{
 		*(tmp->expect) = (*(tmp->token))->type;
-		if (handle_redirection(current, tmp->token, tmp->last_exit) == -1)
+		if (handle_redirection(current, tmp->token, tmp->shell) == -1)
 		{
 			free_cmds(*(tmp->cmds));
 			return (NULL);
@@ -92,20 +92,19 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 
 /* ===================== Parser ===================== */
 
-t_cmd	*parser(t_token *tokens, char **argv, int last_exit)
+t_cmd	*parser(t_token *tokens, t_shell *shell)
 {
 	t_cmd			*cmds;
 	t_cmd			*current;
 	t_token_type	expect;
 	t_parser_intern	tmp;
 
-	(void)argv;
 	cmds = new_cmd();
 	if (!tokens || !cmds)
 		return (NULL);
 	current = cmds;
 	expect = TOKEN_NONE;
-	tmp = (t_parser_intern){&tokens, &cmds, last_exit, &expect};
+	tmp = (t_parser_intern){&tokens, &cmds, shell, &expect};
 	while (tokens)
 	{
 		current = handle_token(current, &tmp);

@@ -6,7 +6,7 @@
 /*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 11:00:03 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/03 11:00:25 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:20:26 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,17 @@ int	validate_syntax(t_token *head)
 		curr = curr->next;
 	}
 	return (0);
+}
+
+t_cmd	*handle_pipe(t_cmd *current)
+{
+	t_cmd	*new;
+
+	if (!current)
+		return (NULL);
+	new = new_cmd();
+	if (!new)
+		return (NULL);
+	current->next = new;
+	return (new);
 }

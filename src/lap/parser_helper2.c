@@ -6,11 +6,13 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:44 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/30 15:09:53 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:19:01 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
+
+/* ===================== Join Last Argument ===================== */
 
 int	join_last_arg(t_cmd *current, char *val)
 {
@@ -28,7 +30,8 @@ int	join_last_arg(t_cmd *current, char *val)
 	return (1);
 }
 
-/* ===================== Helpers ===================== */
+/* ===================== Heredoc Helpers ===================== */
+
 static int	append_heredoc(t_heredoc *tmp)
 {
 	tmp->line_len = ft_strlen_lap(tmp->line);
@@ -53,7 +56,20 @@ static int	append_heredoc(t_heredoc *tmp)
 	return (1);
 }
 
-static char	*read_heredoc_content(const char *delimiter)
+/* Expand variables in a single line if needed */
+static void	expand_heredoc_line(char **line, t_shell *shell)
+{
+	t_token	tmp_token;
+
+	tmp_token.value = *line;
+	tmp_token.quoted = 0;
+	expand_token_value(&tmp_token, shell);
+	*line = tmp_token.value;
+}
+
+/* Read heredoc content with variable expansion for unquoted delimiters */
+static char	*read_heredoc_content(const char *delimiter,
+			int quoted, t_shell *shell)
 {
 	t_heredoc	tmp;
 
@@ -70,6 +86,8 @@ static char	*read_heredoc_content(const char *delimiter)
 			free(tmp.line);
 			break ;
 		}
+		if (!quoted)
+			expand_heredoc_line(&tmp.line, shell);
 		if (!append_heredoc(&tmp))
 			return (NULL);
 		free(tmp.line);
@@ -77,13 +95,12 @@ static char	*read_heredoc_content(const char *delimiter)
 	return (tmp.content);
 }
 
-/* ====== Heredoc Handler NEED TO USE READLINE !!! FIX !!! === */
+/* ===================== Handle Heredoc ===================== */
 
-int	handle_heredoc(t_cmd *cmd, t_token **token, int last_exit)
+int	handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell)
 {
 	t_token	*cur;
 
-	(void)last_exit;
 	if (!cmd || !token || !*token)
 		return (-1);
 	cur = (*token)->next;
@@ -93,20 +110,8 @@ int	handle_heredoc(t_cmd *cmd, t_token **token, int last_exit)
 		free(cmd->heredoc_delim);
 	cmd->heredoc_delim = ft_strdup(cur->value);
 	cmd->heredoc_quoted = cur->quoted;
-	cmd->heredoc_content = read_heredoc_content(cmd->heredoc_delim);
+	cmd->heredoc_content = read_heredoc_content(cmd->heredoc_delim,
+			cur->quoted, shell);
 	*token = cur->next;
 	return (0);
-}
-
-t_cmd	*handle_pipe(t_cmd *current)
-{
-	t_cmd	*new;
-
-	if (!current)
-		return (NULL);
-	new = new_cmd();
-	if (!new)
-		return (NULL);
-	current->next = new;
-	return (new);
 }
