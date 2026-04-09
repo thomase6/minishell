@@ -15,7 +15,7 @@
 #include "../inc/lap.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
-
+/*
 //this function is for testing
 static void print_cmds(t_cmd *cmds)
 {
@@ -75,7 +75,7 @@ static void	print_tokens(t_token *tokens)
 	}
 	printf("\n===END OF TOKENS===\n");
 }
-
+*/
 void	cleanup_shell(t_shell *shell)
 {
 	if (shell->env)
@@ -120,7 +120,7 @@ int	main(int ac, char **av, char **envp)
             		free(line);
             		continue;
         	}
-		print_tokens(tokens); // REMOVE AFTER TESTING
+		//print_tokens(tokens); // REMOVE AFTER TESTING
 		cmds = parser(tokens, &shell);
         	if (!cmds)
         	{
@@ -130,8 +130,8 @@ int	main(int ac, char **av, char **envp)
            	 	continue;
         	}
 		// expander goes here
-		set_builtin_and_open(cmds); // REMOVE AFTER TESTING
-		print_cmds(cmds); // REMOVE AFTER TESTING
+		//set_builtin_and_open(cmds); // REMOVE AFTER TESTING
+		//print_cmds(cmds); // REMOVE AFTER TESTING
 		if (cmds)
 		{
 			execute_cmds(cmds, &shell);

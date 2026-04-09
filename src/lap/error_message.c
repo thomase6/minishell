@@ -12,38 +12,22 @@
 
 #include "../../inc/lap.h"
 
-static void	handle_syntax_helper(const char *token_str)
+static void	put_err(const char *msg)
 {
-	if (ft_strcmp_lap(token_str, "<<") == 0)
-		write (2, ERR_PREFIX "unexpected token '<<'\n", 47);
-	else if (ft_strcmp_lap(token_str, ">>") == 0)
-		write (2, ERR_PREFIX "unexpected token '>>'\n", 47);
-	else if (ft_strcmp_lap(token_str, "<") == 0)
-		write (2, ERR_PREFIX "unexpected token '<'\n", 46);
-	else if (ft_strcmp_lap(token_str, ">") == 0)
-		write (2, ERR_PREFIX "unexpected token '>'\n", 46);
-	else if (ft_strcmp_lap(token_str, "|") == 0)
-		write (2, ERR_PREFIX "unexpected token '|'\n", 46);
-	else if (ft_strcmp_lap(token_str, "'") == 0
-		|| ft_strcmp_lap(token_str, "\"") == 0)
-		write (2, ERR_PREFIX"unmatched quote\n", 41);
-	else
-		write (2, ERR_PREFIX "unknown token\n", 39);
+	write(2, ERR_PREFIX, ft_strlen_lap(ERR_PREFIX));
+	write(2, msg, ft_strlen_lap(msg));
 }
 
-void	handle_syntax_error(const char *token_str, int missing_next)
+void	handle_syntax_error(t_shell *shell, const char *token_str, int missing_next)
 {
+	shell->last_status = 2;
 	if (!token_str)
-	{
-		write (2, ERR_PREFIX "unknown error\n", 39);
-		return ;
-	}
+		return (put_err("unknown error\n"));
+	write(2, ERR_PREFIX, ft_strlen_lap(ERR_PREFIX));
+	write(2, "near unexpected token `", 23);
 	if (missing_next)
-	{
-		write (2, ERR_PREFIX "unmatched token 'newline' after '", 58);
-		write (2, token_str, ft_strlen_lap(token_str));
-		write (2, "'\n", 2);
-		return ;
-	}
-	handle_syntax_helper(token_str);
+		write(2, "newline", 7);
+	else
+		write(2, token_str, ft_strlen_lap(token_str));
+	write(2, "'\n", 2);
 }

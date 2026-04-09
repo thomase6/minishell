@@ -3,7 +3,7 @@
 
 #include "./minishell.h"
 
-#define ERR_PREFIX "minishell: syntax error: "
+#define ERR_PREFIX "syntax error "
 
 /* ===================== Token Types ===================== */
 typedef enum e_token_type
@@ -83,7 +83,7 @@ typedef struct s_redir
 
 /* ===================== Lexer / Parser ===================== */
 // main lexer
-t_token	*lexer(const char * input);  // input string -> linked list of tokens
+t_token	*lexer(t_shell *shell, const char * input);  // input string -> linked list of tokens
 
 // parser (syntax check / grouping)
 t_cmd   *parser(t_token *tokens, t_shell *shell);
@@ -94,11 +94,11 @@ t_cmd	*new_cmd(void);
 char	**add_args(char **argv, char *word);
 int	add_args_cmd(t_cmd *cmd, char *arg);
 int	is_redirection(t_token_type type);
-int	validate_syntax(t_token *head);
+int	validate_syntax(t_shell *shell, t_token *head);
 int	handle_redir_in(t_cmd *cmd, t_token **token);
 int	handle_redir_out(t_cmd *cmd, t_token **token);
 int	handle_redir_out_append(t_cmd *cmd, t_token **token);
-int     handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell);
+int	handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell);
 int     expand_tokens(t_token *tokens, t_shell *shell);
 int	handle_exit(char *res, size_t *j, t_shell *shell);
 int	join_last_arg(t_cmd *current, char *val);
@@ -114,15 +114,15 @@ int      check_scan(int i, t_token ** head);           // helper for macro
 int      scan_word(const char * input, int i, t_token ** head, int has_space);
 int      scan_pipe(const char * input, int i, t_token ** head, int has_space);
 int      scan_redirections(const char * input, int i, t_token ** head, int has_space);
-int      scan_single_quote(const char * input, int i, t_token ** head, int has_space);
-int      scan_double_quote(const char * input, int i, t_token ** head, int has_space);
+int      scan_single_quote(t_shell *shell, const char * input, int i, t_token ** head, int has_space);
+int      scan_double_quote(t_shell *shell, const char * input, int i, t_token ** head, int has_space);
 char	*remove_quotes_str(const char *str);
 
 /* ===================== Utils ===================== */
 void     free_tokens(t_token * head);
 // void     print_tokens(t_token * head);
 // void     print_cmds(t_cmd *cmds);
-void	 handle_syntax_error(const char *token_str, int missing_next);
+void	handle_syntax_error(t_shell *shell, const char *token_str, int missing_next);
 char *my_getenv(char *name, char **envp);
 
 /* ===================== Later functions ===================== */
