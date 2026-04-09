@@ -15,7 +15,7 @@
 #include "../inc/lap.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
-
+/*
 //this function is for testing
 // static void print_cmds(t_cmd *cmds)
 // {

@@ -25,7 +25,7 @@ static int	skip_white_spaces(const char *input, int *i)
 	return (has_space);
 }
 
-t_token	*lexer(const char *input)
+t_token	*lexer(t_shell *shell, const char *input)
 {
 	int		i;
 	int		has_space;
@@ -39,9 +39,9 @@ t_token	*lexer(const char *input)
 		if (!input[i])
 			break ;
 		if (input[i] == '\'')
-			SCAN_OR_BREAK(scan_single_quote(input, i, &head, has_space));
+			SCAN_OR_BREAK(scan_single_quote(shell, input, i, &head, has_space));
 		else if (input[i] == '"')
-			SCAN_OR_BREAK(scan_double_quote(input, i, &head, has_space));
+			SCAN_OR_BREAK(scan_double_quote(shell, input, i, &head, has_space));
 		else if (input[i] == '|')
 			SCAN_OR_BREAK(scan_pipe(input, i, &head, has_space));
 		else if (input[i] == '>' || input[i] == '<')
@@ -58,18 +58,16 @@ t_token	*process_input(char *line, t_shell *shell)
 
 	if (!line || !shell)
 		return (NULL);
-	tokens = lexer(line);
+	tokens = lexer(shell, line);
 	if (!tokens)
 		return (NULL);
-	if (validate_syntax(tokens))
+	if (validate_syntax(shell, tokens))
 	{
-		printf("syntax error.\n");
 		free_tokens(tokens);
 		return (NULL);
 	}
 	if (expand_tokens(tokens, shell) == -1)
 	{
-		printf("expansion failed.\n");
 		free_tokens(tokens);
 		return (NULL);
 	}

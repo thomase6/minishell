@@ -12,7 +12,7 @@
 
 #include "../../inc/lap.h"
 
-int	scan_single_quote(const char *input, int i, t_token **head, int has_space)
+int	scan_single_quote(t_shell *shell, const char *input, int i, t_token **head, int has_space)
 {
 	int		start;
 	t_token	*tok;
@@ -23,7 +23,7 @@ int	scan_single_quote(const char *input, int i, t_token **head, int has_space)
 		i++;
 	if (!input[i])
 	{
-		handle_syntax_error("'", 0);
+		handle_syntax_error(shell, "'", 0);
 		return (-1);
 	}
 	tok = add_token(head, (t_token_data){TOKEN_WORD,
@@ -34,7 +34,7 @@ int	scan_single_quote(const char *input, int i, t_token **head, int has_space)
 	return (i + 1);
 }
 
-int	scan_double_quote(const char *input, int i, t_token **head, int has_space)
+int	scan_double_quote(t_shell *shell, const char *input, int i, t_token **head, int has_space)
 {
 	int		start;
 	t_token	*tok;
@@ -45,7 +45,7 @@ int	scan_double_quote(const char *input, int i, t_token **head, int has_space)
 		i++;
 	if (!input[i])
 	{
-		handle_syntax_error("\"", 0);
+		handle_syntax_error(shell, "\"", 0);
 		return (-1);
 	}
 	tok = add_token(head, (t_token_data){TOKEN_WORD,
