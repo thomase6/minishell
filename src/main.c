@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/07 11:51:27 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/10 10:44:14 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		g_signal = 0;// signal reset before every prompt
-		line = readline("Minishell: $");
+		line = readline("Minishell:$ ");
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 2);
@@ -148,74 +148,75 @@ int	main(int ac, char **av, char **envp)
 	// printf("%d", shell.last_status);
 	return (shell.last_status);
 }
-/*
-int	main(int ac, char **av, char **envp)
-{
-	t_shell	shell;
-	char	*line;
-	t_cmd	*cmds;
-	t_token	*tokens;
-	(void)ac;
-	(void)av;
-	if (init_env(&shell, envp) == -1)
-	{
-		ft_putstr_fd("Error: failed to initialize shell\n", 2);
-		return (1);
-	}
-	setup_main_signals();
-	rl_signal_event_hook = signal_main_hook; // this is the proper way of handling functions that need to be executed after the signal is interrupted. 
-	while (1)
-	{
-		g_signal = 0;// signal reset before every prompt
-		line = readline("Minishell: $");
-		if (!line)
-		{
-			ft_putstr_fd("exit\n", 2);
-			break ;
-		}
-		if (line[0] == '\0')
-		{
-			free(line);
-			continue ;
-		}
-		add_history(line);
-		// Lexer and Parser
-		tokens = process_input(line, &shell);
-        if (!tokens)
-        {
-            printf("Lexer failed or returned no tokens.\n");
-            free(line);
-            continue;
-        }
-		print_tokens(tokens); // REMOVE AFTER TESTING
-		// validate_syntax(t_token *tokens); goes here
-		cmds = parser(tokens, shell.env, shell.last_status);
-        if (!cmds)
-        {
-            printf("Parser failed or returned no commands.\n");
-            free_tokens(tokens);
-            free(line);
-            continue;
-        }
-		// expander goes here
-		set_builtin_and_open(cmds); // REMOVE AFTER TESTING
-		print_cmds(cmds); // REMOVE AFTER TESTING
-		if (cmds)
-		{
-			execute_cmds(cmds, &shell);
-			free_cmds(cmds);
-		}
 
-		free_tokens(tokens);
-		free(line);
-		if (g_signal == SIGINT)
-			shell.last_status = 130;
-	}
-	//clean up SHELL
-	cleanup_shell(&shell);
-	// printf("%d", shell.last_status); // REMOVE AFTER TESTING
-	return (shell.last_status);
-}
+
+// int	main(int ac, char **av, char **envp)
+// {
+// 	t_shell	shell;
+// 	char	*line;
+// 	t_cmd	*cmds;
+// 	t_token	*tokens;
+// 	(void)ac;
+// 	(void)av;
+// 	if (init_env(&shell, envp) == -1)
+// 	{
+// 		ft_putstr_fd("Error: failed to initialize shell\n", 2);
+// 		return (1);
+// 	}
+// 	setup_main_signals();
+// 	rl_signal_event_hook = signal_main_hook; // this is the proper way of handling functions that need to be executed after the signal is interrupted. 
+// 	while (1)
+// 	{
+// 		g_signal = 0;// signal reset before every prompt
+// 		line = readline("Minishell: $");
+// 		if (!line)
+// 		{
+// 			ft_putstr_fd("exit\n", 2);
+// 			break ;
+// 		}
+// 		if (line[0] == '\0')
+// 		{
+// 			free(line);
+// 			continue ;
+// 		}
+// 		add_history(line);
+// 		// Lexer and Parser
+// 		tokens = process_input(line, &shell);
+//         if (!tokens)
+//         {
+//             printf("Lexer failed or returned no tokens.\n");
+//             free(line);
+//             continue;
+//         }
+// 		print_tokens(tokens); // REMOVE AFTER TESTING
+// 		// validate_syntax(t_token *tokens); goes here
+// 		cmds = parser(tokens, shell.env, shell.last_status);
+//         if (!cmds)
+//         {
+//             printf("Parser failed or returned no commands.\n");
+//             free_tokens(tokens);
+//             free(line);
+//             continue;
+//         }
+// 		// expander goes here
+// 		set_builtin_and_open(cmds); // REMOVE AFTER TESTING
+// 		print_cmds(cmds); // REMOVE AFTER TESTING
+// 		if (cmds)
+// 		{
+// 			execute_cmds(cmds, &shell);
+// 			free_cmds(cmds);
+// 		}
+
+// 		free_tokens(tokens);
+// 		free(line);
+// 		if (g_signal == SIGINT)
+// 			shell.last_status = 130;
+// 	}
+// 	//clean up SHELL
+// 	cleanup_shell(&shell);
+// 	// printf("%d", shell.last_status); // REMOVE AFTER TESTING
+// 	return (shell.last_status);
+// }
 
 // the main shell structure
 // 1. Signals
