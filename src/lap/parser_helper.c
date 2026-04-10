@@ -52,7 +52,10 @@ static int	process_dollar(char *val, char *res, t_index *idx, t_shell *shell)
 		if (tmp)
 			idx->j += ft_strlen_lap(ft_strcpy_lap(res + idx->j, tmp));
 		else
+		{
 			res[(idx->j)++] = val[idx->i];
+			idx->i++;
+		}
 	}
 	return (0);
 }

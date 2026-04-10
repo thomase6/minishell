@@ -72,7 +72,7 @@ typedef struct s_redir
 	do {									\
 		i = check_scan(scan_call, &head);	\
 		if (i == -1)						\
-			break;							\
+			return (NULL);						\
 	} while (0)
 
 #define PARSE_OR_ERROR(call)				\
@@ -116,7 +116,6 @@ int      scan_pipe(const char * input, int i, t_token ** head, int has_space);
 int      scan_redirections(const char * input, int i, t_token ** head, int has_space);
 int      scan_single_quote(t_shell *shell, const char * input, int i, t_token ** head, int has_space);
 int      scan_double_quote(t_shell *shell, const char * input, int i, t_token ** head, int has_space);
-char	*remove_quotes_str(const char *str);
 
 /* ===================== Utils ===================== */
 void     free_tokens(t_token * head);

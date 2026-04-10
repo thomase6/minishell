@@ -56,6 +56,7 @@ int	scan_double_quote(t_shell *shell, const char *input, int i, t_token **head, 
 	return (i + 1);
 }
 
+/*
 char	*remove_quotes_str(const char *str)
 {
 	size_t	len;
@@ -78,3 +79,4 @@ char	*remove_quotes_str(const char *str)
 	}
 	return (ft_strdup_lap(str));
 }
+*/

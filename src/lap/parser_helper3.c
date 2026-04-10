@@ -45,33 +45,29 @@ static int	argv_len(char **argv)
 	return (i);
 }
 
-char	**add_args(char **argv, char *word)
+char **add_args(char **argv, char *word)
 {
-	int		i;
-	int		j;
-	char	**new;
-	char	*clean_word;
+    int i;
+    int j;
+    char **new;
 
-	if (!word)
-		return (argv);
-	clean_word = remove_quotes_str(word);
-	if (!clean_word)
-		return (NULL);
-	i = argv_len(argv);
-	new = malloc(sizeof(char *) * (i + 2));
-	if (!new)
-		return (free(clean_word), NULL);
-	j = 0;
-	while (j < i)
-	{
-		new[j] = argv[j];
-		j++;
-	}
-	new[i] = clean_word;
-	new[i + 1] = NULL;
-	if (argv)
-		free(argv);
-	return (new);
+    if (!word)
+        return (argv);
+    i = argv_len(argv);
+    new = malloc(sizeof(char *) * (i + 2));
+    if (!new)
+        return (NULL);  // removed free(clean_word)
+    j = 0;
+    while (j < i)
+    {
+        new[j] = argv[j];
+        j++;
+    }
+    new[i] = ft_strdup_lap(word);  // duplicate the word as-is
+    new[i + 1] = NULL;
+    if (argv)
+        free(argv);
+    return (new);
 }
 
 int	add_args_cmd(t_cmd *cmd, char *arg)
