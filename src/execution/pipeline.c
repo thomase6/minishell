@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 13:41:45 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/10 09:18:15 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,35 +81,6 @@ static int	wait_all(pid_t last_pid, int *last_status)
 	return (last);
 }
 
-//second version that Im testing
-// *** GOTTA FIX *** currently "sleep 10" | "sleep 10" prints 2 spaces
-// static int wait_all(pid_t last_pid, int *last_status)
-// {
-// 	int		status;
-// 	pid_t	pid;
-// 	int		last;
-
-// 	last = 0;
-// 	pid = wait(&status); 
-// 	while (pid > 0) 
-// 	{
-// 		if (WIFEXITED(status) && pid == last_pid)
-// 			last = WEXITSTATUS(status);
-// 		else if (WIFSIGNALED(status))
-// 		{	
-// 			if (WTERMSIG(status) == SIGQUIT)
-// 				ft_putstr_fd("Quit (core dumped)\n", 2);
-// 			else if (WTERMSIG(status) == SIGINT)
-// 				write(1, "\n", 1);
-// 			if (pid == last_pid)	
-// 				last = 128 + WTERMSIG(status);
-// 		}
-// 		pid = wait(&status); 
-// 	}
-// 	*last_status = last;
-// 	return (last);
-// }
-
 //this function is the actual child process that duplicates if necessary, closes the fds that are not used, then finds the path of the cmd in the child.
 // after it has found the path it checks to see if it's executable and then it executes it.
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
@@ -173,7 +144,6 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	set_signals_for_parent();
 	while (cmds)
 	{
-		// need to remove the fds when merged.
 		fd[0] = -1;
 		fd[1] = -1;
 		if (cmds->next && pipe(fd) < 0)
