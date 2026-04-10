@@ -11,20 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
-/*
-static int	check_pipe(t_token *curr, t_token *head)
-{
-	if (curr == head || !curr->next || curr->next->type == TOKEN_PIPE)
-	{
-		if (!curr->next || curr->next->type != TOKEN_PIPE)
-			handle_syntax_error("|", 1);
-		else
-			handle_syntax_error("|", 0);
-		return (1);
-	}
-	return (0);
-}
-*/
+
 static int check_pipe(t_shell *shell, t_token *curr, t_token *head)
 {
     // Pipe at the start or end
@@ -40,20 +27,7 @@ static int check_pipe(t_shell *shell, t_token *curr, t_token *head)
 
     return 1; // syntax error
 }
-/*
-static int	check_redirection(t_token *curr)
-{
-	if (!curr->next || curr->next->type != TOKEN_WORD)
-	{
-		if (!curr->next)
-			handle_syntax_error(curr->value, 1);
-		else
-			handle_syntax_error(curr->next->value, 0);
-		return (1);
-	}
-	return (0);
-}
-*/
+
 static int	check_redirection(t_shell *shell, t_token *curr)
 {
 	if (!curr->next || curr->next->type != TOKEN_WORD)
@@ -89,23 +63,7 @@ int	validate_syntax(t_shell *shell, t_token *head)
 	}
 	return (0);
 }
-/*
-int	validate_syntax(t_token *head)
-{
-	t_token	*curr;
 
-	curr = head;
-	while (curr)
-	{
-		if (curr->type == TOKEN_PIPE && check_pipe(curr, head))
-			return (1);
-		if (is_redirection(curr->type) && check_redirection(curr))
-			return (1);
-		curr = curr->next;
-	}
-	return (0);
-}
-*/
 t_cmd	*handle_pipe(t_cmd *current)
 {
 	t_cmd	*new;

@@ -15,7 +15,7 @@
 #include "../inc/lap.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
-/*
+
 //this function is for testing
 // static void print_cmds(t_cmd *cmds)
 // {
@@ -148,7 +148,6 @@ int	main(int ac, char **av, char **envp)
 	// printf("%d", shell.last_status);
 	return (shell.last_status);
 }
-
 /*
 int	main(int ac, char **av, char **envp)
 {
@@ -217,7 +216,7 @@ int	main(int ac, char **av, char **envp)
 	// printf("%d", shell.last_status); // REMOVE AFTER TESTING
 	return (shell.last_status);
 }
-*/
+
 // the main shell structure
 // 1. Signals
 // 2. Loop: Read the input -> Parse -> Execute -> Repeat.
@@ -263,3 +262,4 @@ int	main(int ac, char **av, char **envp)
 // |	├─lexer	
 // |		├─lexer.c
 // ├─Makefile
+*/
