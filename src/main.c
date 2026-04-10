@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/10 10:44:14 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/10 10:59:39 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,4 +263,4 @@ int	main(int ac, char **av, char **envp)
 // |	├─lexer	
 // |		├─lexer.c
 // ├─Makefile
-*/
+
