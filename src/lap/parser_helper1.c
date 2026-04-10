@@ -34,15 +34,21 @@ int	handle_redir_in(t_cmd *cmd, t_token **token)
 
 	if (!cmd || !token || !*token)
 		return (-1);
+
 	next = (*token)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (-1);
+
 	dup = ft_strdup_lap(next->value);
 	if (!dup)
 		return (-1);
-	if (cmd->infile)
-		free(cmd->infile);
-	cmd->infile = dup;
+
+	// FIRST redirection wins
+	if (!cmd->infile)
+		cmd->infile = dup;
+	else
+		free(dup);
+
 	*token = next->next;
 	return (0);
 }
@@ -54,16 +60,24 @@ int	handle_redir_out(t_cmd *cmd, t_token **token)
 
 	if (!cmd || !token || !*token)
 		return (-1);
+
 	next = (*token)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (-1);
+
 	dup = ft_strdup_lap(next->value);
 	if (!dup)
 		return (-1);
-	if (cmd->outfile)
-		free(cmd->outfile);
-	cmd->outfile = dup;
-	cmd->append = 0;
+
+	// FIRST output redirection wins
+	if (!cmd->outfile)
+	{
+		cmd->outfile = dup;
+		cmd->append = 0;
+	}
+	else
+		free(dup);
+
 	*token = next->next;
 	return (0);
 }
@@ -75,16 +89,24 @@ int	handle_redir_out_append(t_cmd *cmd, t_token **token)
 
 	if (!cmd || !token || !*token)
 		return (-1);
+
 	next = (*token)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (-1);
+
 	dup = ft_strdup_lap(next->value);
 	if (!dup)
 		return (-1);
-	if (cmd->outfile)
-		free(cmd->outfile);
-	cmd->outfile = dup;
-	cmd->append = 1;
+
+	// FIRST output redirection wins (even for >>)
+	if (!cmd->outfile)
+	{
+		cmd->outfile = dup;
+		cmd->append = 1;
+	}
+	else
+		free(dup);
+
 	*token = next->next;
 	return (0);
 }
