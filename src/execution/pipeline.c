@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/10 09:18:15 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/11 00:11:38 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@ int	cmd_check(char *path, char *cmd)
 	{
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		free(path);
 		return (127);
 	}
 	if (access(path, X_OK) != 0)
 	{
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": permission denied\n", 2);
-		free(path);
 		return (126);
 	}
 	return (0);
@@ -81,8 +79,6 @@ static int	wait_all(pid_t last_pid, int *last_status)
 	return (last);
 }
 
-//this function is the actual child process that duplicates if necessary, closes the fds that are not used, then finds the path of the cmd in the child.
-// after it has found the path it checks to see if it's executable and then it executes it.
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 {
 	char	**envp;
@@ -116,7 +112,10 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	path = resolve_path(cmds->argv[0], envp);
 	err = cmd_check(path, cmds->argv[0]);
 	if (err != 0)
+	{
+		free(path);
 		exit(err);
+	}
 	execve(path, cmds->argv, envp);
 	perror("minishell");
 	free(path);
