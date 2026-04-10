@@ -82,7 +82,7 @@ int	expand_token_value(t_token *t, t_shell *shell)
 
 	if (!t || !t->value || t->quoted == 1)
 		return (0);
-	res = malloc(ft_strlen_lap(t->value) * 5 + 1);
+	res = malloc(ft_strlen_lap(t->value) * 150 + 1);
 	if (!res)
 		return (-1);
 	idx.i = 0;
