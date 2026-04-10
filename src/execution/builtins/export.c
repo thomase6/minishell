@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/03 11:21:31 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:30:56 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	update_env_var(char **env, int i, char *var)
 	return (0);
 }
 
-// could rewrite realloc.
 char	**add_env_var(char **env, char *var)
 {
 	char	**new_env;
@@ -42,7 +41,7 @@ char	**add_env_var(char **env, char *var)
 	i = 0;
 	while (i < count)
 	{
-		new_env[i] = env[i];
+		new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	new_env[count] = ft_strdup(var);
@@ -65,7 +64,7 @@ void	print_export(char **env)
 	i = 0;
 	while (env[i])
 	{
-		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd("export ", 1);
 		ft_putstr_fd(env[i], 1);
 		ft_putchar_fd('\n', 1);
 		i++;
@@ -108,7 +107,7 @@ int	builtin_export(char **argv, t_shell *shell)
 	{
 		if (!is_valid_export(argv[i]))
 		{
-			ft_putstr_fd("export: '", 2);
+			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(argv[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			err = 1;
