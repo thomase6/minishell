@@ -55,28 +55,3 @@ int	scan_double_quote(t_shell *shell, const char *input, int i, t_token **head, 
 	tok->quoted = 2;
 	return (i + 1);
 }
-
-/*
-char	*remove_quotes_str(const char *str)
-{
-	size_t	len;
-	char	*res;
-
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	if (len == 0)
-		return (ft_strdup_lap(""));
-	if ((str[0] == '"' && str[len - 1] == '"')
-		|| (str[0] == '\'' && str[len - 1] == '\''))
-	{
-		res = malloc(len - 1);
-		if (!res)
-			return (NULL);
-		ft_memcpy_lap(res, str + 1, len - 2);
-		res[len - 2] = '\0';
-		return (res);
-	}
-	return (ft_strdup_lap(str));
-}
-*/
