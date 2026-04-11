@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/10 09:35:31 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/11 04:28:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ int		set_env_var(t_shell *shell, char *var);
 ///		builtin helper functions	///
 
 bool	long_long_overflow(const char *str);
+void	update_underscore(t_shell *shell, char *path);
+
+///		pipeline helper functions	///
+
+void	cmd_not_found(char *cmd);
+void	file_no_access(char *cmd);
 
 ///		exit and free	///
 void	free_argv(char **av);
