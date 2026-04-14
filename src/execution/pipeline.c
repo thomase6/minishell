@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/11 04:30:55 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/14 09:26:43 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	else if (cmds->next) //if the previous fd exists we are gonna duplicate it
 		dup2(fd[1], STDOUT_FILENO);
 	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
-	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs
+	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs this actually protects the redirs from crashing in one test
 	{
 		ft_putstr_fd("minishell: command not found\n", 2);
 		exit(127);
