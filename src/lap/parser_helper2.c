@@ -57,6 +57,7 @@ static int	append_heredoc(t_heredoc *tmp)
 }
 
 /* Expand variables in a single line if needed */
+
 static void	expand_heredoc_line(char **line, t_shell *shell)
 {
 	t_token	tmp_token;
@@ -68,6 +69,7 @@ static void	expand_heredoc_line(char **line, t_shell *shell)
 }
 
 /* Read heredoc content with variable expansion for unquoted delimiters */
+
 static char	*read_heredoc_content(const char *delimiter,
 			int quoted, t_shell *shell)
 {

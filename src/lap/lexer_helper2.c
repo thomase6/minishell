@@ -62,3 +62,19 @@ int	scan_word(const char *input, int i, t_token **head, int has_space)
 	tok->quoted = 0;
 	return (i);
 }
+char	*my_getenv_len(char *name, size_t len, char **envp)
+{
+	size_t	i;
+
+	i = 0;
+	if (!name || !envp)
+		return (NULL);
+	while (envp[i])
+	{
+		if (ft_strncmp_lap(envp[i], name, len) == 0
+			&& envp[i][len] == '=')
+			return (envp[i] + len + 1);
+		i++;
+	}
+	return (NULL);
+}
