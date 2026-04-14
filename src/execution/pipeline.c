@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/11 00:11:38 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/14 09:26:43 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@ int	cmd_check(char *path, char *cmd)
 {
 	if (access(path, F_OK) != 0)
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		cmd_not_found(cmd);
 		return (127);
 	}
 	if (access(path, X_OK) != 0)
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": permission denied\n", 2);
+		file_no_access(cmd);
 		return (126);
 	}
 	return (0);
@@ -102,7 +100,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	else if (cmds->next) //if the previous fd exists we are gonna duplicate it
 		dup2(fd[1], STDOUT_FILENO);
 	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
-	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs
+	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs this actually protects the redirs from crashing in one test
 	{
 		ft_putstr_fd("minishell: command not found\n", 2);
 		exit(127);
@@ -116,7 +114,9 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 		free(path);
 		exit(err);
 	}
+	update_underscore(shell, path);
 	execve(path, cmds->argv, envp);
+	envp = shell->env; // refreshes the envp after updating it in the _= variable
 	perror("minishell");
 	free(path);
 	exit(126);
