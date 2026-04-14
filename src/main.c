@@ -122,13 +122,13 @@ int	main(int ac, char **av, char **envp)
         	}
 		// print_tokens(tokens); // REMOVE AFTER TESTING
 		cmds = parser(tokens, &shell);
-        	if (!cmds)
+        	/*if (!cmds)
         	{
            	 	printf("Parser failed or returned no commands.\n");
            	 	free_tokens(tokens);
            	 	free(line);
            	 	continue;
-        	}
+        	}*/
 		// expander goes here
 		// set_builtin_and_open(cmds); // REMOVE AFTER TESTING
 		// print_cmds(cmds); // REMOVE AFTER TESTING

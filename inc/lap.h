@@ -23,7 +23,8 @@ typedef struct s_token
 	t_token_type    type;		// token type
 	char            *value;		// string value
 	int             quoted;		// 0 = no quotes 1 = single 2 = double
-	int		has_space_before; // used to see if command or args  
+	int		has_space_before; // used to see if command or args 
+	int		is_heredoc_delim;
 	struct s_token  *next;		// linked list pointer
 }   t_token;
 
@@ -92,6 +93,7 @@ t_token	*process_input(char *line, t_shell *shell);
 /* ===================== Parser Helpers ==================== */
 t_cmd	*new_cmd(void);
 char	**add_args(char **argv, char *word);
+char	*my_getenv_len(char *name, size_t len, char **envp);
 int	add_args_cmd(t_cmd *cmd, char *arg);
 int	is_redirection(t_token_type type);
 int	validate_syntax(t_shell *shell, t_token *head);
