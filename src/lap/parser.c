@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/06 16:15:43 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/16 17:00:59 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,12 @@ static t_cmd	*handle_pipe_token(t_cmd *current,
 {
 	t_cmd	*next_cmd;
 
-	if (!current || !current->argv || !current->argv[0])
+	// if (!current || !current->argv || !current->argv[0])
+	// {
+	// 	free_cmds(*cmds);
+	// 	return (NULL);
+	// }
+	if (!current->argv && !current->infile && !current->outfile)
 	{
 		free_cmds(*cmds);
 		return (NULL);
@@ -111,7 +116,8 @@ t_cmd	*parser(t_token *tokens, t_shell *shell)
 		if (!current)
 			return (NULL);
 	}
-	if (!cmds->argv || !cmds->argv[0])
+	// changed this to make sure that even single infiles and outfiles can be tested by themselves.
+	if (!cmds->argv && !cmds->infile && !cmds->outfile)
 	{
 		free_cmds(cmds);
 		return (NULL);

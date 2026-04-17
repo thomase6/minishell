@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/14 09:26:43 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/17 15:06:20 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,19 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 
 	set_signals_for_child();// signals reset to default action
 	envp = shell->env;
+	if ((cmds->infile_fd == -1 && cmds->infile != NULL) || (cmds->outfile_fd == -1 && cmds->outfile != NULL)) // new check to make sure that infile_fd/outfile_fd didn't fail
+	{
+		if (cmds->infile_fd == -1 && cmds->infile != NULL)
+		{
+			perror(cmds->infile);
+			exit(1);
+		}
+		if (cmds->outfile_fd == -1 && cmds->outfile != NULL) 
+		{
+			perror(cmds->outfile);
+			exit(1);
+		} 
+	}
 	if (cmds->infile_fd != -1) //if the infile exists we are gonna duplicate it and close it
 	{
 		dup2(cmds->infile_fd, STDIN_FILENO);
@@ -100,11 +113,11 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	else if (cmds->next) //if the previous fd exists we are gonna duplicate it
 		dup2(fd[1], STDOUT_FILENO);
 	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
-	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs this actually protects the redirs from crashing in one test
-	{
-		ft_putstr_fd("minishell: command not found\n", 2);
-		exit(127);
-	}
+	// if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs this actually protects the redirs from crashing in one test
+	// {
+	// 	ft_putstr_fd("minishell: command not found\n", 2);
+	// 	exit(127);
+	// }
 	if (cmds->is_builtin == 1)
 		exit(exec_builtin(cmds, shell));
 	path = resolve_path(cmds->argv[0], envp);
@@ -119,7 +132,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	envp = shell->env; // refreshes the envp after updating it in the _= variable
 	perror("minishell");
 	free(path);
-	exit(126);
+	exit(0);
 }
 
 // this is the first process that starts the pipeline, forks and starts the child process, it also closses all fds that were not used by the parent but the children needed

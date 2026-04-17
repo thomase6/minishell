@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/11 04:28:07 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/16 10:26:11 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	set_builtin_and_open(t_cmd *cmds);
 void	set_builtin_flag(t_cmd *cmds);
 bool	cmd_is_builtin(char *cmd);
 void	set_infile_and_outfile(t_cmd *cmds);
+void	setup_heredoc(t_cmd	*cmd);
 
 
 ///		builtin functions	///
