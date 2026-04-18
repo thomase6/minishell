@@ -19,6 +19,22 @@ void	set_infile_and_outfile(t_cmd *cmds)
 	t_cmd	*current = cmds;
 	while (current)
 	{
+		// 🔥 ADD THIS BLOCK
+		if (current->heredoc_content)
+		{
+			int pipefd[2];
+
+			if (pipe(pipefd) == -1)
+				perror("pipe");
+
+			write(pipefd[1], current->heredoc_content,
+				ft_strlen(current->heredoc_content));
+			close(pipefd[1]);
+
+			current->infile_fd = pipefd[0];
+		}
+		// 🔥 END OF ADD
+
 		if (current->infile) // <
 		{
 			current->infile_fd = open(current->infile, O_RDONLY);
