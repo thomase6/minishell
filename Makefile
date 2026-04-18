@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/04/11 04:23:29 by texenber         ###   ########.fr        #
+#    Updated: 2026/04/17 12:05:52 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,9 @@ fclean:		clean
 			(${LIBFT} && make fclean)
 			$(RM) $(NAME)
 
+debug:
+			$(MAKE) CFLAGS="$(CFLAGS) -g" re
+
 re:			fclean all clean
 
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean debug re

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:30 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/06 11:16:23 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/16 15:46:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 #include "../../inc/execution.h"
 
 // if the file doesn't exist it fails to open it in case of the infile which should lead to an error message with exit code 1.
+// void	perror_and_flag(t_cmd *cmds)
+// {
+	
+// }
+
 void	set_infile_and_outfile(t_cmd *cmds)
 {
 	t_cmd	*current = cmds;
+	
 	while (current)
 	{
 		// 🔥 ADD THIS BLOCK
@@ -36,19 +42,13 @@ void	set_infile_and_outfile(t_cmd *cmds)
 		// 🔥 END OF ADD
 
 		if (current->infile) // <
-		{
 			current->infile_fd = open(current->infile, O_RDONLY);
-			if (current->infile_fd < 0) 
-				perror(current->infile);
-		}
 		if (current->outfile) // >
 		{
 			if (current->append)
 				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			else
 				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (current->outfile_fd < 0)
-				perror(current->outfile);
 		}
 		current = current->next;
 	}
@@ -101,8 +101,56 @@ int	execute_cmds(t_cmd *cmds, t_shell *shell)
 	if (!cmds)
 		return (0);
 	set_builtin_and_open(cmds);
-	// might have to add a way to catch an error early
-	if (!cmds->next && cmds->is_builtin == 1) // it's not necessary to check for the next command because it should be ok to have a command after the built-in function
+	if (!cmds->next && cmds->is_builtin == 1)
 		return (exec_builtin_parent(cmds, shell));
 	return (exec_pipeline(cmds, shell));
 }
+// // this is just grabbing the already read information from the parser but it might need to be read here so I might have to look into it again and change it to include the reading.
+// void	setup_heredoc(t_cmd	*cmd)
+// {
+// 	int	herefd[2];
+
+// 	if (!cmd->heredoc_content)
+// 		return ;
+// 	if (pipe(herefd) < 0)
+// 	{
+// 		perror ("pipe");
+// 		return ;
+// 	}
+// 	ft_putstr_fd (cmd->heredoc_content, herefd[1]);
+// 	close(herefd[1]);
+// 	cmd->infile_fd = herefd[0];
+// }
+// // this is a copy from set_infile_and_outfile including setup_heredoc
+// void	set_infile_and_outfile(t_cmd *cmds)
+// {
+// 	t_cmd	*current = cmds;
+	
+// 	while (current)
+// 	{
+// 		if (current->heredoc_delim)
+// 		{
+// 			setup_heredoc(current); // haven't made this function yet.
+// 		}
+// 		else if (current->infile) // <
+// 		{
+// 			current->infile_fd = open(current->infile, O_RDONLY);
+// 			if (current->infile_fd < 0) 
+// 				perror(current->infile);
+// 		}
+// 		if (current->outfile) // >
+// 		{
+// 			if (current->append)
+// 				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+// 			else
+// 				current->outfile_fd = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 			if (current->outfile_fd < 0)
+// 				perror(current->outfile);
+// 		}
+// 		current = current->next;
+// 	}
+// }
+
+// HEREDOCS AND REDIRS
+// if  REDIRS doesn't work then I will struggle with HEREDOCS
+// gotta get REDIRS to work properly before focusing on HEREDOCS
