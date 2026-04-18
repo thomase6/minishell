@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 13:38:55 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/18 11:37:45 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,20 @@ void	free_cmds(t_cmd *cmds)
 		cmds = cmds->next;
 		if (tmp->argv)
 			free_argv(tmp->argv);
+		if (tmp->heredoc_delim)
+			free(tmp->heredoc_delim);
+		if (tmp->heredoc_content)
+			free(tmp->heredoc_content);
 		if (tmp->infile_fd != -1)
+		{
+			free(tmp->infile);
 			close(tmp->infile_fd);
+		}
 		if (tmp->outfile_fd != -1)
+		{
+			free(tmp->outfile);
 			close(tmp->outfile_fd);
+		}
 		free(tmp);
 	}
 }
@@ -37,6 +47,8 @@ void	free_argv(char **av)
 	int	i;
 
 	i = 0;
+	if (av == NULL)
+		return ;
 	while (av[i])
 	{
 		free (av[i]);

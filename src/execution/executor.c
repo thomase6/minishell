@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:30 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/16 15:46:54 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/18 12:20:34 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	set_infile_and_outfile(t_cmd *cmds)
 	
 	while (current)
 	{
-		// 🔥 ADD THIS BLOCK
+		// ADD THIS BLOCK
 		if (current->heredoc_content)
 		{
 			int pipefd[2];
@@ -39,7 +39,7 @@ void	set_infile_and_outfile(t_cmd *cmds)
 
 			current->infile_fd = pipefd[0];
 		}
-		// 🔥 END OF ADD
+		// END OF ADD
 
 		if (current->infile) // <
 			current->infile_fd = open(current->infile, O_RDONLY);
