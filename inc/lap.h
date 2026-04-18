@@ -64,6 +64,9 @@ typedef struct s_redir
 {
 	int			type;
 	const char	*input;
+	//	int heredoc_fd;
+	//	int heredoc_expand:
+	//	s_redir *next;
 	int			len;
 	int			has_space;
 }	t_redir;
