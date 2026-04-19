@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 10:45:26 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 15:13:50 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ int		set_env_var(t_shell *shell, char *var);
 ///		redirections				///
 t_exec_redir *new_redir(int type, char *filename);
 void add_redirs(t_cmd *cmds, t_exec_redir *node);
+int	all_redirections(t_cmd *cmds);
+int	apply_redirections(t_exec_redir *r);
+int	apply_in(t_exec_redir *r);
+int	apply_out(t_exec_redir *r);
+int	apply_append(t_exec_redir *r);
 
 ///		pipeline helper functions	///
 

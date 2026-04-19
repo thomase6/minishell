@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:43 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 10:59:52 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 15:33:43 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,88 @@ void add_redirs(t_cmd *cmds, t_exec_redir *node)
 	tmp = cmds->exec_redirs;
 	while(tmp->next)
 		tmp = tmp->next;
-	tmp->next = node;
-	
-//	if (exec_redirs == NULL)
-//		tmp = malloc(sizeof(t_exec_redir));
+	tmp->next = node;	
+}
 
-//	if the list is not there we need to make sure to create it and set the current redir to the top of the redir list
-//	once we have a list or have created the list we have to set the type to token->type and then the content to the next token->value and if needed quoted is also available inside of token
+// void	apply_heredoc(t_exec_redir *r)
+// {
+	
+// }
+
+int	apply_append(t_exec_redir *r)
+{
+	int fd;
+	
+	fd = open(r->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+	{
+		perror(r->filename);
+		return (1);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close (fd);
+	return (0);
+}
+
+int	apply_out(t_exec_redir *r)
+{
+	int fd;
+	
+	fd = open(r->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror(r->filename);
+		return (1);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close (fd);
+	return (0);
+}
+
+int	apply_in(t_exec_redir *r)
+{
+	int fd;
+	
+	fd = open(r->filename, O_RDONLY);
+	if (fd < 0)
+	{
+		perror(r->filename);
+		return (1);
+	}
+	dup2(fd, STDIN_FILENO);
+	close (fd);
+	return (0);
+}
+
+int	apply_redirections(t_exec_redir *r)
+{
+	int	res;
+	
+	res = 0;
+	if (r->type == TOKEN_REDIR_IN)
+		res = apply_in(r);
+	else if (r->type == TOKEN_REDIR_OUT)
+		res = apply_out(r);
+	else if (r->type == TOKEN_REDIR_OUT_APPEND)
+		res = apply_append(r);
+	// else if (r->type == TOKEN_HEREDOC)
+	// 	apply_heredoc(r);
+	return (res);
+}
+
+
+int	all_redirections(t_cmd *cmds)
+{
+	t_exec_redir	*r;
+	int				res;
+
+	r = cmds->exec_redirs;
+	while (r)
+	{
+		res = apply_redirections(r);
+		if (res == 1)
+			return (1);
+		r = r->next;
+	}
+	return (0);
 }

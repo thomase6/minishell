@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:30 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/18 12:20:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 16:52:43 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ int	execute_cmds(t_cmd *cmds, t_shell *shell)
 {
 	if (!cmds)
 		return (0);
-	set_builtin_and_open(cmds);
+	// set_builtin_and_open(cmds); // TESTING
+	set_builtin_flag(cmds);
 	if (!cmds->next && cmds->is_builtin == 1)
 		return (exec_builtin_parent(cmds, shell));
 	return (exec_pipeline(cmds, shell));

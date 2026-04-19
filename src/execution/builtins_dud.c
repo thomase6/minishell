@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/16 09:25:18 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 16:54:44 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,3 @@ int	exec_builtin_parent(t_cmd *cmds, t_shell *shell)
 	shell->last_status = res;
 	return (res);
 }
-
-//builtins that should be handled by exec_builtin
-	// echo with -n flag
-	// cd with relative or absolute path
-	// pwd
-	// export
-	// unset
-	// env
-	// exit
