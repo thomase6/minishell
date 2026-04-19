@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:43 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/18 14:59:00 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:59:52 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,35 @@
 // 5. the exec_redirs struct can be initialized as a NULL inside the new_cmd function and then once we create the function to handle the list we can malloc the list to the sizeof(t_exec_redirs)
 // 6. we can use the handle_redirections function that allows us to go inside the functions that are handling each individual case for redirections <, <<, >>, >. and inside those functions we can call the function that makes or adds to the linked list. we can do this right before *token = next->next;.
 
-void add_redirs_list(t_cmd *cmds, t_exec_redir *exec_redirs, t_token **tokens )
+t_exec_redir *new_redir(int type, char *filename)
+{
+	t_exec_redir	*node;
+
+	node = malloc(sizeof(t_exec_redir));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	node->filename = filename;
+	node->next = NULL;
+
+	return (node);
+}
+
+void add_redirs(t_cmd *cmds, t_exec_redir *node)
 {
 	t_exec_redir	*tmp;
+
+	if (!cmds || !node)
+		return ;
+	if (!cmds->exec_redirs)
+	{
+		cmds->exec_redirs = node;
+		return ;
+	}
+	tmp = cmds->exec_redirs;
+	while(tmp->next)
+		tmp = tmp->next;
+	tmp->next = node;
 	
 //	if (exec_redirs == NULL)
 //		tmp = malloc(sizeof(t_exec_redir));

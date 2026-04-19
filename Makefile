@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/04/17 12:05:52 by texenber         ###   ########.fr        #
+#    Updated: 2026/04/19 10:46:20 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ EXEC_SRC	=	executor.c			\
 				builtins/export2.c	\
 				builtins/unset.c	\
 				signals_in_main.c	\
-				signals_in_exec.c
+				signals_in_exec.c	\
+				redirs.c
 
 #execution/test_main.c
 SRC			=	main.c									\

@@ -6,11 +6,12 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:38 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/30 15:09:13 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 11:06:12 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
+#include "../../inc/execution.h"
 
 /* ===================== Redirection Handlers ===================== */
 
@@ -29,8 +30,10 @@ int	handle_exit(char *res, size_t *j, t_shell *shell)
 
 int	handle_redir_in(t_cmd *cmd, t_token **token)
 {
-	t_token	*next;
-	char	*dup;
+	t_token			*next;
+	t_exec_redir	*new;	// CHANGE FOR THE REDIRS: added this line
+	char			*dup;
+	char			*dup2;	// CHANGE FOR THE REDIRS: added this line
 
 	if (!cmd || !token || !*token)
 		return (-1);
@@ -48,15 +51,26 @@ int	handle_redir_in(t_cmd *cmd, t_token **token)
 		cmd->infile = dup;
 	else
 		free(dup);
-
+	dup2 = ft_strdup_lap(next->value);	// CHANGE FOR THE REDIRS: added this line
+	if (!dup2)
+		return (-1);
+	new = new_redir(TOKEN_REDIR_IN, dup2);	// CHANGE FOR THE REDIRS: added this line
+	if (!new)
+	{	
+		free (dup2);
+		return (-1);
+	}
+	add_redirs(cmd, new);					// CHANGE FOR THE REDIRS: added this line
 	*token = next->next;
 	return (0);
 }
 
 int	handle_redir_out(t_cmd *cmd, t_token **token)
 {
-	t_token	*next;
-	char	*dup;
+	t_token			*next;
+	t_exec_redir	*new;	// CHANGE FOR THE REDIRS: added this line
+	char			*dup;
+	char			*dup2;	// CHANGE FOR THE REDIRS: added this line
 
 	if (!cmd || !token || !*token)
 		return (-1);
@@ -77,6 +91,16 @@ int	handle_redir_out(t_cmd *cmd, t_token **token)
 	}
 	else
 		free(dup);
+	dup2 = ft_strdup_lap(next->value);	// CHANGE FOR THE REDIRS: added this line
+	if (!dup2)
+		return (-1);
+	new = new_redir(TOKEN_REDIR_OUT, dup2);	// CHANGE FOR THE REDIRS: added this line
+	if (!new)
+	{	
+		free (dup2);
+		return (-1);
+	}
+	add_redirs(cmd, new);					// CHANGE FOR THE REDIRS: added this line
 
 	*token = next->next;
 	return (0);
@@ -84,8 +108,10 @@ int	handle_redir_out(t_cmd *cmd, t_token **token)
 
 int	handle_redir_out_append(t_cmd *cmd, t_token **token)
 {
-	t_token	*next;
-	char	*dup;
+	t_token			*next;
+	t_exec_redir	*new;	// CHANGE FOR THE REDIRS: added this line
+	char			*dup;
+	char			*dup2;	// CHANGE FOR THE REDIRS: added this line
 
 	if (!cmd || !token || !*token)
 		return (-1);
@@ -106,6 +132,16 @@ int	handle_redir_out_append(t_cmd *cmd, t_token **token)
 	}
 	else
 		free(dup);
+	dup2 = ft_strdup_lap(next->value);					// CHANGE FOR THE REDIRS: added this line
+	if (!dup2)
+		return (-1);
+	new = new_redir(TOKEN_REDIR_OUT_APPEND, dup2);	// CHANGE FOR THE REDIRS: added this line
+	if (!new)
+	{	
+		free (dup2);
+		return (-1);
+	}
+	add_redirs(cmd, new);						// CHANGE FOR THE REDIRS: added this line
 
 	*token = next->next;
 	return (0);

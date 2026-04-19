@@ -6,11 +6,12 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:44 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/06 16:19:01 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/19 11:05:20 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
+#include "../../inc/execution.h"
 
 /* ===================== Join Last Argument ===================== */
 
@@ -102,6 +103,8 @@ static char	*read_heredoc_content(const char *delimiter,
 int	handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell)
 {
 	t_token	*cur;
+	t_exec_redir	*new;	// CHANGE FOR THE REDIRS: added this line
+	char			*dup2;	// CHANGE FOR THE REDIRS: added this line
 
 	if (!cmd || !token || !*token)
 		return (-1);
@@ -114,6 +117,16 @@ int	handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell)
 	cmd->heredoc_quoted = cur->quoted;
 	cmd->heredoc_content = read_heredoc_content(cmd->heredoc_delim,
 			cur->quoted, shell);
+	dup2 = ft_strdup_lap(cur->value);	// CHANGE FOR THE REDIRS: added this line
+	if (!dup2)
+		return (-1);
+	new = new_redir(TOKEN_HEREDOC, dup2);	// CHANGE FOR THE REDIRS: added this line
+	if (!new)
+	{	
+		free (dup2);
+		return (-1);
+	}
+	add_redirs(cmd, new);					// CHANGE FOR THE REDIRS: added this line
 	*token = cur->next;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 10:59:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/06 16:21:43 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/19 09:09:20 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_cmd	*new_cmd(void)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
+	cmd->exec_redirs = NULL; // CHANGE FOR THE REDIRS: added this line completely
 	cmd->argv = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;

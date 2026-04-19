@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:09 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/18 14:41:37 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:59:44 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ extern volatile sig_atomic_t g_signal;
 typedef struct s_exec_redir
 {
 	int					type;
-	char				*content;
+	char				*filename;
 
 	struct s_exec_redir	*next;
 	
@@ -56,7 +56,7 @@ typedef struct s_cmd
 {
 	char			**argv;				// command + args
 	//		Parsing			//
-	t_exec_redir	exec_redirs;	
+	t_exec_redir	*exec_redirs;	
 	char			*infile;			// < infile
 	char			*outfile;			// > or >> outfile
 	int				append;				// 1 if >>, 0 if >
