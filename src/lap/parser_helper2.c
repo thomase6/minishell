@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:44 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/19 11:05:20 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 14:53:04 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,29 @@ static char	*read_heredoc_content(const char *delimiter,
 	tmp.new_content = NULL;
 	tmp.content_len = 0;
 	tmp.line_len = 0;
+	setup_heredoc_signals();
+	g_signal = 0;
 	while (1)
 	{
 		tmp.line = readline("> ");
-		if (!tmp.line || ft_strcmp_lap(tmp.line, delimiter) == 0)
+		if (g_signal == SIGINT)  // SIGNAL HANDLING 
+		{
+			if (tmp.line)
+				free(tmp.line);
+			if (tmp.content)
+				free(tmp.content);
+			setup_main_signals();
+			shell->last_status = 130;
+			return (NULL);
+		}
+		// if (!tmp.line || ft_strcmp_lap(tmp.line, delimiter) == 0) //This 2 can't be done together it should be one then the other
+		// {
+		// 	free(tmp.line);
+		// 	break ;
+		// }
+		if (!tmp.line)	// FIXED
+			break ;
+		if (ft_strcmp_lap(tmp.line, delimiter) == 0) // FIXED
 		{
 			free(tmp.line);
 			break ;
@@ -95,6 +114,7 @@ static char	*read_heredoc_content(const char *delimiter,
 			return (NULL);
 		free(tmp.line);
 	}
+	setup_main_signals(); // SIGNAL HANDLING
 	return (tmp.content);
 }
 

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:09 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 10:59:44 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 14:11:04 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	cleanup_shell(t_shell *shell);
 void	setup_main_signals(void);
 void	siginthandler(int sig);
 int		signal_main_hook(void);
+void	sigint_heredoc_handler(int sig);
+void	setup_heredoc_signals(void);
 
 ///		signals in execute				///
 void	set_signals_for_child(void);
