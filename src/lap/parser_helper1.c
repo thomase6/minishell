@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:38 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/19 11:06:12 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:57:41 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ int	handle_redir_in(t_cmd *cmd, t_token **token)
 		free(dup);
 	dup2 = ft_strdup_lap(next->value);	// CHANGE FOR THE REDIRS: added this line
 	if (!dup2)
+	{
+		free (dup);
 		return (-1);
+	}
 	new = new_redir(TOKEN_REDIR_IN, dup2);	// CHANGE FOR THE REDIRS: added this line
 	if (!new)
 	{	

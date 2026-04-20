@@ -6,12 +6,27 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 15:52:02 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:53:53 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
 
+void	free_redirs(t_exec_redir *redir)
+{
+	t_exec_redir	*tmp;
+	
+	if (!redir)
+		return ;
+	while(redir)
+	{
+		tmp = redir;
+		redir = redir->next;
+		if (tmp->filename)
+			free(tmp->filename);
+		free(tmp);
+	}
+}
 
 // this function frees the cmd arguments and closes the fd's if they are still open for each cmd
 void	free_cmds(t_cmd *cmds)
@@ -24,20 +39,20 @@ void	free_cmds(t_cmd *cmds)
 		cmds = cmds->next;
 		if (tmp->argv)
 			free_argv(tmp->argv);
+		if (tmp->exec_redirs)
+			free_redirs(tmp->exec_redirs);
 		if (tmp->heredoc_delim)
 			free(tmp->heredoc_delim);
 		if (tmp->heredoc_content)
 			free(tmp->heredoc_content);
-		if (tmp->infile_fd != -1)
-		{
+		if (tmp->infile)
 			free(tmp->infile);
-			close(tmp->infile_fd);
-		}
-		if (tmp->outfile_fd != -1)
-		{
+		if (tmp->outfile)
 			free(tmp->outfile);
+		if (tmp->infile_fd != -1)
+			close(tmp->infile_fd);
+		if (tmp->outfile_fd != -1)
 			close(tmp->outfile_fd);
-		}
 		free(tmp);
 	}
 }

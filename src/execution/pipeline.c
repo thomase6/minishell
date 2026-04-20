@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 12:13:45 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:31:47 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,8 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	set_signals_for_parent();
 	while (cmds)
 	{
-		fd[0] = -1;
-		fd[1] = -1;
+		// fd[0] = -1;
+		// fd[1] = -1;
 		if (cmds->next && pipe(fd) < 0)
 		{
 			if (prev_fd != -1)
