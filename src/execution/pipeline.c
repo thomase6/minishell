@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 15:28:13 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:13:45 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
 	if (cmds->is_builtin == 1)
 		exit(exec_builtin(cmds, shell));
+	if (!cmds->argv || !cmds->argv[0])
+		exit(0);
 	path = resolve_path(cmds->argv[0], envp);
 	err = cmd_check(path, cmds->argv[0]);
 	if (err != 0)

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:43 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 15:33:43 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:40:49 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,27 @@ void add_redirs(t_cmd *cmds, t_exec_redir *node)
 	tmp->next = node;	
 }
 
-// void	apply_heredoc(t_exec_redir *r)
-// {
+int	apply_heredoc(t_cmd *cmds)
+{
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+	{
+		perror("pipe");
+		return (1);
+	}
+	ft_putstr_fd(cmds->heredoc_content, fd[1]);
+	close(fd[1]);
 	
-// }
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		close(fd[0]);
+		return (1);
+	}
+	close (fd[0]);
+	return (0);
+}
 
 int	apply_append(t_exec_redir *r)
 {
@@ -102,7 +119,7 @@ int	apply_in(t_exec_redir *r)
 	return (0);
 }
 
-int	apply_redirections(t_exec_redir *r)
+int	apply_redirections(t_exec_redir *r, t_cmd *cmds)
 {
 	int	res;
 	
@@ -113,8 +130,8 @@ int	apply_redirections(t_exec_redir *r)
 		res = apply_out(r);
 	else if (r->type == TOKEN_REDIR_OUT_APPEND)
 		res = apply_append(r);
-	// else if (r->type == TOKEN_HEREDOC)
-	// 	apply_heredoc(r);
+	else if (r->type == TOKEN_HEREDOC)
+		res = apply_heredoc(cmds);
 	return (res);
 }
 
@@ -127,7 +144,7 @@ int	all_redirections(t_cmd *cmds)
 	r = cmds->exec_redirs;
 	while (r)
 	{
-		res = apply_redirections(r);
+		res = apply_redirections(r, cmds);
 		if (res == 1)
 			return (1);
 		r = r->next;
