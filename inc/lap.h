@@ -12,7 +12,7 @@ typedef enum e_token_type
 	TOKEN_PIPE,             	// |	1
 	TOKEN_HEREDOC,          	// <<	2
 	TOKEN_REDIR_IN,         	// <	3
-	TOKEN_REDIR_OUT,		// >	4
+	TOKEN_REDIR_OUT,			// >	4
 	TOKEN_REDIR_OUT_APPEND,		// >>	5
 	TOKEN_NONE = -1         	// special value for parser internal use
 }   t_token_type;
@@ -64,9 +64,6 @@ typedef struct s_redir
 {
 	int			type;
 	const char	*input;
-	//	int heredoc_fd;
-	//	int heredoc_expand:
-	//	s_redir *next;
 	int			len;
 	int			has_space;
 }	t_redir;

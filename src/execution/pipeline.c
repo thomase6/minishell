@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/17 15:06:20 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:31:47 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,41 +85,17 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 
 	set_signals_for_child();// signals reset to default action
 	envp = shell->env;
-	if ((cmds->infile_fd == -1 && cmds->infile != NULL) || (cmds->outfile_fd == -1 && cmds->outfile != NULL)) // new check to make sure that infile_fd/outfile_fd didn't fail
-	{
-		if (cmds->infile_fd == -1 && cmds->infile != NULL)
-		{
-			perror(cmds->infile);
-			exit(1);
-		}
-		if (cmds->outfile_fd == -1 && cmds->outfile != NULL) 
-		{
-			perror(cmds->outfile);
-			exit(1);
-		} 
-	}
-	if (cmds->infile_fd != -1) //if the infile exists we are gonna duplicate it and close it
-	{
-		dup2(cmds->infile_fd, STDIN_FILENO);
-		close(cmds->infile_fd);
-	}
-	else if (prev_fd != -1) //if the previous fd exists we are gonna duplicate it
+	if (prev_fd != -1) //if the previous fd exists we are gonna duplicate it
 		dup2(prev_fd, STDIN_FILENO);
-	if (cmds->outfile_fd != -1) //if the outfile exists we are gonna duplicate it and close it
-	{
-		dup2(cmds->outfile_fd, STDOUT_FILENO);
-		close(cmds->outfile_fd);
-	}
-	else if (cmds->next) //if the previous fd exists we are gonna duplicate it
+	if (cmds->next) //if the previous fd exists we are gonna duplicate it
 		dup2(fd[1], STDOUT_FILENO);
+	if (all_redirections(cmds) == 1)
+		exit (1);
 	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
-	// if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0') //this is just necessary to make the executor work independently and to avoid parser bugs this actually protects the redirs from crashing in one test
-	// {
-	// 	ft_putstr_fd("minishell: command not found\n", 2);
-	// 	exit(127);
-	// }
 	if (cmds->is_builtin == 1)
 		exit(exec_builtin(cmds, shell));
+	if (!cmds->argv || !cmds->argv[0])
+		exit(0);
 	path = resolve_path(cmds->argv[0], envp);
 	err = cmd_check(path, cmds->argv[0]);
 	if (err != 0)
@@ -156,8 +132,8 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	set_signals_for_parent();
 	while (cmds)
 	{
-		fd[0] = -1;
-		fd[1] = -1;
+		// fd[0] = -1;
+		// fd[1] = -1;
 		if (cmds->next && pipe(fd) < 0)
 		{
 			if (prev_fd != -1)

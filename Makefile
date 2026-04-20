@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/04/17 12:05:52 by texenber         ###   ########.fr        #
+#    Updated: 2026/04/20 15:51:35 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ EXEC_PRE	= execution/
 EXEC_SRC	=	executor.c			\
 				pipeline.c			\
 				pipeline_helper.c	\
-				exec_cmd.c			\
+				exec_helper.c		\
+				exec_cleanup.c		\
 				init_env.c			\
 				builtins_dud.c		\
 				builtins/echo.c		\
@@ -48,7 +49,9 @@ EXEC_SRC	=	executor.c			\
 				builtins/export2.c	\
 				builtins/unset.c	\
 				signals_in_main.c	\
-				signals_in_exec.c
+				signals_in_heredoc.c\
+				signals_in_exec.c	\
+				redirs.c
 
 #execution/test_main.c
 SRC			=	main.c									\

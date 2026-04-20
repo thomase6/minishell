@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/10 10:59:39 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/19 13:40:03 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 #include "../inc/lap.h"
 
 volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
+
+// void print_redirs(t_exec_redir *r)
+// {
+// 	while (r)
+// 	{
+// 		printf("type: %d, file: %s\n", r->type, r->filename);
+// 		r = r->next;
+// 	}
+// }
 
 //this function is for testing
 // static void print_cmds(t_cmd *cmds)
@@ -132,6 +141,7 @@ int	main(int ac, char **av, char **envp)
 		// expander goes here
 		// set_builtin_and_open(cmds); // REMOVE AFTER TESTING
 		// print_cmds(cmds); // REMOVE AFTER TESTING
+		// print_redirs(cmds->exec_redirs); // REMOVE AFTER TESTING
 		if (cmds)
 		{
 			execute_cmds(cmds, &shell);

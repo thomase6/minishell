@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/16 09:25:18 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 09:17:40 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell)
 	if (ft_strcmp(cmds->argv[0], "echo") == 0)
 		return (builtin_echo(cmds->argv));
 	else if (ft_strcmp(cmds->argv[0], "cd") == 0)
-		return (builtin_cd(cmds->argv, shell)); // shell->env doesn't fully work need to further test cd to see if I need to change it back to char **envp. testing once merging is done.
+		return (builtin_cd(cmds->argv, shell)); 
 	else if (ft_strcmp(cmds->argv[0], "pwd") == 0)
 		return (builtin_pwd());
 	else if (ft_strcmp(cmds->argv[0], "env") == 0)
@@ -35,25 +35,43 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell)
 int	exec_builtin_parent(t_cmd *cmds, t_shell *shell)
 {
 	int	res;
-	int	fd;
+	int	fd0;
+	int	fd1;
 	
-	fd = dup(STDOUT_FILENO);
-	if (cmds->outfile)
-		dup2(cmds->outfile_fd, STDOUT_FILENO);
+	res = 0;
+	fd0 = dup(STDIN_FILENO);
+	fd1 = dup(STDOUT_FILENO);
+	if (all_redirections(cmds) == 1)
+	{
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		return (1);
+	}
 	res = exec_builtin(cmds, shell);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	if (cmds->outfile_fd != -1)
-		close(cmds->outfile_fd);
+	dup2(fd0,STDIN_FILENO);	
+	dup2(fd1,STDOUT_FILENO);
+	close(fd0);
+	close(fd1);
 	shell->last_status = res;
-	return (res);
+	return (res);	
 }
 
-//builtins that should be handled by exec_builtin
-	// echo with -n flag
-	// cd with relative or absolute path
-	// pwd
-	// export
-	// unset
-	// env
-	// exit
+
+
+
+
+
+
+//	int res;
+//	int	fd;
+// 	fd = dup(STDOUT_FILENO);
+// 	if (cmds->outfile)
+// 		dup2(cmds->outfile_fd, STDOUT_FILENO);
+// 	res = exec_builtin(cmds, shell);
+// 	dup2(fd, STDOUT_FILENO);
+// 	close(fd);
+// 	if (cmds->outfile_fd != -1)
+// 		close(cmds->outfile_fd);
+// 	shell->last_status = res;
+// 	return (res);
+// }

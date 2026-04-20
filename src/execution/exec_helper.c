@@ -1,50 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   exec_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 13:38:55 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:51:58 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
 
-// this function frees the cmd arguments and closes the fd's if they are still open for each cmd
-void	free_cmds(t_cmd *cmds)
-{
-	t_cmd	*tmp;
-
-	while (cmds)
-	{
-		tmp = cmds;
-		cmds = cmds->next;
-		if (tmp->argv)
-			free_argv(tmp->argv);
-		if (tmp->infile_fd != -1)
-			close(tmp->infile_fd);
-		if (tmp->outfile_fd != -1)
-			close(tmp->outfile_fd);
-		free(tmp);
-	}
-}
-
-// this function just frees a double pointer
-void	free_argv(char **av)
-{
-	int	i;
-
-	i = 0;
-	while (av[i])
-	{
-		free (av[i]);
-		i++;
-	}
-	if (av)
-		free (av);
-}
 
 //this function takes the path and then tries to find the full path of the cmd, then it tests them with access and lastly it returns that full path.
 char	*resolve_cmd(char *cmd, char **dir_path)

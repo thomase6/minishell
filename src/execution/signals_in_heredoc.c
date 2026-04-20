@@ -1,40 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals_in_main.c                                  :+:      :+:    :+:   */
+/*   signals_in_heredoc.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/21 10:00:47 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 12:45:26 by texenber         ###   ########.fr       */
+/*   Created: 2026/04/20 12:45:18 by texenber          #+#    #+#             */
+/*   Updated: 2026/04/20 15:22:50 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	signal_main_hook(void)
-{
-	if (g_signal == SIGINT)
-	{
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_replace_line("", 0);
-	}
-	return (0);
-}
-
-void	siginthandler(int sig)
+void	sigint_heredoc_handler(int sig)
 {
 	(void)sig;
 	g_signal = SIGINT;
 }
 
-void	setup_main_signals(void)
+void	setup_heredoc_signals(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = siginthandler;
+	sa.sa_handler = sigint_heredoc_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN); //when ignoring the signal it is ok to use signal instead of sigaction	
 }
