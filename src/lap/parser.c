@@ -83,7 +83,7 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 	else if ((*(tmp->token))->type == TOKEN_REDIR_IN
 		|| (*(tmp->token))->type == TOKEN_REDIR_OUT
 		|| (*(tmp->token))->type == TOKEN_REDIR_OUT_APPEND
-		|| (*(tmp->token))->type == TOKEN_HEREDOC)
+		|| (*(tmp->token))->type == TOKEN_HEREDOC)               // exclude  (*(tmp->token))->type == TOKEN_HEREDOC)
 	{
 		*(tmp->expect) = (*(tmp->token))->type;
 		if (handle_redirection(current, tmp->token, tmp->shell) == -1)
