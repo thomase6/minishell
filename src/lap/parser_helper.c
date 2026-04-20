@@ -141,12 +141,20 @@ int	expand_token_value(t_token *t, t_shell *shell)
 int	expand_tokens(t_token *tokens, t_shell *shell)
 {
 	t_token	*tmp;
+	t_token *prev;
 
+	prev = NULL;
 	tmp = tokens;
 	while (tmp)
 	{
-		if (expand_token_value(tmp, shell) == -1)
-			return (-1);
+		if (tmp->type == TOKEN_HEREDOC && tmp->next && tmp->next->type == TOKEN_WORD )
+		{
+			tmp = tmp->next;
+			tmp = tmp->next;
+			continue ;
+		}	
+			if (expand_token_value(tmp, shell) == -1)
+			return (-1);	
 		tmp = tmp->next;
 	}
 	return (0);
