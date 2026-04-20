@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:30 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 16:52:43 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:53:21 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 #include "../../inc/execution.h"
 
 // if the file doesn't exist it fails to open it in case of the infile which should lead to an error message with exit code 1.
-// void	perror_and_flag(t_cmd *cmds)
-// {
-	
-// }
-
+//THIS FUNCTION IS NOT NEEDED ANYMORE
 void	set_infile_and_outfile(t_cmd *cmds)
 {
 	t_cmd	*current = cmds;
@@ -88,7 +84,7 @@ void	set_builtin_flag(t_cmd *cmds)
 		current=current->next;
 	}
 }
-
+//THIS FUNCTION IS NOT NEEDED ANYMORE
 void set_builtin_and_open(t_cmd *cmds)
 {
 	set_builtin_flag(cmds);

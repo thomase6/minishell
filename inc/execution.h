@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 12:40:19 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:52:23 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	apply_heredoc(t_cmd *cmds);
 void	cmd_not_found(char *cmd);
 void	file_no_access(char *cmd);
 
-///		exit and free	///
+///		Execution Cleanup	///
 void	free_argv(char **av);
 void	free_cmds(t_cmd *cmds);
 
