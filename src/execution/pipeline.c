@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 17:31:47 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/21 10:24:44 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	envp = shell->env;
 	if (prev_fd != -1) //if the previous fd exists we are gonna duplicate it
 		dup2(prev_fd, STDIN_FILENO);
-	if (cmds->next) //if the previous fd exists we are gonna duplicate it
+	if (cmds->next)
 		dup2(fd[1], STDOUT_FILENO);
 	if (all_redirections(cmds) == 1)
 		exit (1);
@@ -132,8 +132,8 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	set_signals_for_parent();
 	while (cmds)
 	{
-		// fd[0] = -1;
-		// fd[1] = -1;
+		fd[0] = -1;
+		fd[1] = -1;
 		if (cmds->next && pipe(fd) < 0)
 		{
 			if (prev_fd != -1)
