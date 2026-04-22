@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 11:11:36 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:49:16 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	close_all(int prev_fd, int fd[2])
 // This function is meant to wait for every child and return the last status
 // of the children only if it's the last_pid which means that there are no
 // other commands after it
-// *** GOTTA FIX *** currently "sleep 10" | "env" doesn't print a space after
-// the interruption happens ^C
 static int	wait_all(pid_t last_pid, int *last_status)
 {
 	int		status;
@@ -106,8 +104,6 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 		free(path);
 		exit(err);
 	}
-	update_underscore(shell, path); // I don't think this is doing anything.
-	envp = shell->env; // refreshes the envp after updating it in the _= variable. FIX: moved it above execve because on success it should update the env not on failure.
 	execve(path, cmds->argv, envp);
 	perror("minishell");
 	free(path);
@@ -116,14 +112,8 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 
 // this is the first process that starts the pipeline, forks and starts the
 // child process, it also closses all fds that were not used by the parent
-// but the children needed
-// we do this for every single cmd unless the cmd is a builtin.
-// tracking the last pid of the last executable command.
-// TOO MANY VARIABLES.
 int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 {
-	char	**envp;
-	int		*last_status;
 	int		fd[2];
 	int		prev_fd;
 	pid_t	pid;
@@ -132,8 +122,6 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 
 	prev_fd = -1;
 	last_pid = -1;
-	envp = shell->env;
-	last_status = &shell->last_status;
 	set_signals_for_parent();
 	while (cmds)
 	{
@@ -143,7 +131,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 		{
 			if (prev_fd != -1)
 				close(prev_fd);
-			*last_status = 1;
+			shell->last_status = 1;
 			return (-1);
 		}
 		pid = fork();
@@ -155,17 +143,13 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 				close(fd[1]);
 			if (prev_fd != -1)
 				close(prev_fd);
-			*last_status = 1;
+			shell->last_status = 1;
 			return (-1);
 		}
 		if (pid == 0)
 			exec_child(cmds, shell, prev_fd, fd);
 		if (!cmds->next)
 			last_pid = pid;
-		if (cmds->infile_fd != -1)
-			close(cmds->infile_fd);
-		if (cmds->outfile_fd != -1)
-			close(cmds->outfile_fd);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmds->next)
@@ -175,7 +159,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 		}
 		cmds = cmds->next;
 	}
-	status = wait_all(last_pid, last_status);
+	status = wait_all(last_pid, &shell->last_status);
 	setup_main_signals();
 	return (0);
 }
