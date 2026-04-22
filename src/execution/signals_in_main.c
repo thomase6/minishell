@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:47 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 12:45:26 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 10:00:59 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ void	setup_main_signals(void)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN); //when ignoring the signal it is ok to use signal instead of sigaction	
+	signal(SIGQUIT, SIG_IGN);	
 }

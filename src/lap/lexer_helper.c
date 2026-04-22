@@ -6,15 +6,17 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:04 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/23 10:08:11 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:24:07 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
 
-int	scan_pipe(const char *input, int i, t_token **head, int has_space)
-	{
-	if (!add_token(head, (t_token_data){TOKEN_PIPE, &input[i], 1, has_space}))
+int	scan_pipe(t_shell *shell, t_scan_ctx *cntx, int i)
+{
+	(void)shell;
+	if (!add_token(cntx->head,
+			(t_token_data){TOKEN_PIPE, &cntx->input[i], 1, cntx->has_space}))
 		return (-1);
 	return (i + 1);
 }
@@ -53,16 +55,17 @@ static int	get_redir_type_len(const char *input, int i, int *len)
 	return (0);
 }
 
-int	scan_redirections(const char *input, int i,
-		t_token **head, int has_space)
+int	scan_redirections(t_shell *shell, t_scan_ctx *cntx, int i)
 {
 	int	len;
 	int	type;
 
-	type = get_redir_type_len(input, i, &len);
+	(void)shell;
+	type = get_redir_type_len(cntx->input, i, &len);
 	if (!type)
 		return (i);
-	if (create_redir(head, (t_redir){type, &input[i], len, has_space}))
+	if (create_redir(cntx->head,
+			(t_redir){type, &cntx->input[i], len, cntx->has_space}))
 		return (-1);
 	return (i + len);
 }

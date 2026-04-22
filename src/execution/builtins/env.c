@@ -36,6 +36,9 @@ void	update_underscore(t_shell *shell, char *path)
 
 // in the env don't worry about _= because bash has a list of special variables in env
 int	builtin_env(char **argv, char **envp)
+// in the env don't worry about _= because bash has a list of special
+// variables in env
+int	builtin_env(char **envp) // CHANGE: add t_shell *shell
 {
 	int	i;
 

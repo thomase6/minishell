@@ -12,18 +12,17 @@
 
 #include "../../../inc/execution.h"
 
-// first we identify if the var string exists in the envp, if it does we update that variable with the new information and if it doesn't exist we create it at the bottom of the envp
+// first we identify if the var string exists in the envp, if it does we update
+// that variable with the new information and if it doesn't exist we create it
+// at the bottom of the envp
 int	set_env_var(t_shell *shell, char *var)
 {
 	char	**new_env;
 	int		index;
 
-	//first we search for the variable , if we do find it we return the index in which we found the variable
 	index = find_env_var(shell->env, var);
-	//if we find it we update the variable with the new information that needs to be updated or the value in it
 	if (index >= 0)
 		return (update_env_var(shell->env, index, var));
-	// otherwise we add the variable to our env and that's it 
 	else
 	{
 		new_env = add_env_var(shell->env, var);
@@ -34,7 +33,8 @@ int	set_env_var(t_shell *shell, char *var)
 	}
 }
 
-//this function finds the key string in the env pointer and check to see if it's the one we are looking for
+// this function finds the key string in the env pointer and check to see if
+// it's the one we are looking for
 int	find_env_var(char **env, char *key)
 {
 	int	i;

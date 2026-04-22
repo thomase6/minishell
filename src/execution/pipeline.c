@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
 #include "../../inc/execution.h"
 
-//this function is meant to check whether the cmd exists and then it checks if it's executable
+// this function is meant to check whether the cmd exists and then
+// it checks if it's executable
 int	cmd_check(char *path, char *cmd)
 {
 	if (access(path, F_OK) != 0)
@@ -32,7 +32,7 @@ int	cmd_check(char *path, char *cmd)
 // this function is used just to close prev_fd, and the array of fd[2]
 void	close_all(int prev_fd, int fd[2])
 {
-	if (prev_fd != -1) //this could be an issue because there is the chance of a reuse bug causing a double close.
+	if (prev_fd != -1)
 		close(prev_fd);
 	if (fd[0] != -1)
 	{
@@ -46,8 +46,11 @@ void	close_all(int prev_fd, int fd[2])
 	}
 }
 
-// This function is meant to wait for every child and return the last status of the children only if it's the last_pid which means that there are no other commands after it
-// *** GOTTA FIX *** currently "sleep 10" | "env" doesn't print a space after the interruption happens ^C
+// This function is meant to wait for every child and return the last status
+// of the children only if it's the last_pid which means that there are no
+// other commands after it
+// *** GOTTA FIX *** currently "sleep 10" | "env" doesn't print a space after
+// the interruption happens ^C
 static int	wait_all(pid_t last_pid, int *last_status)
 {
 	int		status;
@@ -83,15 +86,15 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	char	*path;
 	int		err;
 
-	set_signals_for_child();// signals reset to default action
+	set_signals_for_child();
 	envp = shell->env;
-	if (prev_fd != -1) //if the previous fd exists we are gonna duplicate it
+	if (prev_fd != -1)
 		dup2(prev_fd, STDIN_FILENO);
 	if (cmds->next)
 		dup2(fd[1], STDOUT_FILENO);
 	if (all_redirections(cmds) == 1)
 		exit (1);
-	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
+	close_all(prev_fd, fd);
 	if (cmds->is_builtin == 1)
 		exit(exec_builtin(cmds, shell));
 	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0')
@@ -111,8 +114,10 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	exit(127);
 }
 
-// this is the first process that starts the pipeline, forks and starts the child process, it also closses all fds that were not used by the parent but the children needed
-//we do this for every single cmd unless the cmd is a builtin.
+// this is the first process that starts the pipeline, forks and starts the
+// child process, it also closses all fds that were not used by the parent
+// but the children needed
+// we do this for every single cmd unless the cmd is a builtin.
 // tracking the last pid of the last executable command.
 // TOO MANY VARIABLES.
 int	exec_pipeline(t_cmd *cmds, t_shell *shell)
@@ -126,7 +131,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 	int		status;
 
 	prev_fd = -1;
-	last_pid = -1; //set to -1 because 0 is a valid pid 
+	last_pid = -1;
 	envp = shell->env;
 	last_status = &shell->last_status;
 	set_signals_for_parent();
@@ -155,7 +160,7 @@ int	exec_pipeline(t_cmd *cmds, t_shell *shell)
 		}
 		if (pid == 0)
 			exec_child(cmds, shell, prev_fd, fd);
-		if (!cmds->next) // this is a check to find the last pid to make sure that we can use this in the wait afterwards
+		if (!cmds->next)
 			last_pid = pid;
 		if (cmds->infile_fd != -1)
 			close(cmds->infile_fd);

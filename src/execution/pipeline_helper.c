@@ -14,22 +14,19 @@
 
 void	cmd_not_found(char *cmd)
 {
-	char *msg;
-	
-	if (cmd && cmd[0] != '\0')
-	{
-		msg = ft_strjoin(cmd, ": command not found\n");
-		if (!msg)
-			return ;
-		ft_putstr_fd(msg, 2);
-		free (msg);
-	}
+	char	*msg;
+
+	msg = ft_strjoin(cmd, ": command not found\n");
+	if (!msg)
+		return ;
+	ft_putstr_fd(msg, 2);
+	free (msg);
 }
 
 void	file_no_access(char *cmd)
 {
-	char *msg;
-	
+	char	*msg;
+
 	msg = ft_strjoin(cmd, ": permission denied\n");
 	if (!msg)
 		return ;

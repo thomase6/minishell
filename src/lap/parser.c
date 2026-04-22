@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/19 09:10:18 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:13:15 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,8 @@ static t_cmd	*handle_pipe_token(t_cmd *current,
 {
 	t_cmd	*next_cmd;
 
-	// if (!current || !current->argv || !current->argv[0])
-	// {
-	// 	free_cmds(*cmds);
-	// 	return (NULL);
-	// }
-	if (!current->argv && !current->infile && !current->outfile && !current->exec_redirs) // CHANGE FOR THE REDIRS: added !current->exec_redirs
+	if (!current->argv && !current->infile && !current->outfile
+		&& !current->exec_redirs)
 	{
 		free_cmds(*cmds);
 		return (NULL);
@@ -71,7 +67,6 @@ static int	handle_redirection(t_cmd *current, t_token **token, t_shell *shell)
 	return (0);
 }
 
-// Dispatch token to correct handler THE " BRAIN "
 static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 {
 	if (!*(tmp->token))
@@ -83,7 +78,7 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 	else if ((*(tmp->token))->type == TOKEN_REDIR_IN
 		|| (*(tmp->token))->type == TOKEN_REDIR_OUT
 		|| (*(tmp->token))->type == TOKEN_REDIR_OUT_APPEND
-		|| (*(tmp->token))->type == TOKEN_HEREDOC)               // exclude  (*(tmp->token))->type == TOKEN_HEREDOC)
+		|| (*(tmp->token))->type == TOKEN_HEREDOC)
 	{
 		*(tmp->expect) = (*(tmp->token))->type;
 		if (handle_redirection(current, tmp->token, tmp->shell) == -1)
@@ -116,7 +111,6 @@ void	merge_adjacent_tokens(t_token *tokens)
 			tmp->next = next->next;
 			free(next->value);
 			free(next);
-			// don't advance tmp — check again in case of 3+ segments
 			continue ;
 		}
 		tmp = tmp->next;
@@ -129,7 +123,7 @@ t_cmd	*parser(t_token *tokens, t_shell *shell)
 	t_cmd			*current;
 	t_token_type	expect;
 	t_parser_intern	tmp;
-	
+
 	merge_adjacent_tokens(tokens);
 	cmds = new_cmd();
 	if (!tokens || !cmds)
@@ -143,8 +137,7 @@ t_cmd	*parser(t_token *tokens, t_shell *shell)
 		if (!current)
 			return (NULL);
 	}
-	// changed this to make sure that even single infiles and outfiles can be tested by themselves.
-	if (!cmds->argv && !cmds->infile && !cmds->outfile && !cmds->exec_redirs) // CHANGE FOR THE REDIRS: added !cmds->exec_redirs
+	if (!cmds->argv && !cmds->infile && !cmds->outfile && !cmds->exec_redirs)
 	{
 		free_cmds(cmds);
 		return (NULL);

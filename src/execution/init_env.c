@@ -49,7 +49,8 @@ void	update_shlvl(t_shell *shell)
 	}
 }
 
-//this function is meant to copy the envp and make a version that I can edit if needed.
+//this function is meant to copy the envp and make a version that
+//I can edit if needed.
 char	**copy_env(char **envp)
 {
 	char	**new_env;

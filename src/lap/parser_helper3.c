@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 10:59:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/19 09:09:20 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:24:53 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd	*new_cmd(void)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->exec_redirs = NULL; // CHANGE FOR THE REDIRS: added this line completely
+	cmd->exec_redirs = NULL;
 	cmd->argv = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
@@ -46,29 +46,29 @@ static int	argv_len(char **argv)
 	return (i);
 }
 
-char **add_args(char **argv, char *word)
+char	**add_args(char **argv, char *word)
 {
-    int i;
-    int j;
-    char **new;
+	int		i;
+	int		j;
+	char	**new;
 
-    if (!word)
-        return (argv);
-    i = argv_len(argv);
-    new = malloc(sizeof(char *) * (i + 2));
-    if (!new)
-        return (NULL);  // removed free(clean_word)
-    j = 0;
-    while (j < i)
-    {
-        new[j] = argv[j];
-        j++;
-    }
-    new[i] = ft_strdup_lap(word);  // duplicate the word as-is
-    new[i + 1] = NULL;
-    if (argv)
-        free(argv);
-    return (new);
+	if (!word)
+		return (argv);
+	i = argv_len(argv);
+	new = malloc(sizeof(char *) * (i + 2));
+	if (!new)
+		return (NULL);
+	j = 0;
+	while (j < i)
+	{
+		new[j] = argv[j];
+		j++;
+	}
+	new[i] = ft_strdup_lap(word);
+	new[i + 1] = NULL;
+	if (argv)
+		free(argv);
+	return (new);
 }
 
 int	add_args_cmd(t_cmd *cmd, char *arg)

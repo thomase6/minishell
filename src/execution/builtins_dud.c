@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
 #include "../../inc/execution.h"
 
 int	exec_builtin(t_cmd *cmds, t_shell *shell)
@@ -18,7 +17,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell)
 	if (ft_strcmp(cmds->argv[0], "echo") == 0)
 		return (builtin_echo(cmds->argv));
 	else if (ft_strcmp(cmds->argv[0], "cd") == 0)
-		return (builtin_cd(cmds->argv, shell)); 
+		return (builtin_cd(cmds->argv, shell));
 	else if (ft_strcmp(cmds->argv[0], "pwd") == 0)
 		return (builtin_pwd());
 	else if (ft_strcmp(cmds->argv[0], "env") == 0)
@@ -28,7 +27,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell)
 	else if (ft_strcmp(cmds->argv[0], "unset") == 0)
 		return (builtin_unset(cmds->argv, shell));
 	else if (ft_strcmp(cmds->argv[0], "exit") == 0)
-		return (builtin_exit(cmds->argv, shell->last_status));	
+		return (builtin_exit(cmds->argv, shell->last_status));
 	return (0);
 }
 
@@ -37,7 +36,7 @@ int	exec_builtin_parent(t_cmd *cmds, t_shell *shell)
 	int	res;
 	int	fd0;
 	int	fd1;
-	
+
 	res = 0;
 	fd0 = dup(STDIN_FILENO);
 	fd1 = dup(STDOUT_FILENO);
@@ -48,19 +47,13 @@ int	exec_builtin_parent(t_cmd *cmds, t_shell *shell)
 		return (1);
 	}
 	res = exec_builtin(cmds, shell);
-	dup2(fd0,STDIN_FILENO);	
-	dup2(fd1,STDOUT_FILENO);
+	dup2(fd0, STDIN_FILENO);
+	dup2(fd1, STDOUT_FILENO);
 	close(fd0);
 	close(fd1);
 	shell->last_status = res;
-	return (res);	
+	return (res);
 }
-
-
-
-
-
-
 
 //	int res;
 //	int	fd;

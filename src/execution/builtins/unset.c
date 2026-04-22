@@ -6,14 +6,16 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:22:44 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/27 13:57:28 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 10:19:11 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
-// this function is meant to remove the line in the env that we are trying to remove and then it rewrites the other env pointers as if the line didn't exist in the first place
+// this function is meant to remove the line in the env that we are trying to
+// remove and then it rewrites the other env pointers as if the line didn't
+// exist in the first place
 char	**rem_env_var(char **env, int index)
 {
 	char	**new_env;
@@ -24,7 +26,6 @@ char	**rem_env_var(char **env, int index)
 	count = 0;
 	while (env[count])
 		count++;
-	// after identifying the index calling this function with a single line will cause it to delete the line and return an empty env
 	if (count == 1)
 	{
 		new_env = malloc(sizeof(char *) * 1);
