@@ -112,14 +112,17 @@ int				handle_redir_in(t_cmd *cmd, t_token **token);
 int				handle_redir_out(t_cmd *cmd, t_token **token);
 int				handle_redir_out_append(t_cmd *cmd, t_token **token);
 int				handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell);
-int				expand_tokens(t_token *tokens, t_shell *shell);
 int				handle_exit(char *res, size_t *j, t_shell *shell);
 int				join_last_arg(t_cmd *current, char *val);
-int				expand_token_value(t_token *t, t_shell *shell);
+void			merge_adjacent_tokens(t_token *tokens);
 void			free_cmds(t_cmd *cmds);
 t_cmd			*handle_pipe(t_cmd *current);
 t_cmd			*build_commands(t_token *tokens);
-
+/* ===================== EXPANDER HELPER =================== */
+int				expand_token_value(t_token *t, t_shell *shell);
+int				expand_tokens(t_token *tokens, t_shell *shell);
+int	ft_intlen(int n);
+size_t	handle_var(t_expand_ctx *ctx);
 /* ===================== Lexer Helpers ===================== */
 t_token			*add_token(t_token **head, t_token_data data);
 int				check_scan(int i, t_token **head);
@@ -134,7 +137,6 @@ void			handle_syntax_error(t_shell *shell, const char *token_str,
 					int missing_next);
 char			*my_getenv(char *name, char **envp);
 void			remove_quotes(t_token *tokens);
-
 /* ====================== helper functions =================== */
 int				ft_strcmp_lap(const char *s1, const char *s2);
 int				ft_strncmp_lap(const char *s1, const char *s2, size_t n);

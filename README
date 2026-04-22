@@ -1,0 +1,170 @@
+# MINISHELL
+
+*This project has been created as part of the 42 curriculum by Thomas Exenberger and Stefan Bagdahn.*
+
+---
+
+## Introduction
+
+Minishell is a simplified Unix shell inspired by Bash.  
+The goal of this project is to understand how a command-line interpreter processes user input and communicates with the operating system.
+
+The shell reads commands, parses them, expands variables, and executes programs while handling pipes, redirections, and signals.
+
+The implementation is written in C and follows a modular design based on lexer, parser, expansion, and execution stages.
+
+---
+
+## Architecture
+
+Minishell follows a sequential pipeline:
+
+Input → Lexer → Parser → Expansion → Execution → Output
+
+Each stage transforms the data into a more structured representation until it becomes an executable command.
+
+---
+
+## Lexer
+
+The lexer converts raw input into tokens (`t_token`).
+
+It:
+- Splits input into words and operators (`|`, `<`, `>`, `<<`, `>>`)
+- Handles quotes (`'` and `"`)
+- Preserves quoted strings as single tokens
+- Produces a linked list used by the parser
+
+Related files:
+- `lap.h`
+- lexer implementation (`scan_*`, `lexer`)
+
+---
+
+## Parser
+
+The parser builds structured commands (`t_cmd`) from tokens.
+
+It:
+- Groups tokens into commands
+- Builds pipelines using `cmd->next`
+- Assigns arguments (`argv`)
+- Handles redirections (`<`, `>`, `>>`, `<<`)
+- Stores heredoc data (`heredoc_*` fields)
+
+Related files:
+- `lap.h`
+- parser implementation (`parser`, `build_commands`, `handle_redir_*`)
+
+---
+
+## Expansion
+
+Expansion resolves environment variables before execution.
+
+Rules:
+- `$VAR` → value from `shell->env`
+- `$?` → `shell->last_status`
+- `'single quotes'` → no expansion
+- `"double quotes"` → allows `$` expansion
+
+Related files:
+- `lap.h` (`t_expand_ctx`)
+- expander functions (`expand_token_value`, `expand_tokens`)
+
+---
+
+## Execution
+
+The execution layer runs commands using system calls.
+
+It uses:
+- `fork()` for process creation
+- `execve()` for external commands
+- `wait()` for synchronization
+- `pipe()` for pipelines
+- `dup2()` for redirections
+
+Supported redirections:
+- `<` input
+- `>` output overwrite
+- `>>` output append
+- `<<` heredoc
+
+Related files:
+- `execution.h`
+- execution implementation (`execute_cmds`, `exec_pipeline`, `exec_child`)
+
+---
+
+## Builtins
+
+Built-in commands executed inside the shell process:
+
+- `echo`
+- `cd`
+- `pwd`
+- `export`
+- `unset`
+- `env`
+- `exit`
+
+They operate directly on:
+- `t_shell->env`
+- `t_shell->last_status`
+
+Related files:
+- `execution.h`
+- builtin implementations (`builtin_*` functions)
+
+---
+
+## Signals
+
+Interactive signal handling:
+
+- `Ctrl-C` → interrupts input, prints new prompt
+- `Ctrl-D` → exits shell
+- `Ctrl-\` → ignored
+
+Special handling exists for:
+- heredoc mode
+- child processes
+- main prompt loop
+
+Related files:
+- `minishell.h`
+- signal functions (`setup_main_signals`, `setup_heredoc_signals`)
+
+---
+
+## Source Code Structure
+
+Main headers defining the project architecture:
+
+- `minishell.h` → core structures (`t_shell`, `t_cmd`, signals)
+- `lap.h` → lexer, parser, tokens, expansion
+- `execution.h` → execution, builtins, redirections
+- `libft/` → utility functions
+
+Core structures:
+- `t_shell` → environment + exit status
+- `t_cmd` → command representation
+- `t_token` → lexer output
+- `t_exec_redir` → runtime redirections
+
+---
+
+## Conclusion
+
+Minishell is a full reimplementation of the essential behavior of a Unix shell.
+
+It demonstrates how system-level components work together:
+- lexical analysis
+- parsing
+- environment expansion
+- process creation
+- signal handling
+- execution flow control
+
+The project is implemented in C and structured into clearly separated modules to reflect a real shell architecture.
