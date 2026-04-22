@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:41 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:49:49 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 13:55:14 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,7 @@ void	update_underscore(t_shell *shell, char *path)
 	free(var);
 }
 
-// in the env don't worry about _= because bash has a list of special variables in env
 int	builtin_env(char **argv, char **envp)
-// in the env don't worry about _= because bash has a list of special
-// variables in env
-int	builtin_env(char **envp) // CHANGE: add t_shell *shell
 {
 	int	i;
 
