@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:37:41 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:54:29 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,36 @@ char			*resolve_path(char *cmd, char **envp);
 int				exec_builtin_parent(t_cmd *cmds, t_shell *shell);
 int				exec_builtin(t_cmd *cmds, t_shell *shell);
 
-///		inbuilt flag, infile_fd and outfile_fd set	///
-void			set_builtin_and_open(t_cmd *cmds);
+///		inbuilt flag	///
 void			set_builtin_flag(t_cmd *cmds);
 bool			cmd_is_builtin(char *cmd);
-void			set_infile_and_outfile(t_cmd *cmds);
-void			setup_heredoc(t_cmd	*cmd);
 
 ///		builtin functions	///
 
-int				builtin_echo(char **argv);
-int				builtin_cd(char **argv, t_shell *shell);
-int				builtin_pwd(void);
-int				builtin_env(char **envp);
-int				builtin_export(char **argv, t_shell *shell);
-int				builtin_unset(char **argv, t_shell *shell);
-int				builtin_exit(char **argv, int last_status);
+int     builtin_echo(char **argv);
+int		builtin_cd(char **argv, t_shell *shell);
+int     builtin_pwd(void);
+int     builtin_env(char **argv, char **envp);
+int     builtin_export(char **argv, t_shell *shell);
+int     builtin_unset(char **argv, t_shell *shell);
+int     builtin_exit(char **argv, int last_status);
 
 ///		builtin helper functions	///
 
-bool			long_long_overflow(const char *str);
-void			update_underscore(t_shell *shell, char *path);
-int				find_env_var(char **env, char *key);
-int				update_env_var(char **env, int i, char *var);
-char			**add_env_var(char **env, char *var);
-void			print_export(char **env);
-int				set_env_var(t_shell *shell, char *var);
+bool	long_long_overflow(const char *str);
+int     find_env_var(char **env, char *key);
+int     update_env_var(char **env, int i, char *var);
+char	**add_env_var(char **env, char *var);
+void	print_export(char **env);
+int		set_env_var(t_shell *shell, char *var);
+void	no_such_argument(char *arg);
+void	update_shlvl(t_shell *shell);
 
 ///		redirections				///
 t_exec_redir	*new_redir(int type, char *filename);
 void			add_redirs(t_cmd *cmds, t_exec_redir *node);
 int				all_redirections(t_cmd *cmds);
-int				apply_redirections(t_exec_redir *r);
+int				apply_redirections(t_exec_redir *r, t_cmd *cmds);
 int				apply_in(t_exec_redir *r);
 int				apply_out(t_exec_redir *r);
 int				apply_append(t_exec_redir *r);

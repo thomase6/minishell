@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 10:59:18 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/22 09:24:53 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:56:36 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ t_cmd	*new_cmd(void)
 	cmd->heredoc_delim = NULL;
 	cmd->heredoc_quoted = 0;
 	cmd->heredoc_content = NULL;
-	cmd->infile_fd = -1;
-	cmd->outfile_fd = -1;
 	cmd->is_builtin = 0;
 	cmd->next = NULL;
 	return (cmd);

@@ -6,11 +6,10 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 13:51:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:20:50 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:07:51 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
 // first we identify if the var string exists in the envp, if it does we update

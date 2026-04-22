@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/04/20 15:51:35 by texenber         ###   ########.fr        #
+#    Updated: 2026/04/22 15:51:22 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ EXEC_SRC	=	executor.c			\
 				exec_helper.c		\
 				exec_cleanup.c		\
 				init_env.c			\
-				builtins_dud.c		\
+				builtins_parent.c	\
 				builtins/echo.c		\
 				builtins/cd.c		\
 				builtins/pwd.c		\
@@ -53,7 +53,8 @@ EXEC_SRC	=	executor.c			\
 				signals_in_main.c	\
 				signals_in_heredoc.c\
 				signals_in_exec.c	\
-				redirs.c
+				redirs.c			\
+				redirs_helper.c		\
 
 #execution/test_main.c
 SRC			=	main.c									\

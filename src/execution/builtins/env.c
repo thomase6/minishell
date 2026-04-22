@@ -6,31 +6,34 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:41 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:27:47 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:17:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/execution.h"
 
-void	update_underscore(t_shell *shell, char *path)
+void	no_such_argument(char *arg)
 {
-	char	*var;
+	char *msg;
 
-	var = ft_strjoin("_=", path);
-	if (!var)
+	msg = ft_strjoin(arg, ": No such file or directory\n");
+	if (!msg)
 		return ;
-	set_env_var(shell, var);
-	free(var);
+	ft_putstr_fd(msg, 2);
+	free (msg);
 }
 
-// in the env don't worry about _= because bash has a list of special
-// variables in env
-int	builtin_env(char **envp) // CHANGE: add t_shell *shell
+int	builtin_env(char **argv, char **envp)
 {
 	int	i;
 
+	if (argv[1])
+	{
+		no_such_argument(argv[1]);
+		return (127);
+	}
 	if (!envp)
-		return (1);
+		return (0);
 	i = 0;
 	while (envp[i])
 	{
