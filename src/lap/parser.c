@@ -92,31 +92,6 @@ static t_cmd	*handle_token(t_cmd *current, t_parser_intern *tmp)
 
 /* ===================== Parser ===================== */
 
-void	merge_adjacent_tokens(t_token *tokens)
-{
-	t_token	*tmp;
-	t_token	*next;
-	char	*joined;
-
-	tmp = tokens;
-	while (tmp && tmp->next)
-	{
-		next = tmp->next;
-		if (tmp->type == TOKEN_WORD && next->type == TOKEN_WORD
-			&& !next->has_space_before)
-		{
-			joined = ft_strjoin_lap(tmp->value, next->value);
-			free(tmp->value);
-			tmp->value = joined;
-			tmp->next = next->next;
-			free(next->value);
-			free(next);
-			continue ;
-		}
-		tmp = tmp->next;
-	}
-}
-
 t_cmd	*parser(t_token *tokens, t_shell *shell)
 {
 	t_cmd			*cmds;

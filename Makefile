@@ -20,10 +20,12 @@ LAP_SRC		= 	lexer.c				\
           		lexer_helper1.c		\
           		lexer_helper2.c \
           		parser.c			\
-          		parser_helper.c		\
+          		parser_helper.c \
           		parser_helper1.c	\
           		parser_helper2.c		\
           		parser_helper3.c \
+          		expander.c        \
+          		expander1.c       \
           		validate_syntax.c \
           		cleanup.c			\
           		error_message.c \
