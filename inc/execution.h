@@ -34,23 +34,25 @@ void			setup_heredoc(t_cmd	*cmd);
 
 ///		builtin functions	///
 
-int				builtin_echo(char **argv);
-int				builtin_cd(char **argv, t_shell *shell);
-int				builtin_pwd(void);
-int				builtin_env(char **envp);
-int				builtin_export(char **argv, t_shell *shell);
-int				builtin_unset(char **argv, t_shell *shell);
-int				builtin_exit(char **argv, int last_status);
+int     builtin_echo(char **argv);
+int		builtin_cd(char **argv, t_shell *shell);
+int     builtin_pwd(void);
+int     builtin_env(char **argv, char **envp);
+int     builtin_export(char **argv, t_shell *shell);
+int     builtin_unset(char **argv, t_shell *shell);
+int     builtin_exit(char **argv, int last_status);
 
 ///		builtin helper functions	///
 
-bool			long_long_overflow(const char *str);
-void			update_underscore(t_shell *shell, char *path);
-int				find_env_var(char **env, char *key);
-int				update_env_var(char **env, int i, char *var);
-char			**add_env_var(char **env, char *var);
-void			print_export(char **env);
-int				set_env_var(t_shell *shell, char *var);
+bool	long_long_overflow(const char *str);
+void	update_underscore(t_shell *shell, char *path);
+int     find_env_var(char **env, char *key);
+int     update_env_var(char **env, int i, char *var);
+char	**add_env_var(char **env, char *var);
+void	print_export(char **env);
+int		set_env_var(t_shell *shell, char *var);
+void	no_such_argument(char *arg);
+void	update_shlvl(t_shell *shell);
 
 ///		redirections				///
 t_exec_redir	*new_redir(int type, char *filename);
