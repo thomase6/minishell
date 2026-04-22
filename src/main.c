@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/19 13:40:03 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 18:46:02 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline("Minishell:$ ");
 		if (!line)
 		{
-			ft_putstr_fd("exit\n", 2);
+			// ft_putstr_fd("exit\n", 2);
 			break ;
 		}
 		if (line[0] == '\0')
@@ -131,6 +131,7 @@ int	main(int ac, char **av, char **envp)
         	}
 		// print_tokens(tokens); // REMOVE AFTER TESTING
 		cmds = parser(tokens, &shell);
+		free_tokens(tokens);
         	/*if (!cmds)
         	{
            	 	printf("Parser failed or returned no commands.\n");
@@ -147,8 +148,6 @@ int	main(int ac, char **av, char **envp)
 			execute_cmds(cmds, &shell);
 			free_cmds(cmds);// need to make this function
 		}
-
-		free_tokens(tokens);
 		free(line);
 		if (g_signal == SIGINT)
 			shell.last_status = 130;

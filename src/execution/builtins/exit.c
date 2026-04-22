@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:29 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:27:13 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:36:08 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,34 @@ bool	long_long_overflow(const char *str)
 
 // make sure that the exit code is saved to the last_status to make sure that
 // echo $? works with exit.
-int	builtin_exit(char **argv, int last_status)
+int	builtin_exit(t_cmd *cmds, t_shell *shell, int *fd)
 {
 	int			exit_code;
 	int			i;
 	char		*trimmed;
 
 	ft_putstr_fd("exit\n", 1);
-	if (!argv[1])
-		exit(last_status);
+	if (!cmds->argv[1])
+	{
+		cleanup_shell(shell);
+		free_cmds(cmds);
+		close(fd[0]);
+		close(fd[1]);
+		exit(shell->last_status);
+	}
 	i = 0;
-	trimmed = ft_strtrim(argv[1], " \t");
+	trimmed = ft_strtrim(cmds->argv[1], " \t");
 	if (trimmed[i] == '+' || trimmed[i] == '-')
 		i++;
 	if (!trimmed[i])
 	{
 		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(cmds->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		cleanup_shell(shell);
+		free_cmds(cmds);
+		close(fd[0]);
+		close(fd[1]);
 		exit (2);
 	}
 	while (trimmed[i])
@@ -72,24 +82,44 @@ int	builtin_exit(char **argv, int last_status)
 		if (!ft_isdigit(trimmed[i]))
 		{
 			ft_putstr_fd("exit: ", 2);
-			ft_putstr_fd(argv[1], 2);
+			ft_putstr_fd(cmds->argv[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
+			free(trimmed);
+			cleanup_shell(shell);
+			free_cmds(cmds);
+			close(fd[0]);
+			close(fd[1]);
 			exit (2);
 		}
 		i++;
 	}
-	if (argv[2])
+	if (cmds->argv[2])
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
+		free(trimmed);
+		cleanup_shell(shell);
+		free_cmds(cmds);
+		close(fd[0]);
+		close(fd[1]);
 		exit (1);
 	}
 	if (long_long_overflow(trimmed))
 	{
 		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(cmds->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		free(trimmed);
+		cleanup_shell(shell);
+		free_cmds(cmds);
+		close(fd[0]);
+		close(fd[1]);
 		exit (2);
 	}
 	exit_code = ft_atoll(trimmed);
+	free(trimmed);
+	cleanup_shell(shell);
+	free_cmds(cmds);
+	close(fd[0]);
+	close(fd[1]);
 	exit(exit_code % 256);
 }

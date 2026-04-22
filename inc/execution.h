@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:54:29 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 20:23:50 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int				exec_pipeline(t_cmd *cmds, t_shell *shell);
 void			exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]);
 char			*resolve_path(char *cmd, char **envp);
 int				exec_builtin_parent(t_cmd *cmds, t_shell *shell);
-int				exec_builtin(t_cmd *cmds, t_shell *shell);
+int				exec_builtin(t_cmd *cmds, t_shell *shell, int *fd);
 
 ///		inbuilt flag	///
 void			set_builtin_flag(t_cmd *cmds);
@@ -37,7 +37,7 @@ int     builtin_pwd(void);
 int     builtin_env(char **argv, char **envp);
 int     builtin_export(char **argv, t_shell *shell);
 int     builtin_unset(char **argv, t_shell *shell);
-int     builtin_exit(char **argv, int last_status);
+int     builtin_exit(t_cmd *cmds, t_shell *shell, int *fd);
 
 ///		builtin helper functions	///
 
