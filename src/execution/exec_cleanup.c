@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 09:56:03 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:39:09 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ void	free_cmds(t_cmd *cmds)
 			free(tmp->infile);
 		if (tmp->outfile)
 			free(tmp->outfile);
-		if (tmp->infile_fd != -1)
-			close(tmp->infile_fd);
-		if (tmp->outfile_fd != -1)
-			close(tmp->outfile_fd);
 		free(tmp);
 	}
 }

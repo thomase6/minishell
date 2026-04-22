@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:51:13 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:27:08 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,3 @@ int	exec_builtin_parent(t_cmd *cmds, t_shell *shell)
 	shell->last_status = res;
 	return (res);
 }
-
-//	int res;
-//	int	fd;
-// 	fd = dup(STDOUT_FILENO);
-// 	if (cmds->outfile)
-// 		dup2(cmds->outfile_fd, STDOUT_FILENO);
-// 	res = exec_builtin(cmds, shell);
-// 	dup2(fd, STDOUT_FILENO);
-// 	close(fd);
-// 	if (cmds->outfile_fd != -1)
-// 		close(cmds->outfile_fd);
-// 	shell->last_status = res;
-// 	return (res);
-// }
