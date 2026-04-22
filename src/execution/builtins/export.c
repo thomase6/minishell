@@ -6,14 +6,15 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/10 23:30:56 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 10:25:41 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
-//this function changes the value of a string in the env double pointer at position i with the string var
+// this function changes the value of a string in the env double pointer at
+// position i with the string var
 int	update_env_var(char **env, int i, char *var)
 {
 	char	*new_str;
@@ -54,9 +55,10 @@ char	**add_env_var(char **env, char *var)
 	free(env);
 	return (new_env);
 }
-
-// this function is supposed to print onto standard output the env with "declare -x"
+// this function is supposed to print onto standard output the env with
+// "declare -x"
 // Very simple version might want to add the "" later
+
 void	print_export(char **env)
 {
 	int	i;
@@ -70,8 +72,10 @@ void	print_export(char **env)
 		i++;
 	}
 }
+// this function is basically just checking that the first character is a
+// letter or an underscore and that everything after is either a number, letter
+// or an underscore until the '='.
 
-// this function is basically just checking that the first character is a letter or an underscore and that everything after is either a number, letter or an underscore until the '='.
 int	is_valid_export(char *arg)
 {
 	int	i;

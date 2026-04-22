@@ -6,13 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:33 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/29 09:54:26 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:51:18 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-//this function is meant to copy the envp and make a version that I can edit if needed.
+//this function is meant to copy the envp and make a version that
+//I can edit if needed.
 char	**copy_env(char **envp)
 {
 	char	**new_env;

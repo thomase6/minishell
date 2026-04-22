@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:29:44 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/20 14:53:04 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:20:02 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char	*read_heredoc_content(const char *delimiter,
 	while (1)
 	{
 		tmp.line = readline("> ");
-		if (g_signal == SIGINT)  // SIGNAL HANDLING 
+		if (g_signal == SIGINT)
 		{
 			if (tmp.line)
 				free(tmp.line);
@@ -96,14 +96,9 @@ static char	*read_heredoc_content(const char *delimiter,
 			shell->last_status = 130;
 			return (NULL);
 		}
-		// if (!tmp.line || ft_strcmp_lap(tmp.line, delimiter) == 0) //This 2 can't be done together it should be one then the other
-		// {
-		// 	free(tmp.line);
-		// 	break ;
-		// }
-		if (!tmp.line)	// FIXED
+		if (!tmp.line)
 			break ;
-		if (ft_strcmp_lap(tmp.line, delimiter) == 0) // FIXED
+		if (ft_strcmp_lap(tmp.line, delimiter) == 0)
 		{
 			free(tmp.line);
 			break ;
@@ -114,7 +109,7 @@ static char	*read_heredoc_content(const char *delimiter,
 			return (NULL);
 		free(tmp.line);
 	}
-	setup_main_signals(); // SIGNAL HANDLING
+	setup_main_signals();
 	return (tmp.content);
 }
 
@@ -122,9 +117,9 @@ static char	*read_heredoc_content(const char *delimiter,
 
 int	handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell)
 {
-	t_token	*cur;
-	t_exec_redir	*new;	// CHANGE FOR THE REDIRS: added this line
-	char			*dup2;	// CHANGE FOR THE REDIRS: added this line
+	t_token			*cur;
+	t_exec_redir	*new;
+	char			*dup2;
 
 	if (!cmd || !token || !*token)
 		return (-1);
@@ -137,16 +132,16 @@ int	handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell)
 	cmd->heredoc_quoted = cur->quoted;
 	cmd->heredoc_content = read_heredoc_content(cmd->heredoc_delim,
 			cur->quoted, shell);
-	dup2 = ft_strdup_lap(cur->value);	// CHANGE FOR THE REDIRS: added this line
+	dup2 = ft_strdup_lap(cur->value);
 	if (!dup2)
 		return (-1);
-	new = new_redir(TOKEN_HEREDOC, dup2);	// CHANGE FOR THE REDIRS: added this line
+	new = new_redir(TOKEN_HEREDOC, dup2);
 	if (!new)
-	{	
+	{
 		free (dup2);
 		return (-1);
 	}
-	add_redirs(cmd, new);					// CHANGE FOR THE REDIRS: added this line
+	add_redirs(cmd, new);
 	*token = cur->next;
 	return (0);
 }
