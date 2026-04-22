@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 16:53:53 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:56:03 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	free_redirs(t_exec_redir *redir)
 {
 	t_exec_redir	*tmp;
-	
+
 	if (!redir)
 		return ;
-	while(redir)
+	while (redir)
 	{
 		tmp = redir;
 		redir = redir->next;
@@ -28,7 +28,8 @@ void	free_redirs(t_exec_redir *redir)
 	}
 }
 
-// this function frees the cmd arguments and closes the fd's if they are still open for each cmd
+// this function frees the cmd arguments and closes the fd's
+// if they are still open for each cmd
 void	free_cmds(t_cmd *cmds)
 {
 	t_cmd	*tmp;

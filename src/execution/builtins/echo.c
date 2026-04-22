@@ -6,13 +6,15 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:45 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/27 13:37:14 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 10:18:13 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/execution.h"
 
-// this function is supposed to mimic the builtin command echo which prints to standard output the argument after echo unless that argument is the flag '-n'
+// this function is supposed to mimic the builtin command echo which prints
+// to standard output the argument after echo unless that argument is the
+// flag '-n'
 // in that case we print the argument without a newline.
 int	builtin_echo(char **argv)
 {

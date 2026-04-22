@@ -6,7 +6,7 @@
 /*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 10:56:27 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/03 10:56:37 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:25:59 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,27 @@ t_token	*add_token(t_token **head, t_token_data data)
 	return (new);
 }
 
-int	scan_word(const char *input, int i, t_token **head, int has_space)
+int	scan_word(t_shell *shell, t_scan_ctx *cntx, int i)
 {
 	int		start;
 	t_token	*tok;
 
+	(void)shell;
 	start = i;
-	while (input[i] && input[i] != ' ' && input[i] != '\t' && input[i] != '|'
-		&& input[i] != '<' && input[i] != '>' && input[i] != '"'
-		&& input[i] != '\'' && input[i] != '\n')
+	while (cntx->input[i] && cntx->input[i] != ' ' && cntx->input[i] != '\t'
+		&& cntx->input[i] != '|' && cntx->input[i] != '<'
+		&& cntx->input[i] != '>' && cntx->input[i] != '"'
+		&& cntx->input[i] != '\'' && cntx->input[i] != '\n')
 		i++;
-	tok = add_token(head, (t_token_data){TOKEN_WORD, &input[start],
-			i - start, has_space});
+	tok = add_token(cntx->head,
+			(t_token_data){TOKEN_WORD, &cntx->input[start],
+			i - start, cntx->has_space});
 	if (!tok)
 		return (-1);
 	tok->quoted = 0;
 	return (i);
 }
+
 char	*my_getenv_len(char *name, size_t len, char **envp)
 {
 	size_t	i;

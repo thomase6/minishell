@@ -6,7 +6,7 @@
 /*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 12:33:12 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/03/27 10:29:03 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:44:44 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	put_err(const char *msg)
 	write(2, msg, ft_strlen_lap(msg));
 }
 
-void	handle_syntax_error(t_shell *shell, const char *token_str, int missing_next)
+void	handle_syntax_error(t_shell *shell, const char *token_str,
+				int missing_next)
 {
 	shell->last_status = 2;
 	if (!token_str)

@@ -6,26 +6,23 @@
 /*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 11:00:03 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/06 16:20:26 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:05:57 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
 
-static int check_pipe(t_shell *shell, t_token *curr, t_token *head)
+static int	check_pipe(t_shell *shell, t_token *curr, t_token *head)
 {
-    // Pipe at the start or end
-    if (curr == head && !curr->next)
-        handle_syntax_error(shell, "|", 0); // lone pipe
-    else if (curr == head || !curr->next)
-        handle_syntax_error(shell, "|", 0); // pipe at start or pipe at end
-    // Consecutive pipes
-    else if (curr->next->type == TOKEN_PIPE)
-        handle_syntax_error(shell, "|", 0);
-    else
-        return 0; // valid pipe usage
-
-    return 1; // syntax error
+	if (curr == head && !curr->next)
+		handle_syntax_error(shell, "|", 0);
+	else if (curr == head || !curr->next)
+		handle_syntax_error(shell, "|", 0);
+	else if (curr->next->type == TOKEN_PIPE)
+		handle_syntax_error(shell, "|", 0);
+	else
+		return (0);
+	return (1);
 }
 
 static int	check_redirection(t_shell *shell, t_token *curr)
@@ -48,6 +45,7 @@ int	is_redirection(t_token_type type)
 		|| type == TOKEN_REDIR_OUT_APPEND
 		|| type == TOKEN_HEREDOC);
 }
+
 int	validate_syntax(t_shell *shell, t_token *head)
 {
 	t_token	*curr;

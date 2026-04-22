@@ -6,14 +6,14 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 15:51:58 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 09:58:04 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
 
-
-//this function takes the path and then tries to find the full path of the cmd, then it tests them with access and lastly it returns that full path.
+//this function takes the path and then tries to find the full path of the cmd,
+//then it tests them with access and lastly it returns that full path.
 char	*resolve_cmd(char *cmd, char **dir_path)
 {
 	int		i;
@@ -36,9 +36,11 @@ char	*resolve_cmd(char *cmd, char **dir_path)
 	return (ft_strdup(cmd));
 }
 
-// this function finds the right part of the envp were we can find the cmd path then it sends it to resolve_cmd to find the cmd path
-// make sure cmd is only a cmd without anything added to it like "ls" and not "ls -l"
-char	*resolve_path(char *cmd, char **envp) // CHANGE: add t_shell *shell
+// this function finds the right part of the envp were we can find the
+// cmd path then it sends it to resolve_cmd to find the cmd path
+// make sure cmd is only a cmd without anything added to it
+// like "ls" and not "ls -l"
+char	*resolve_path(char *cmd, char **envp)
 {
 	char	*env_path;
 	char	*result;
