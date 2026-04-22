@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/20 16:05:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 13:01:52 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	setup_heredoc(t_cmd	*cmd);
 int     builtin_echo(char **argv);
 int		builtin_cd(char **argv, t_shell *shell);
 int     builtin_pwd(void);
-int     builtin_env(char **envp);
+int     builtin_env(char **argv, char **envp);
 int     builtin_export(char **argv, t_shell *shell);
 int     builtin_unset(char **argv, t_shell *shell);
 int     builtin_exit(char **argv, int last_status);
@@ -51,6 +51,8 @@ int     update_env_var(char **env, int i, char *var);
 char	**add_env_var(char **env, char *var);
 void	print_export(char **env);
 int		set_env_var(t_shell *shell, char *var);
+void	no_such_argument(char *arg);
+void	update_shlvl(t_shell *shell);
 
 ///		redirections				///
 t_exec_redir *new_redir(int type, char *filename);

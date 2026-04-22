@@ -6,11 +6,10 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 13:51:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/30 08:57:47 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:07:51 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
 
 // first we identify if the var string exists in the envp, if it does we update that variable with the new information and if it doesn't exist we create it at the bottom of the envp

@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/21 14:27:49 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 11:11:36 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	close_all(prev_fd, fd); //make sure to close the previous fd and the fd array.
 	if (cmds->is_builtin == 1)
 		exit(exec_builtin(cmds, shell));
-	if (!cmds->argv || cmds->argv[0] == 0)
+	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0')
 		exit(0);
 	path = resolve_path(cmds->argv[0], envp);
 	err = cmd_check(path, cmds->argv[0]);
@@ -103,12 +103,12 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 		free(path);
 		exit(err);
 	}
-	update_underscore(shell, path);
+	update_underscore(shell, path); // I don't think this is doing anything.
 	envp = shell->env; // refreshes the envp after updating it in the _= variable. FIX: moved it above execve because on success it should update the env not on failure.
 	execve(path, cmds->argv, envp);
-	// perror("minishell");
+	perror("minishell");
 	free(path);
-	exit(0);
+	exit(127);
 }
 
 // this is the first process that starts the pipeline, forks and starts the child process, it also closses all fds that were not used by the parent but the children needed

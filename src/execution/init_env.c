@@ -6,11 +6,48 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:33 by texenber          #+#    #+#             */
-/*   Updated: 2026/03/29 09:54:26 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:55:09 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../inc/execution.h"
+
+void	update_shlvl(t_shell *shell)
+{
+	int		i;
+	int		shlvl;
+	char	*shlvl_str;
+	char	*tmp;
+	char	**new_env;
+	
+	i = find_env_var(shell->env, "SHLVL");
+	if (i >= 0)
+	{
+		shlvl = ft_atoi(shell->env[i] + 6);
+		shlvl++;
+	}
+	else
+		shlvl = 1;
+	shlvl_str = ft_itoa(shlvl);
+	if (!shlvl_str)
+		return ;
+	tmp = ft_strjoin("SHLVL=", shlvl_str);
+	free (shlvl_str);
+	if (!tmp)
+		return ;
+	if (i >= 0)
+	{
+		free(shell->env[i]);
+		shell->env[i] = tmp;
+	}
+	else
+	{
+		new_env = add_env_var(shell->env, tmp);
+		free(tmp);
+		if (new_env)
+			shell->env = new_env;
+	}
+}
 
 //this function is meant to copy the envp and make a version that I can edit if needed.
 char	**copy_env(char **envp)
@@ -48,5 +85,6 @@ int	init_env(t_shell *shell, char **envp)
 	if (!shell->env)
 		return (-1);
 	shell->last_status = 0;
+	update_shlvl(shell);
 	return (0);
 }
