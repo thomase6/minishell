@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/25 10:45:43 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 12:58:01 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ char	**add_env_var(char **env, char *var)
 		return (NULL);
 	}
 	new_env[count + 1] = NULL;
-	free(env);
-	env = NULL;
+	free_argv(env);
 	return (new_env);
 }
 // this function is supposed to print onto standard output the env with
-// "declare -x"
-// Very simple version might want to add the "" later
+// "export"
 
 void	print_export(char **env)
 {
@@ -94,7 +92,6 @@ int	is_valid_export(char *arg)
 	return (1);
 }
 
-// fix error handling later.
 int	builtin_export(char **argv, t_shell *shell)
 {
 	int		i;
