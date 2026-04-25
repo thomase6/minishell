@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:29 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 20:36:08 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:44:50 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	builtin_exit(t_cmd *cmds, t_shell *shell, int *fd)
 			ft_putstr_fd(cmds->argv[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
 			free(trimmed);
+			trimmed = NULL;
 			cleanup_shell(shell);
 			free_cmds(cmds);
 			close(fd[0]);
@@ -97,6 +98,7 @@ int	builtin_exit(t_cmd *cmds, t_shell *shell, int *fd)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
 		free(trimmed);
+		trimmed = NULL;
 		cleanup_shell(shell);
 		free_cmds(cmds);
 		close(fd[0]);
@@ -109,6 +111,7 @@ int	builtin_exit(t_cmd *cmds, t_shell *shell, int *fd)
 		ft_putstr_fd(cmds->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		free(trimmed);
+		trimmed = NULL;
 		cleanup_shell(shell);
 		free_cmds(cmds);
 		close(fd[0]);
@@ -117,6 +120,7 @@ int	builtin_exit(t_cmd *cmds, t_shell *shell, int *fd)
 	}
 	exit_code = ft_atoll(trimmed);
 	free(trimmed);
+	trimmed = NULL;
 	cleanup_shell(shell);
 	free_cmds(cmds);
 	close(fd[0]);

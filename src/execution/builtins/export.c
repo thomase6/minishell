@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:25:41 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:45:43 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	update_env_var(char **env, int i, char *var)
 	if (!new_str)
 		return (-1);
 	free(env[i]);
+	env[i] = NULL;
 	env[i] = new_str;
 	return (0);
 }
@@ -53,6 +54,7 @@ char	**add_env_var(char **env, char *var)
 	}
 	new_env[count + 1] = NULL;
 	free(env);
+	env = NULL;
 	return (new_env);
 }
 // this function is supposed to print onto standard output the env with
@@ -131,6 +133,7 @@ int	builtin_export(char **argv, t_shell *shell)
 					return (1);
 				res = set_env_var(shell, var_with_equal);
 				free(var_with_equal);
+				var_with_equal = NULL;
 				if (res == 1)
 					return (1);
 			}

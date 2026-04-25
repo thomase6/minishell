@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:22:44 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:23:45 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:47:03 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ char	**rem_env_var(char **env, int index)
 			return (NULL);
 		new_env[0] = NULL;
 		free(env[index]);
+		env[index] = NULL;
 		free(env);
+		env = NULL;
 		return (new_env);
 	}
 	new_env = malloc(sizeof(char *) * count);
@@ -44,7 +46,10 @@ char	**rem_env_var(char **env, int index)
 	while (i < count)
 	{
 		if (i == index)
+		{
 			free(env[i]);
+			env[i] = NULL;
+		}
 		else
 		{
 			new_env[j] = env[i];
@@ -54,6 +59,7 @@ char	**rem_env_var(char **env, int index)
 	}
 	new_env[j] = NULL;
 	free(env);
+	env = NULL;
 	return (new_env);
 }
 

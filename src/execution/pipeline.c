@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/25 09:08:30 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:39:57 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,10 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 		if (shell)
 			cleanup_shell(shell);
 		if (path)
-			free(path);	
+		{
+			free(path);
+			path = NULL;
+		}	
 		exit(ret);
 	}
 	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0')
@@ -124,6 +127,7 @@ void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 	free_cmds(cmds);
 	cleanup_shell(shell);
 	free(path);
+	path = NULL;
 	exit(err);
 }
 

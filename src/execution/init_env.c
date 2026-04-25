@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:33 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 19:44:16 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:37:47 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,20 @@ void	update_shlvl(t_shell *shell)
 		return ;
 	tmp = ft_strjoin("SHLVL=", shlvl_str);
 	free (shlvl_str);
+	shlvl_str = NULL;
 	if (!tmp)
 		return ;
 	if (i >= 0)
 	{
 		free(shell->env[i]);
+		shell->env[i] = NULL;
 		shell->env[i] = tmp;
 	}
 	else
 	{
 		new_env = add_env_var(shell->env, tmp);
 		free(tmp);
+		tmp = NULL;
 		if (new_env)
 			shell->env = new_env;
 	}
@@ -70,8 +73,12 @@ char	**copy_env(char **envp)
 		if (!new_env[i])
 		{
 			while (i > 0)
+			{
 				free(new_env[--i]);
+				new_env[i] = NULL;
+			}
 			free(new_env);
+			new_env = NULL;
 			return (NULL);
 		}
 		i++;

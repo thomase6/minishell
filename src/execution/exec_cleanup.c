@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/24 10:37:25 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:34:34 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,27 @@ void	free_cmds(t_cmd *cmds)
 		if (tmp->exec_redirs)
 			free_redirs(tmp->exec_redirs);
 		if (tmp->heredoc_delim)
+		{
 			free(tmp->heredoc_delim);
+			tmp->heredoc_delim = NULL;
+		}
 		if (tmp->heredoc_content)
+		{
 			free(tmp->heredoc_content);
+			tmp->heredoc_content = NULL;
+		}
 		if (tmp->infile)
+		{
 			free(tmp->infile);
+			tmp->infile = NULL;
+		}	
 		if (tmp->outfile)
+		{
 			free(tmp->outfile);
+			tmp->outfile = NULL;
+		}
 		free(tmp);
+		tmp = NULL;
 	}
 }
 
