@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:39:09 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/24 10:37:25 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,15 @@ void	free_redirs(t_exec_redir *redir)
 		tmp = redir;
 		redir = redir->next;
 		if (tmp->filename)
+		{
 			free(tmp->filename);
-		free(tmp);
+			tmp->filename = NULL;
+		}
+		if (tmp)
+		{
+			free(tmp);
+			tmp = NULL;
+		}
 	}
 }
 
@@ -65,8 +72,12 @@ void	free_argv(char **av)
 	while (av[i])
 	{
 		free (av[i]);
+		av[i] = NULL;
 		i++;
 	}
 	if (av)
+	{
 		free (av);
+		av = NULL;
+	}
 }

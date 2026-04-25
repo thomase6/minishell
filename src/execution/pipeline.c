@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:37 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 20:58:51 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/25 09:08:30 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	cmd_check(char *path, char *cmd)
 		cmd_not_found(cmd);
 		return (127);
 	}
+
 	if (access(path, X_OK) != 0)
 	{
 		file_no_access(cmd);
@@ -33,7 +34,10 @@ int	cmd_check(char *path, char *cmd)
 void	close_all(int prev_fd, int fd[2])
 {
 	if (prev_fd != -1)
+	{
 		close(prev_fd);
+		prev_fd = -1;
+	}
 	if (fd[0] != -1)
 	{
 		close(fd[0]);
@@ -80,36 +84,47 @@ static int	wait_all(pid_t last_pid, int *last_status)
 
 void	exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2])
 {
-	char	**envp;
 	char	*path;
 	int		err;
+	int		ret;
 
+	path = NULL;
 	set_signals_for_child();
-	envp = shell->env;
 	if (prev_fd != -1)
 		dup2(prev_fd, STDIN_FILENO);
 	if (cmds->next)
 		dup2(fd[1], STDOUT_FILENO);
 	if (all_redirections(cmds) == 1)
-		exit (1);
-	close_all(prev_fd, fd);
-	if (cmds->is_builtin == 1)
-		exit(exec_builtin(cmds, shell, fd));
-	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0')
-		exit(0);
-	path = resolve_path(cmds->argv[0], envp);
-	err = cmd_check(path, cmds->argv[0]);
-	if (err != 0)
 	{
-		free(path);
 		free_cmds(cmds);
 		cleanup_shell(shell);
-		exit(err);
+		close_all(prev_fd, fd);
+		exit (1);
 	}
-	execve(path, cmds->argv, envp);
-	perror("minishell");
+	close_all(prev_fd, fd);
+	if (cmds->is_builtin == 1) {
+		ret = exec_builtin(cmds, shell, NULL);
+		if (cmds)
+			free_cmds(cmds);
+		if (shell)
+			cleanup_shell(shell);
+		if (path)
+			free(path);	
+		exit(ret);
+	}
+	if (!cmds->argv || !cmds->argv[0] || cmds->argv[0][0] == '\0')
+	{
+		free_cmds(cmds);
+		cleanup_shell(shell);
+		exit(0);
+	}
+	path = resolve_path(cmds->argv[0], shell->env);
+	err = cmd_check(path, cmds->argv[0]);
+	execve(path, cmds->argv, shell->env);
+	free_cmds(cmds);
+	cleanup_shell(shell);
 	free(path);
-	exit(127);
+	exit(err);
 }
 
 // this is the first process that starts the pipeline, forks and starts the
