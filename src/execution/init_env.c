@@ -6,47 +6,50 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:33 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/25 10:37:47 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 17:20:56 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
 
+char	*build_shlvl(int shlvl)
+{
+	char	*shlvl_str;
+	char	*res;
+
+	shlvl_str = ft_itoa(shlvl);
+	if (!shlvl_str)
+		return (NULL);
+	res = ft_strjoin("SHLVL=", shlvl_str);
+	free (shlvl_str);
+	shlvl_str = NULL;
+	return (res);
+}
+
 void	update_shlvl(t_shell *shell)
 {
 	int		i;
 	int		shlvl;
-	char	*shlvl_str;
 	char	*tmp;
 	char	**new_env;
-	
+
 	i = find_env_var(shell->env, "SHLVL");
 	if (i >= 0)
-	{
-		shlvl = ft_atoi(shell->env[i] + 6);
-		shlvl++;
-	}
+		shlvl = (ft_atoi(shell->env[i] + 6)) + 1;
 	else
 		shlvl = 1;
-	shlvl_str = ft_itoa(shlvl);
-	if (!shlvl_str)
-		return ;
-	tmp = ft_strjoin("SHLVL=", shlvl_str);
-	free (shlvl_str);
-	shlvl_str = NULL;
+	tmp = build_shlvl(shlvl);
 	if (!tmp)
 		return ;
 	if (i >= 0)
 	{
 		free(shell->env[i]);
-		shell->env[i] = NULL;
 		shell->env[i] = tmp;
 	}
 	else
 	{
 		new_env = add_env_var(shell->env, tmp);
 		free(tmp);
-		tmp = NULL;
 		if (new_env)
 			shell->env = new_env;
 	}
@@ -71,16 +74,7 @@ char	**copy_env(char **envp)
 	{
 		new_env[i] = ft_strdup(envp[i]);
 		if (!new_env[i])
-		{
-			while (i > 0)
-			{
-				free(new_env[--i]);
-				new_env[i] = NULL;
-			}
-			free(new_env);
-			new_env = NULL;
-			return (NULL);
-		}
+			return (free_partial_env(new_env, i), NULL);
 		i++;
 	}
 	new_env[i] = NULL;

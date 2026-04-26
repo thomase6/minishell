@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/26 09:54:42 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 18:17:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ void			exec_child(t_cmd *cmds, t_shell *shell, int prev_fd, int fd[2]);
 char			*resolve_path(char *cmd, char **envp);
 int				exec_builtin_parent(t_cmd *cmds, t_shell *shell);
 int				exec_builtin(t_cmd *cmds, t_shell *shell, int *fd);
+int				setup_pipe(t_cmd *cmds, t_shell *shell, int prev_fd, int *fd);
+pid_t			handle_fork(t_shell *shell, int prev_fd, int *fd);
+void			handle_fd(t_cmd *cmds, int *prev_fd, int *fd);
+void			empty_cmd(t_cmd *cmds, t_shell *shell);
+void			exec_builtin_child(t_cmd *cmds, t_shell	*shell);
+void			child_exit(t_cmd *cmds, t_shell *shell, int code);
+
 
 ///		inbuilt flag	///
 void			set_builtin_flag(t_cmd *cmds);
@@ -55,6 +62,11 @@ int		parse_n_flags(char **argv, int *i);
 int		get_sign(char **str);
 int		is_valid_num(char *str);
 void	numeric_error(char *arg);
+void	invalid_identifier(char *arg);
+int		process_export(char	*arg, t_shell *shell);
+int		is_valid_export(char *arg);
+char	**copy_env_except_i(char **env, int index, int count);
+void	free_partial_env(char **env, int i);
 
 ///		redirections				///
 t_exec_redir	*new_redir(int type, char *filename);
@@ -76,5 +88,6 @@ void			free_argv(char **av);
 void			free_cmds(t_cmd *cmds);
 void			free_redirs(t_exec_redir *redir);
 void			exit_and_cleanup(t_shell *shell, t_cmd *cmds, int *fd, int code);
+void			free_and_null(char *str);
 
 #endif //EXECUTION_H

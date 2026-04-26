@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:19 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 20:23:24 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 18:03:20 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exec_builtin(t_cmd *cmds, t_shell *shell, int *fd)
 	else if (ft_strcmp(cmds->argv[0], "pwd") == 0)
 		return (builtin_pwd());
 	else if (ft_strcmp(cmds->argv[0], "env") == 0)
-		return (builtin_env(cmds->argv,shell->env));
+		return (builtin_env(cmds->argv, shell->env));
 	else if (ft_strcmp(cmds->argv[0], "export") == 0)
 		return (builtin_export(cmds->argv, shell));
 	else if (ft_strcmp(cmds->argv[0], "unset") == 0)

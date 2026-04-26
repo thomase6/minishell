@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/25 10:35:40 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 14:01:38 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ char	*resolve_cmd(char *cmd, char **dir_path)
 	return (ft_strdup(cmd));
 }
 
+char	*get_env_path(char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+
 // this function finds the right part of the envp were we can find the
 // cmd path then it sends it to resolve_cmd to find the cmd path
 // make sure cmd is only a cmd without anything added to it
@@ -53,15 +67,7 @@ char	*resolve_path(char *cmd, char **envp)
 		return (ft_strdup(cmd));
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			env_path = envp[i] + 5;
-			break ;
-		}
-		i++;
-	}
+	env_path = get_env_path(envp);
 	if (!env_path)
 		return (ft_strdup(cmd));
 	dir_path = ft_split(env_path, ':');

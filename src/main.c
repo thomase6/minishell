@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/25 10:55:32 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 18:02:07 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,12 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		if (line[0] == '\0')
 		{
-			free(line);
-			line = NULL;
+			free_and_null(line);
 			continue ;
 		}
 		add_history(line);
 		tokens = process_input(line, &shell);
-		free(line);
-		line = NULL;
+		free_and_null(line);
 		if (!tokens)
 				continue;
 		cmds = parser(tokens, &shell);

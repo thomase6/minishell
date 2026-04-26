@@ -6,11 +6,17 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/26 09:55:54 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 13:42:49 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
+
+void	free_and_null(char *str)
+{
+	free(str);
+	str = NULL;
+}
 
 void	exit_and_cleanup(t_shell *shell, t_cmd *cmds, int *fd, int code)
 {
@@ -32,10 +38,7 @@ void	free_redirs(t_exec_redir *redir)
 		tmp = redir;
 		redir = redir->next;
 		if (tmp->filename)
-		{
-			free(tmp->filename);
-			tmp->filename = NULL;
-		}
+			free_and_null(tmp->filename);
 		if (tmp)
 		{
 			free(tmp);
@@ -59,25 +62,13 @@ void	free_cmds(t_cmd *cmds)
 		if (tmp->exec_redirs)
 			free_redirs(tmp->exec_redirs);
 		if (tmp->heredoc_delim)
-		{
-			free(tmp->heredoc_delim);
-			tmp->heredoc_delim = NULL;
-		}
+			free_and_null(tmp->heredoc_delim);
 		if (tmp->heredoc_content)
-		{
-			free(tmp->heredoc_content);
-			tmp->heredoc_content = NULL;
-		}
+			free_and_null(tmp->heredoc_content);
 		if (tmp->infile)
-		{
-			free(tmp->infile);
-			tmp->infile = NULL;
-		}	
+			free_and_null(tmp->infile);
 		if (tmp->outfile)
-		{
-			free(tmp->outfile);
-			tmp->outfile = NULL;
-		}
+			free_and_null(tmp->outfile);
 		free(tmp);
 		tmp = NULL;
 	}
