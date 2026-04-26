@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 20:23:50 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 09:54:42 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void	print_export(char **env);
 int		set_env_var(t_shell *shell, char *var);
 void	no_such_argument(char *arg);
 void	update_shlvl(t_shell *shell);
+char	*cd_path(char **argv, t_shell *shell, char *oldpwd);
+int		execute_cd(char *path, char *oldpwd);
+int		parse_n_flags(char **argv, int *i);
+int		get_sign(char **str);
+int		is_valid_num(char *str);
+void	numeric_error(char *arg);
 
 ///		redirections				///
 t_exec_redir	*new_redir(int type, char *filename);
@@ -69,5 +75,6 @@ void			file_no_access(char *cmd);
 void			free_argv(char **av);
 void			free_cmds(t_cmd *cmds);
 void			free_redirs(t_exec_redir *redir);
+void			exit_and_cleanup(t_shell *shell, t_cmd *cmds, int *fd, int code);
 
 #endif //EXECUTION_H

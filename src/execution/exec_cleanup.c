@@ -6,11 +6,20 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:50:59 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/25 10:34:34 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 09:55:54 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
+
+void	exit_and_cleanup(t_shell *shell, t_cmd *cmds, int *fd, int code)
+{
+	cleanup_shell(shell);
+	free_cmds(cmds);
+	close(fd[0]);
+	close(fd[1]);
+	exit (code);
+}
 
 void	free_redirs(t_exec_redir *redir)
 {
