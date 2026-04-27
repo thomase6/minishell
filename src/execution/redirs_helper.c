@@ -6,12 +6,11 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:50:46 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:53:49 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 18:01:12 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/lap.h"
-
 
 int	apply_heredoc(t_cmd *cmds)
 {

@@ -6,11 +6,25 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:29 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:27:13 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/26 09:58:38 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/execution.h"
+
+int	get_sign(char **str)
+{
+	int	neg;
+
+	neg = 0;
+	if (**str == '+' || **str == '-')
+	{
+		if (**str == '-')
+			neg = 1;
+		(*str)++;
+	}
+	return (neg);
+}
 
 bool	long_long_overflow(const char *str)
 {
@@ -21,14 +35,8 @@ bool	long_long_overflow(const char *str)
 
 	len = 0;
 	i = 0;
-	neg = 0;
 	tmp = (char *)str;
-	if (tmp[0] == '+' || tmp[0] == '-')
-	{
-		if (tmp[0] == '-')
-			neg = 1;
-		tmp++;
-	}
+	neg = get_sign(&tmp);
 	while (*tmp == '0')
 		tmp++;
 	if (*tmp == '\0')
@@ -45,51 +53,54 @@ bool	long_long_overflow(const char *str)
 	return (0);
 }
 
-// make sure that the exit code is saved to the last_status to make sure that
-// echo $? works with exit.
-int	builtin_exit(char **argv, int last_status)
+void	numeric_error(char *arg)
+{
+	ft_putstr_fd("exit: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+}
+
+int	is_valid_num(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	builtin_exit(t_cmd *cmds, t_shell *shell, int *fd)
 {
 	int			exit_code;
-	int			i;
 	char		*trimmed;
 
 	ft_putstr_fd("exit\n", 1);
-	if (!argv[1])
-		exit(last_status);
-	i = 0;
-	trimmed = ft_strtrim(argv[1], " \t");
-	if (trimmed[i] == '+' || trimmed[i] == '-')
-		i++;
-	if (!trimmed[i])
+	if (!cmds->argv[1])
+		exit_and_cleanup(shell, cmds, fd, shell->last_status);
+	trimmed = ft_strtrim(cmds->argv[1], " \t");
+	if (!is_valid_num(trimmed) || long_long_overflow(trimmed))
 	{
-		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		exit (2);
+		numeric_error(cmds->argv[1]);
+		free(trimmed);
+		exit_and_cleanup(shell, cmds, fd, 2);
 	}
-	while (trimmed[i])
-	{
-		if (!ft_isdigit(trimmed[i]))
-		{
-			ft_putstr_fd("exit: ", 2);
-			ft_putstr_fd(argv[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			exit (2);
-		}
-		i++;
-	}
-	if (argv[2])
+	if (cmds->argv[2])
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		exit (1);
-	}
-	if (long_long_overflow(trimmed))
-	{
-		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		exit (2);
+		free(trimmed);
+		exit_and_cleanup(shell, cmds, fd, 1);
 	}
 	exit_code = ft_atoll(trimmed);
-	exit(exit_code % 256);
+	free(trimmed);
+	exit_and_cleanup(shell, cmds, fd, exit_code % 256);
+	return (0);
 }

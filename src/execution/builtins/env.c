@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:41 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:17:54 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 09:13:10 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	no_such_argument(char *arg)
 {
-	char *msg;
+	char	*msg;
 
 	msg = ft_strjoin(arg, ": No such file or directory\n");
 	if (!msg)
 		return ;
 	ft_putstr_fd(msg, 2);
 	free (msg);
+	msg = NULL;
 }
 
 int	builtin_env(char **argv, char **envp)

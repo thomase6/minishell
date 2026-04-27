@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:53 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:25:41 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/26 18:00:36 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	update_env_var(char **env, int i, char *var)
 	if (!new_str)
 		return (-1);
 	free(env[i]);
+	env[i] = NULL;
 	env[i] = new_str;
 	return (0);
 }
@@ -43,22 +44,19 @@ char	**add_env_var(char **env, char *var)
 	while (i < count)
 	{
 		new_env[i] = ft_strdup(env[i]);
+		if (!new_env[i])
+			return (free_partial_env(new_env, i), NULL);
 		i++;
 	}
 	new_env[count] = ft_strdup(var);
 	if (!new_env[count])
-	{
-		free(new_env);
-		return (NULL);
-	}
+		return (free_partial_env(new_env, count), NULL);
 	new_env[count + 1] = NULL;
-	free(env);
-	return (new_env);
+	return (free_argv(env), new_env);
 }
-// this function is supposed to print onto standard output the env with
-// "declare -x"
-// Very simple version might want to add the "" later
 
+// this function is supposed to print onto standard output the env with
+// "export"
 void	print_export(char **env)
 {
 	int	i;
@@ -92,53 +90,24 @@ int	is_valid_export(char *arg)
 	return (1);
 }
 
-// fix error handling later.
 int	builtin_export(char **argv, t_shell *shell)
 {
 	int		i;
 	int		res;
 	int		err;
-	char	*var_with_equal;
 
 	if (!argv[1])
-	{
-		print_export(shell->env);
-		return (0);
-	}
+		return (print_export(shell->env), 0);
 	i = 1;
 	err = 0;
 	while (argv[i])
 	{
+		res = process_export(argv[i], shell);
+		if (res == 1 || res == -1)
+			return (1);
 		if (!is_valid_export(argv[i]))
-		{
-			ft_putstr_fd("export: `", 2);
-			ft_putstr_fd(argv[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
 			err = 1;
-		}
-		else
-		{
-			if (ft_strchr(argv[i], '='))
-			{
-				res = set_env_var(shell, argv[i]);
-				if (res == -1)
-					return (1);
-			}
-			else
-			{
-				var_with_equal = ft_strjoin(argv[i], "=");
-				if (!var_with_equal)
-					return (1);
-				res = set_env_var(shell, var_with_equal);
-				free(var_with_equal);
-				if (res == 1)
-					return (1);
-			}
-		}
 		i++;
 	}
-	if (err == 1)
-		return (1);
-	else
-		return (0);
+	return (err);
 }

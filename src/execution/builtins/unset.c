@@ -6,12 +6,41 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:22:44 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:23:45 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 11:46:45 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 #include "../../../inc/execution.h"
+
+char	**copy_env_except_i(char **env, int index, int count)
+{
+	char	**new_env;
+	int		i;
+	int		j;
+
+	new_env = malloc(sizeof(char *) * count);
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (i < count)
+	{
+		if (i == index)
+		{
+			free(env[i]);
+			env[i] = NULL;
+		}
+		else
+		{
+			new_env[j] = env[i];
+			j++;
+		}
+		i++;
+	}
+	new_env[j] = NULL;
+	return (free(env), env = NULL, new_env);
+}
 
 // this function is meant to remove the line in the env that we are trying to
 // remove and then it rewrites the other env pointers as if the line didn't
@@ -19,8 +48,6 @@
 char	**rem_env_var(char **env, int index)
 {
 	char	**new_env;
-	int		i;
-	int		j;
 	int		count;
 
 	count = 0;
@@ -33,27 +60,12 @@ char	**rem_env_var(char **env, int index)
 			return (NULL);
 		new_env[0] = NULL;
 		free(env[index]);
+		env[index] = NULL;
 		free(env);
+		env = NULL;
 		return (new_env);
 	}
-	new_env = malloc(sizeof(char *) * count);
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < count)
-	{
-		if (i == index)
-			free(env[i]);
-		else
-		{
-			new_env[j] = env[i];
-			j++;
-		}
-		i++;
-	}
-	new_env[j] = NULL;
-	free(env);
+	new_env = copy_env_except_i(env, index, count);
 	return (new_env);
 }
 

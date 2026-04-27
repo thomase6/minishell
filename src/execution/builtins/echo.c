@@ -6,11 +6,33 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:45 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 10:18:13 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/26 09:11:21 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/execution.h"
+
+int	parse_n_flags(char **argv, int *i)
+{
+	int	j;
+	int	n_flag;
+
+	n_flag = 0;
+	while (argv[*i] && argv[*i][0] == '-' && argv[*i][1] == 'n')
+	{
+		j = 1;
+		while (argv[*i][j] == 'n')
+			j++;
+		if (argv[*i][j] == '\0')
+		{
+			n_flag = 1;
+			(*i)++;
+		}
+		else
+			break ;
+	}
+	return (n_flag);
+}
 
 // this function is supposed to mimic the builtin command echo which prints
 // to standard output the argument after echo unless that argument is the
@@ -20,26 +42,11 @@ int	builtin_echo(char **argv)
 {
 	int	i;
 	int	n_flag;
-	int	j;
 
 	i = 1;
-	n_flag = 0;
-	while (argv[i] && argv[i][0] == '-' && argv[i][1] == 'n')
-	{
-		j = 1;
-		while (argv[i][j] == 'n')
-			j++;
-		if (argv[i][j] == '\0')
-		{
-			n_flag = 1;
-			i++;
-		}
-		else
-			break ;
-	}
+	n_flag = parse_n_flags(argv, &i);
 	while (argv[i])
 	{
-		j = 0;
 		ft_putstr_fd(argv[i], 1);
 		if (argv[i + 1] != NULL)
 			ft_putchar_fd(' ', 1);

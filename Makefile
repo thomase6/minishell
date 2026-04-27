@@ -6,7 +6,7 @@
 #    By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/19 10:07:05 by texenber          #+#    #+#              #
-#    Updated: 2026/04/22 15:51:22 by texenber         ###   ########.fr        #
+#    Updated: 2026/04/26 18:07:38 by texenber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ EXEC_PRE	= execution/
 EXEC_SRC	=	executor.c			\
 				pipeline.c			\
 				pipeline_helper.c	\
+				child_helper.c		\
 				exec_helper.c		\
 				exec_cleanup.c		\
 				init_env.c			\

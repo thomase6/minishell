@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:49 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/22 15:20:17 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/26 08:50:23 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,53 @@ int	update_pwd_env(t_shell *shell, char *oldpwd, char *newpwd)
 	oldtmp = ft_strjoin("OLDPWD=", oldpwd);
 	newtmp = ft_strjoin("PWD=", newpwd);
 	if (!oldtmp || !newtmp)
-		return (free(oldtmp), free(newtmp), 1);
+	{
+		return (free(oldtmp), free(newtmp), oldtmp = NULL, newtmp = NULL, 1);
+	}
 	set_env_var(shell, oldtmp);
 	set_env_var(shell, newtmp);
 	free(oldtmp);
+	oldtmp = NULL;
 	free(newtmp);
+	newtmp = NULL;
+	return (0);
+}
+
+char	*cd_path(char **argv, t_shell *shell, char *oldpwd)
+{
+	char	*path;
+
+	if (!argv[1])
+		path = get_env(shell->env, "HOME");
+	else if (ft_strcmp(argv[1], "-") == 0)
+	{
+		path = get_env(shell->env, "OLDPWD");
+		if (!path)
+			return (ft_putstr_fd("cd: OLDPWD not set\n", 2),
+				free(oldpwd), oldpwd = NULL, NULL);
+		printf("%s\n", path);
+	}
+	else
+		path = argv[1];
+	if (!path)
+		return (ft_putstr_fd("cd: HOME not set\n", 2),
+			free(oldpwd), oldpwd = NULL, NULL);
+	return (path);
+}
+
+int	execute_cd(char *path, char *oldpwd)
+{
+	if (chdir(path) != 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+		free(oldpwd);
+		oldpwd = NULL;
+		return (1);
+	}
 	return (0);
 }
 
@@ -50,31 +92,16 @@ int	builtin_cd(char **argv, t_shell *shell)
 	if (argv[1] && argv[2])
 		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	oldpwd = getcwd(NULL, 0);
-	if (!argv[1])
-		path = get_env(shell->env, "HOME");
-	else if (ft_strcmp(argv[1], "-") == 0)
-	{
-		path = get_env(shell->env, "OLDPWD");
-		if (!path)
-			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), free(oldpwd), 1);
-		printf("%s\n", path);
-	}
-	else
-		path = argv[1];
+	path = cd_path(argv, shell, oldpwd);
 	if (!path)
-		return (ft_putstr_fd("cd: HOME not set\n", 2), free(oldpwd), 1);
-	if (chdir(path) != 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": ", 2);
-		perror("");
-		return (free(oldpwd), 1);
-	}
+		return (1);
+	if (execute_cd(path, oldpwd))
+		return (1);
 	newpwd = getcwd(NULL, 0);
 	update_pwd_env(shell, oldpwd, newpwd);
 	free(oldpwd);
+	oldpwd = NULL;
 	free(newpwd);
+	newpwd = NULL;
 	return (0);
 }
