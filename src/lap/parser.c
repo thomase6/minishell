@@ -48,6 +48,7 @@ static t_cmd	*handle_pipe_token(t_cmd *current,
 		return (NULL);
 	}
 	current->next = next_cmd;
+	next_cmd->prev = current;
 	*token = (*token)->next;
 	return (next_cmd);
 }

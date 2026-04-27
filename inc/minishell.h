@@ -54,6 +54,7 @@ typedef struct s_cmd
 	// int				outfile_fd;
 	int				is_builtin;	
 	struct s_cmd	*next;			// next command (pipe)
+	struct s_cmd	*prev;
 }	t_cmd;
 
 typedef struct s_shell
