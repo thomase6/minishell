@@ -6,7 +6,7 @@
 /*   By: stbagdah <stbagdah@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:41:58 by stbagdah          #+#    #+#             */
-/*   Updated: 2026/04/22 12:36:36 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:08:38 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,12 @@ int				handle_redir_out_append(t_cmd *cmd, t_token **token);
 int				handle_heredoc(t_cmd *cmd, t_token **token, t_shell *shell);
 int				handle_exit(char *res, size_t *j, t_shell *shell);
 int				join_last_arg(t_cmd *current, char *val);
-int append_heredoc(t_heredoc *tmp);
-void    expand_heredoc_line(char **line, t_shell *shell);
-int handle_sigint(char *line, char *content, t_shell *shell);
-int is_delimiter(char *line, const char *delimiter);
-int process_line(t_heredoc *tmp, const char *delimiter, int quoted, t_shell *shell);
+int				append_heredoc(t_heredoc *tmp);
+void			expand_heredoc_line(char **line, t_shell *shell);
+int				handle_sigint(char *line, char *content, t_shell *shell);
+int				is_delimiter(char *line, const char *delimiter);
+int				process_line(t_heredoc *tmp, const char *delimiter,
+					int quoted, t_shell *shell);
 void			merge_adjacent_tokens(t_token *tokens);
 void			free_cmds(t_cmd *cmds);
 t_cmd			*handle_pipe(t_cmd *current);
@@ -126,8 +127,8 @@ t_cmd			*build_commands(t_token *tokens);
 /* ===================== EXPANDER HELPER =================== */
 int				expand_token_value(t_token *t, t_shell *shell);
 int				expand_tokens(t_token *tokens, t_shell *shell);
-int	ft_intlen(int n);
-size_t	handle_var(t_expand_ctx *ctx);
+int				ft_intlen(int n);
+size_t			handle_var(t_expand_ctx *ctx);
 /* ===================== Lexer Helpers ===================== */
 t_token			*add_token(t_token **head, t_token_data data);
 int				check_scan(int i, t_token **head);

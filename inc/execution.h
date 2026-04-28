@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/26 18:17:54 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:07:54 by stbagdah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,39 @@ void			empty_cmd(t_cmd *cmds, t_shell *shell);
 void			exec_builtin_child(t_cmd *cmds, t_shell	*shell);
 void			child_exit(t_cmd *cmds, t_shell *shell, int code);
 
-
 ///		inbuilt flag	///
 void			set_builtin_flag(t_cmd *cmds);
 bool			cmd_is_builtin(char *cmd);
 
 ///		builtin functions	///
-
-int     builtin_echo(char **argv);
-int		builtin_cd(char **argv, t_shell *shell);
-int     builtin_pwd(void);
-int     builtin_env(char **argv, char **envp);
-int     builtin_export(char **argv, t_shell *shell);
-int     builtin_unset(char **argv, t_shell *shell);
-int     builtin_exit(t_cmd *cmds, t_shell *shell, int *fd);
+int				builtin_echo(char **argv);
+int				builtin_cd(char **argv, t_shell *shell);
+int				builtin_pwd(void);
+int				builtin_env(char **argv, char **envp);
+int				builtin_export(char **argv, t_shell *shell);
+int				builtin_unset(char **argv, t_shell *shell);
+int				builtin_exit(t_cmd *cmds, t_shell *shell, int *fd);
 
 ///		builtin helper functions	///
-
-bool	long_long_overflow(const char *str);
-int     find_env_var(char **env, char *key);
-int     update_env_var(char **env, int i, char *var);
-char	**add_env_var(char **env, char *var);
-void	print_export(char **env);
-int		set_env_var(t_shell *shell, char *var);
-void	no_such_argument(char *arg);
-void	update_shlvl(t_shell *shell);
-char	*cd_path(char **argv, t_shell *shell, char *oldpwd);
-int		execute_cd(char *path, char *oldpwd);
-int		parse_n_flags(char **argv, int *i);
-int		get_sign(char **str);
-int		is_valid_num(char *str);
-void	numeric_error(char *arg);
-void	invalid_identifier(char *arg);
-int		process_export(char	*arg, t_shell *shell);
-int		is_valid_export(char *arg);
-char	**copy_env_except_i(char **env, int index, int count);
-void	free_partial_env(char **env, int i);
+bool			long_long_overflow(const char *str);
+int				find_env_var(char **env, char *key);
+int				update_env_var(char **env, int i, char *var);
+char			**add_env_var(char **env, char *var);
+void			print_export(char **env);
+int				set_env_var(t_shell *shell, char *var);
+void			no_such_argument(char *arg);
+void			update_shlvl(t_shell *shell);
+char			*cd_path(char **argv, t_shell *shell, char *oldpwd);
+int				execute_cd(char *path, char *oldpwd);
+int				parse_n_flags(char **argv, int *i);
+int				get_sign(char **str);
+int				is_valid_num(char *str);
+void			numeric_error(char *arg);
+void			invalid_identifier(char *arg);
+int				process_export(char	*arg, t_shell *shell);
+int				is_valid_export(char *arg);
+char			**copy_env_except_i(char **env, int index, int count);
+void			free_partial_env(char **env, int i);
 
 ///		redirections				///
 t_exec_redir	*new_redir(int type, char *filename);
@@ -79,7 +76,6 @@ int				apply_append(t_exec_redir *r);
 int				apply_heredoc(t_cmd *cmds);
 
 ///		pipeline helper functions	///
-
 void			cmd_not_found(char *cmd);
 void			file_no_access(char *cmd);
 
@@ -87,7 +83,8 @@ void			file_no_access(char *cmd);
 void			free_argv(char **av);
 void			free_cmds(t_cmd *cmds);
 void			free_redirs(t_exec_redir *redir);
-void			exit_and_cleanup(t_shell *shell, t_cmd *cmds, int *fd, int code);
+void			exit_and_cleanup(t_shell *shell, t_cmd *cmds,
+					int *fd, int code);
 void			free_and_null(char *str);
 
 #endif //EXECUTION_H

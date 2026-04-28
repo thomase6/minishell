@@ -54,9 +54,7 @@ size_t	handle_var(t_expand_ctx *ctx)
 int	expand_tokens(t_token *tokens, t_shell *shell)
 {
 	t_token	*tmp;
-	t_token	*prev;
 
-	prev = NULL;
 	tmp = tokens;
 	while (tmp)
 	{
