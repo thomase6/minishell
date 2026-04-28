@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/26 18:02:07 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:37:04 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,36 @@ void	cleanup_shell(t_shell *shell)
 		free_argv(shell->env);
 }
 
-int	main(int ac, char **av, char **envp)
+int	main_loop(t_shell *shell)
 {
-	t_shell	shell;
 	char	*line;
 	t_cmd	*cmds;
 	t_token	*tokens;
+
+	g_signal = 0;
+	line = readline("Minishell:$ ");
+	if (!line)
+		return (0);
+	if (line[0] == '\0')
+		return (free_and_null(line), 1);
+	add_history(line);
+	tokens = process_input(line, shell);
+	free(line);
+	cmds = parser(tokens, shell);
+	free_tokens(tokens);
+	if (cmds)
+	{
+		execute_cmds(cmds, shell);
+		free_cmds(cmds);
+	}
+	if (g_signal == SIGINT)
+		shell->last_status = 130;
+	return (1);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_shell	shell;
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -40,29 +64,8 @@ int	main(int ac, char **av, char **envp)
 	rl_signal_event_hook = signal_main_hook;
 	while (1)
 	{
-		g_signal = 0;
-		line = readline("Minishell:$ ");
-		if (!line)
-			break ;
-		if (line[0] == '\0')
-		{
-			free_and_null(line);
-			continue ;
-		}
-		add_history(line);
-		tokens = process_input(line, &shell);
-		free_and_null(line);
-		if (!tokens)
-				continue;
-		cmds = parser(tokens, &shell);
-		free_tokens(tokens);
-		if (cmds)
-		{
-			execute_cmds(cmds, &shell);
-			free_cmds(cmds);
-		}
-		if (g_signal == SIGINT)
-			shell.last_status = 130;
+		if (!main_loop(&shell))
+			break;
 	}
 	cleanup_shell(&shell);
 	return (shell.last_status);

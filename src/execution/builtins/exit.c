@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 09:59:29 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/26 09:58:38 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/28 08:45:58 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ int	get_sign(char **str)
 bool	long_long_overflow(const char *str)
 {
 	int		len;
-	int		i;
 	int		neg;
 	char	*tmp;
 
 	len = 0;
-	i = 0;
 	tmp = (char *)str;
 	neg = get_sign(&tmp);
 	while (*tmp == '0')

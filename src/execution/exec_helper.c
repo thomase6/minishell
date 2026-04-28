@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:26 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/26 14:01:38 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/28 08:35:37 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ char	*resolve_path(char *cmd, char **envp)
 	char	*env_path;
 	char	*result;
 	char	**dir_path;
-	int		i;
 
-	i = 0;
 	env_path = NULL;
 	if (cmd[0] == '\0')
 		return (ft_strdup(cmd));

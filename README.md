@@ -63,16 +63,31 @@ It is designed to follow the subject requirements of the 42 curriculum and mimic
 
 ### Compilation
 
-make
-make re
-make clean
-make fclean
+To compile use:
 ```
-
+make
+```
 ### Execution
 
+To execute use:
+```
 ./minishell
+```
+After executing you should be inside the minishell. Now you can run commands like `echo` `pwd` `ls` `/bin/env`. 
 
+For Example:
+```
+Minishell:$ echo hello
+hello
+Minishell:$ 
+```
+### Cleaning
+
+```
+make re        # Compiles everything from scratch.
+make clean     # Removes .obj files.
+make fclean    # Removes .obj files and executable.
+```
 ---
 
 ## Resources
@@ -81,6 +96,13 @@ make fclean
 
 * Unix manual pages (`readline`, `fork`, `execve`, `pipe`, `dup2`)
 * Bash behavior reference
+
+### Other Sources
+
+* https://m4nnb3ll.medium.com/minishell-building-a-mini-bash-a-42-project-b55a10598218
+* https://medium.com/@zouhairlrs/minishell-building-a-mini-bash-a-42-project-5dc20d671fbb
+* https://en.wikipedia.org/wiki/Bourne_shell
+* https://linuxize.com/post/bash-heredoc/
 
 ### AI Usage
 
