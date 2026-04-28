@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:09 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/28 09:33:26 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:56:00 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_shell
 int		init_env(t_shell *shell, char **envp);
 
 ///		main loop						///
-int	main_loop(t_shell *shell);
+int		main_loop(t_shell *shell);
 
 ///		minishell cleanup				///
 void	cleanup_shell(t_shell *shell);
