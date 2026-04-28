@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/28 09:37:04 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/28 09:55:37 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../inc/execution.h"
 #include "../inc/lap.h"
 
-volatile sig_atomic_t	g_signal = 0; //global variable declaration and definition
+volatile sig_atomic_t	g_signal = 0;
 
 void	cleanup_shell(t_shell *shell)
 {
@@ -53,6 +53,7 @@ int	main_loop(t_shell *shell)
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
+
 	(void)ac;
 	(void)av;
 	if (init_env(&shell, envp) == -1)
@@ -65,7 +66,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		if (!main_loop(&shell))
-			break;
+			break ;
 	}
 	cleanup_shell(&shell);
 	return (shell.last_status);
