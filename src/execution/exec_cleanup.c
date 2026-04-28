@@ -53,6 +53,8 @@ void	free_cmds(t_cmd *cmds)
 {
 	t_cmd	*tmp;
 
+	while (cmds->prev != NULL)
+		cmds = cmds->prev;
 	while (cmds)
 	{
 		tmp = cmds;

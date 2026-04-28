@@ -29,6 +29,7 @@ t_cmd	*new_cmd(void)
 	cmd->heredoc_content = NULL;
 	cmd->is_builtin = 0;
 	cmd->next = NULL;
+	cmd->prev = NULL;
 	return (cmd);
 }
 
