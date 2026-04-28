@@ -23,7 +23,6 @@ LAP_SRC		= 	lexer.c				\
           		parser_helper.c \
           		parser_helper1.c	\
           		parser_helper2.c		\
-          		parser_helper2.5.c \
           		parser_helper3.c \
           		handle_redir_in.c \
           		handle_redir_out.c \
