@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:01:13 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/28 09:07:54 by stbagdah         ###   ########.fr       */
+/*   Updated: 2026/04/29 03:42:38 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ void			free_redirs(t_exec_redir *redir);
 void			exit_and_cleanup(t_shell *shell, t_cmd *cmds,
 					int *fd, int code);
 void			free_and_null(char *str);
+void			close_all(int prev_fd, int fd[2]);
 
 #endif //EXECUTION_H
