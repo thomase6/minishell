@@ -6,7 +6,7 @@
 /*   By: texenber <texenber@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:00:57 by texenber          #+#    #+#             */
-/*   Updated: 2026/04/28 09:55:37 by texenber         ###   ########.fr       */
+/*   Updated: 2026/04/29 04:15:09 by texenber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main_loop(t_shell *shell)
 	g_signal = 0;
 	line = readline("Minishell:$ ");
 	if (!line)
-		return (0);
+		return (ft_putstr_fd("exit\n", 1), 0);
 	if (line[0] == '\0')
 		return (free_and_null(line), 1);
 	add_history(line);
